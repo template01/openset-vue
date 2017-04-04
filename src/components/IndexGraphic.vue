@@ -1,8 +1,8 @@
 <template>
 <div>
 
-  <button @click="counter++">click</button>
-  {{counter}}
+  <!-- <button @click="counter++">click</button> -->
+  <!-- {{counter}} -->
   <div v-for="(item, index) in newsAndProjectsOrdered">
 
 
@@ -11,7 +11,8 @@
       <template v-if="item.acf.simplestyle == 'Red'">
         <div class="project projectRed">
           <h3>
-            {{item.title.rendered}}
+            <router-link :to="{path: 'project/'+item.id}">{{item.title.rendered}}</router-link>
+
           </h3>
           {{item.acf.simplestyle}}
 
@@ -21,7 +22,8 @@
       <template v-else-if="item.acf.simplestyle == 'Tall'">
         <div class="project projectTall">
           <h3>
-            {{item.title.rendered}}
+            <router-link :to="{path: 'project/'+item.id}">{{item.title.rendered}}</router-link>
+
           </h3>
           {{item.acf.simplestyle}}
 
@@ -31,7 +33,7 @@
       <template v-else>
         <div class="project">
           <h3>
-            {{item.title.rendered}}
+            <router-link :to="{path: 'project/'+item.id}">{{item.title.rendered}}</router-link>
           </h3>
           {{item.acf.simplestyle}}
 
@@ -63,10 +65,10 @@
 
 <script>
 export default {
-  name: 'hello',
+  name: 'indexGraphic',
   data() {
     return {
-      counter:0,
+      // counter:0,
     }
   },
 

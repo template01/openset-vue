@@ -1,36 +1,24 @@
 <template>
 <div>
-  <!-- <div v-for="item in news">
-      {{item.title.rendered}}
-      <br>
-      {{item.date}}
-    </div>
-    <br>
-    <div v-for="item in projects">
-      {{item.title.rendered}}
-      <br>
-      {{item.date}}
-    </div> -->
-    index
-    <router-link to="/">Go to Home</router-link>
+  <header>
+    <router-link to="/">Home</router-link>
+    <router-link to="/list">List View</router-link>
+  </header>
 
-    <router-link to="/work">Go to Foo</router-link>
-
-
-<keep-alive>
-    <router-view
-    v-bind:newsProp="this.news"
-    v-bind:projectsProp="this.projects"
-    v-bind:newsAndProjectsProp="this.newsAndProjects"
-    ></router-view>
-</keep-alive>
+  <keep-alive>
+      <router-view
+      v-bind:newsProp="this.news"
+      v-bind:projectsProp="this.projects"
+      v-bind:newsAndProjectsProp="this.newsAndProjects"
+      ></router-view>
+  </keep-alive>
 
 </div>
 </template>
 
 <script>
 export default {
-  name: 'hello',
+  name: 'indexPage',
   data() {
     return {
       news: Array,

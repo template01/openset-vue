@@ -1,7 +1,8 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="">
+    not found..
   </div>
+
 </template>
 
 <script>
@@ -9,7 +10,6 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'not found :('
     }
   }
 }
