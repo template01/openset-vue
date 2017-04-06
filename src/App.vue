@@ -11,6 +11,14 @@ export default {
 </script>
 
 <style>
+
+body,html{
+  margin: 0;
+}
+
+*{
+  box-sizing: border-box;
+}
 #app {
   /*font-family: 'Avenir', Helvetica, Arial, sans-serif;
 
@@ -19,7 +27,7 @@ export default {
   margin-top: 60px;*/
 
 
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Arial;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
