@@ -10,7 +10,11 @@ export default {
 }
 </script>
 
-<style>
+<style src="../src/assets/fonts/Lyon/stylesheet.css"/>
+<style src="../src/assets/fonts/Calibre/stylesheet.css"/>
+
+<style lang="scss">
+
 
 body,html{
   margin: 0;
@@ -27,7 +31,7 @@ body,html{
   margin-top: 60px;*/
 
 
-  font-family: Arial;
+  font-family: Calibre;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

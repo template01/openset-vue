@@ -4,15 +4,18 @@
 
   <!-- <button @click="counter++">click</button> -->
   <!-- {{counter}} -->
+  <newsItemExpanded v-on:closeNews="newsItemExpandedTrue=false" v-bind:itemId="newsItemExpandedId" v-if="newsItemExpandedTrue"></newsItemExpanded>
+
   <div v-for="(item, index) in newsAndProjectsOrdered">
 
 
 
     <template v-if="item.type == 'project'">
-      <template v-if="item.acf.simplestyle == 'Red'">
+
+      <template v-if="item.acf.default_project">
         <div class="floatItem project projectRed" v-bind:class="randomAnimation()">
           <h3>
-            <router-link :to="{path: 'project/'+item.id}" v-html="item.title.rendered"></router-link>
+            <router-link :to="{path: 'project/'+item.slug}" v-html="item.title.rendered"></router-link>
 
           </h3>
           <!-- {{item.acf.simplestyle}} -->
@@ -20,10 +23,10 @@
         </div>
 </template>
 
-      <template v-else-if="item.acf.simplestyle == 'Tall'">
+      <template v-else-if="item.acf.visual_report">
 <div class="floatItem project projectTall">
   <h3>
-            <router-link :to="{path: 'project/'+item.id}" v-html="item.title.rendered"></router-link>
+            <router-link :to="{path: 'project/'+item.slug}" v-html="item.title.rendered"></router-link>
 
           </h3>
   <!-- {{item.acf.simplestyle}} -->
@@ -34,7 +37,7 @@
       <template v-else>
 <div class="floatItem project">
   <h3>
-            <router-link :to="{path: 'project/'+item.id}" v-html="item.title.rendered"></router-link>
+            <router-link :to="{path: 'project/'+item.slug}" v-html="item.title.rendered"></router-link>
           </h3>
   <!-- {{item.acf.simplestyle}} -->
 
@@ -46,7 +49,7 @@
 
 
     <template v-else-if="item.type == 'news_announcements'">
-<div class="floatItem splashNews">
+<div class="floatItem splashNews"  @click="renderNewsItem(item.id)">
 
   <div class="cornered">
     <h1>
@@ -58,21 +61,25 @@
 
 
   </div>
-
-
-
-
 </div>
 </template>
 
 <script>
+
+import newsItemExpanded from '@/components/newsItemExpanded'
+
 export default {
   name: 'indexGraphic',
   data() {
     return {
       // counter:0,
+      newsItemExpandedId:'',
+      newsItemExpandedTrue: false,
     }
   },
+
+
+  components:{newsItemExpanded},
 
   props: ['newsProp', 'projectsProp', 'newsAndProjectsProp'],
 
@@ -84,6 +91,17 @@ export default {
   },
 
   methods: {
+
+
+
+    renderNewsItem: function(indexParam){
+      console.log('hey')
+      this.newsItemExpandedId=indexParam
+      this.newsItemExpandedTrue = true;
+
+
+    },
+
     packery: function() {
       var elem = document.querySelector('#visualView');
       var pckry = new Packery(elem, {

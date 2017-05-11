@@ -67,7 +67,7 @@ export default new Router({
           // when /user/:id/profile is matched
           name: 'project',
 
-          path: '/project/:projectId',
+          path: '/project/:projectSlug',
           component: Project,
 
         }, {

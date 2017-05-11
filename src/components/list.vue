@@ -52,9 +52,9 @@
       </div>
 
       <div class="projectItem" v-for="item in projectsProp">
-        <router-link :to="{path: 'project/'+item.id}">
+        <router-link :to="{path: 'project/'+item.slug}">
           <span class="w25">
-            {{item.type}}
+            {{item.acf.project_type}}
           </span>
           <span class="w50" v-html="item.title.rendered">
           </span>

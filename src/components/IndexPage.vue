@@ -4,7 +4,7 @@
 
     <div class="viewSwitcher">
         <router-link v-if="listView" to="/">Visual</router-link>
-        <router-link v-else to="/list">List</router-link>
+        <router-link v-else to="/list">Texual</router-link>
     </div>
 
     <div class="navigation">
@@ -63,7 +63,7 @@ export default {
 
     })
 
-    this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project').then(function(response) {
+    this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1').then(function(response) {
       this.projects = response.body
       this.newsAndProjects = this.newsAndProjects.concat(response.body)
     })
@@ -116,6 +116,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 header {
     height: 80px;
     position: fixed;
