@@ -64,19 +64,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "../assets/scss/globalVars.scss";
+
 #listView {
     background: lime;
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - $paddingWindowLarg);
 
     font-size: 18px;
 
     .blockHeader {
         width: 100%;
-        min-height: 80px;
+        min-height: $paddingWindowLarge;
 
         h1 {
             color: lime;
-            line-height: 80px;
+            line-height: $paddingWindowLarge;
 
             font-size: 4vw;
             font-weight: normal;
@@ -118,7 +120,7 @@ export default {
 
     .projectItem {
         display: flex;
-        min-height: 80px;
+        min-height: $paddingWindowLarge;
 
         width: 100%;
         // justify-content: center;
@@ -165,7 +167,7 @@ export default {
 .right {
 
     position: absolute;
-    height: calc(100% - 80px);
+    height: calc(100% - #{$paddingWindowLarge});
     overflow-y: auto;
 };
 

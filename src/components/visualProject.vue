@@ -132,6 +132,8 @@ a {
 </style>
 
 <style lang="scss">
+@import "../assets/scss/globalVars.scss";
+
 .visualProject {
     .visualContentTextarea {
         p {

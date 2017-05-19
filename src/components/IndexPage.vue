@@ -1,17 +1,17 @@
-<template>
+  <template>
 <div>
   <header>
 
     <div class="viewSwitcher">
-        <router-link v-if="listView" to="/">Visual</router-link>
-        <router-link v-else to="/list">Texual</router-link>
+      <router-link v-if="listView" to="/">Visual</router-link>
+      <router-link v-else to="/list">Textual</router-link>
     </div>
 
     <div class="navigation">
       <router-link to="/list">About</router-link>
-      <router-link to="/participants">Participants</router-link>
+      <!-- <router-link to="/participants">Participants</router-link> -->
       <!-- <router-link to="http://placeholder-b.template-studio.nl/">Login/Register</router-link> -->
-      <a href="http://placeholder-b.template-studio.nl/">Login/Register</a>
+      <a href="http://placeholder-b.template-studio.nl/">Lo<span class="liftedNavigation">g</span>in</a>
     </div>
 
     <div class="title">
@@ -24,15 +24,14 @@
 
   <div class="content">
     <keep-alive>
-      <router-view v-bind:participantsProp="this.participants"  v-bind:newsProp="this.news" v-bind:projectsProp="this.projects" v-bind:newsAndProjectsProp="this.newsAndProjects"></router-view>
+      <router-view v-bind:newsListPage="totalNewsListPages"  v-bind:projectListPage="totalProjectListPages" v-on:getmoreContentNewsListEmit="function(input){getmoreContentNewsList(input)}" v-on:getmoreContentProjectsListEmit="function(input){getmoreContentProjectsList(input)}" v-on:getmoreContentProjectsEmit="function(input){getmoreContentProjects(input)}" v-on:getmoreContentNewsEmit="function(input){getmoreContentNews(input)}" v-on:getmoreContentReportEmit="function(input){getmoreContentReport(input)}"v-bind:participantsProp="this.participants" v-bind:newsProp="this.news" v-bind:projectsProp="this.projects" v-bind:newsAndProjectsAndReportsProp="this.newsAndProjectsAndReports">
+      </router-view>
     </keep-alive>
   </div>
 </div>
 </template>
 
 <script>
-
-
 export default {
   name: 'indexPage',
   // components:{Participants},
@@ -40,11 +39,15 @@ export default {
     return {
       news: Array,
       projects: Array,
+      reports: Array,
       participants: Array,
-      newsAndProjects: [],
+      newsAndProjectsAndReports: [],
       indexScrollY: 0,
       listView: false,
-      listParticipants:false,
+      listParticipants: false,
+      totalProjectListPages:0,
+      totalNewsListPages:0,
+
     }
   },
 
@@ -56,29 +59,97 @@ export default {
 
     this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements').then(function(response) {
       this.news = response.body
+      this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
 
-      this.newsAndProjects = this.newsAndProjects.concat(response.body)
+      this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
 
-      // console.log(this.newsAndProjects)
+      // console.log(this.newsAndProjectsAndReports)
 
+    })
+
+
+    this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport').then(function(response) {
+      console.log(response)
+      console.log(response.headers)
+      this.reports = response.body
+      this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
     })
 
     this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1').then(function(response) {
       this.projects = response.body
-      this.newsAndProjects = this.newsAndProjects.concat(response.body)
+      this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
+      this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
     })
 
     this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/users?exclude=1').then(function(response) {
       this.participants = response.body
-      // this.newsAndProjects = this.newsAndProjects.concat(response.body)
+      // this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
     })
 
 
   },
 
+  methods:{
+    getmoreContentReport: function(input){
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?page='+input).then(function(response) {
+        var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        console.log(response)
+        console.log(response.headers)
+        console.log(response.headers.map['X-WP-TotalPages'][0])
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+      })
+    },
+
+    getmoreContentNews: function(input){
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?page='+input).then(function(response) {
+        var totalPages = response.headers.map['X-WP-TotalPages'][0]
+
+        console.log(response)
+        console.log(response.headers)
+        console.log(response.headers.map['X-WP-TotalPages'][0])
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+      })
+    },
+
+    getmoreContentProjects: function(input){
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1&page='+input).then(function(response) {
+        var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        console.log(response)
+        console.log(response.headers)
+        console.log(response.headers.map['X-WP-TotalPages'][0])
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+      })
+    },
+
+    getmoreContentProjectsList: function(input){
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1&page='+input).then(function(response) {
+        var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
+
+        console.log(response)
+        console.log(response.headers)
+        console.log(response.headers.map['X-WP-TotalPages'][0])
+        this.projects = this.projects.concat(response.body)
+      })
+    },
+
+    getmoreContentNewsList: function(input){
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?page='+input).then(function(response) {
+        var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+
+        console.log(response)
+        console.log(response.headers)
+        console.log(response.headers.map['X-WP-TotalPages'][0])
+        this.news = this.news.concat(response.body)
+      })
+    }
+
+  },
+
   computed: {
-    newsAndProjectsOrdered: function() {
-      return _.orderBy(this.newsAndProjects, 'modified', ['desc'])
+    newsAndProjectsAndReportsOrdered: function() {
+      return _.orderBy(this.newsAndProjectsAndReports, 'modified', ['desc'])
     },
 
   },
@@ -116,9 +187,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/scss/globalVars.scss";
 
 header {
-    height: 80px;
+    height: $paddingWindowLarge;
     position: fixed;
     top: 0;
     background: black;
@@ -126,71 +198,85 @@ header {
     font-weight: bold;
 
     .navigation {
-        // width: 80px;
+        // width: $paddingWindowLarge;
+        font-size: $fontSizeWindowLarge;
+        font-weight: normal;
+
         float: right;
         display: flex;
         align-items: center;
-        height: 80px;
+        height: $paddingWindowLarge;
         justify-content: center;
         a {
+
+          .liftedNavigation{
+            top: -$fontSizeWindowLarge/7;
+            position: relative;
+          }
             padding-right: 20px;
             color: white;
             text-decoration: none;
+            padding-left: 20px;
         }
 
-        button{
-          margin: 0;
-          padding: 0;
-          color: white;
-          background: transparent;
-          border: 0;
-          font-size: inherit;
-          font-weight: inherit;
-          padding-right: 20px;
+        button {
+            margin: 0;
+            padding: 0;
+            color: white;
+            background: transparent;
+            border: 0;
+            font-size: inherit;
+            font-weight: inherit;
+            padding-right: 20px;
         }
     }
 
     .viewSwitcher {
-        width: 80px;
+        // width: $paddingWindowLarge;
+        padding-right: 20px;
+        padding-left: 20px;
+
         float: right;
         display: flex;
         align-items: center;
-        height: 80px;
+        height: $paddingWindowLarge;
         justify-content: center;
         background: white;
+        font-size: $fontSizeWindowLarge;
+        font-weight: normal;
+
         a {
             color: black;
             text-decoration: none;
             height: 100%;
             width: 100%;
-            line-height: 80px;
+            line-height: $paddingWindowLarge;
             text-align: center;
         }
     }
 
-    .title{
-      h1{
-        color: lime;
-        font-size: 4vw;
-        // line-height: 8vw;
-        font-weight: normal;
-        // float: right;
-        margin: 0;
-      }
-      background: white;
-      float: left;
-      display: flex;
-      align-items: center;
-      height: 80px;
-      justify-content: center;
-      width: auto;
-      padding-left: 20px;
-      padding-right: 20px;
-
+    .title {
+        h1 {
+            color: lime;
+            font-size: $fontSizeWindowLarge;
+            // line-height: 8vw;
+            font-weight: normal;
+            // float: right;
+            margin: 0;
+        }
+        background: white;
+        float: left;
+        display: flex;
+        align-items: center;
+        height: $paddingWindowLarge;
+        justify-content: center;
+        width: auto;
+        padding-left: 20px;
+        padding-right: 20px;
 
     }
 }
 .content {
-    margin-top: 80px;
+    margin-top: $paddingWindowLarge;
 }
 </style>
