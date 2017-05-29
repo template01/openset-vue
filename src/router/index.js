@@ -5,6 +5,7 @@ import IndexPage from '@/components/IndexPage'
 import List from '@/components/list'
 import NotFound from '@/components/Notfound'
 import Project from '@/components/Project'
+import Editorreport from '@/components/Editorreport'
 import Participants from '@/components/Participants'
 
 
@@ -70,7 +71,18 @@ export default new Router({
           path: '/project/:projectSlug',
           component: Project,
 
-        }, {
+        },
+
+        {
+          // UserProfile will be rendered inside User's <router-view>
+          // when /user/:id/profile is matched
+          name: 'editorreport',
+
+          path: '/editorreport/:editorreportSlug',
+          component: Editorreport,
+
+        },
+        {
 
           path: '*',
           component: NotFound,

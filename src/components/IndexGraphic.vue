@@ -97,7 +97,7 @@
 
 <template v-else-if="item.type == 'editorreport'">
 <div class="floatItem project report">
-  <router-link :to="{path: 'project/'+item.slug}">
+  <router-link :to="{path: 'editorreport/'+item.slug}">
 
     <span class="largeLetter">
     <span v-html="item.title.rendered.charAt(0)">
@@ -698,6 +698,8 @@ export default {
 }
 
 .splashNews {
+
+    cursor: pointer;
     min-height: 0;
 
     background-color: lime;

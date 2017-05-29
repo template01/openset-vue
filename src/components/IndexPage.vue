@@ -192,6 +192,7 @@ export default {
 header {
     height: $paddingWindowLarge;
     position: fixed;
+    z-index: 0;
     top: 0;
     background: black;
     width: 100%;
