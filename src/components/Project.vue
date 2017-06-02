@@ -7,7 +7,7 @@
     skecth {{this.sketchProject}}<br />
     default {{this.defaultProject}} -->
     <!-- <h1 v-html="this.projectTitle"></h1> -->
-    <visualProject v-bind:intro="this.visualReportIntro" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visualReport"></visualProject>
+    <visualProject v-bind:introText="this.visualReportIntroText" v-bind:introKeywords="this.visualReportIntroKeywords" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visualReport"></visualProject>
     <defaultProject v-bind:title="this.projectTitle" v-if="defaultProject"></defaultProject>
     <sketchProject v-bind:title="this.projectTitle" v-if="sketchProject"></sketchProject>
   </div>
@@ -44,7 +44,8 @@ export default {
       projectDefaultContent:'',
       NotFoundState: true,
       visualReport:false,
-      visualReportIntro:'',
+      visualReportIntroText:'',
+      visualReportIntroKeywords:'',
       visualContent:'',
       sketchProject:false,
       defaultProject:false,
@@ -74,7 +75,11 @@ export default {
           this.projectDefaultContent = this.projectContent.acf.rendered
           if(this.projectContent.acf.visual_report){
             this.visualReport = true
-            this.visualReportIntro = this.projectContent.acf.visual_report_introduction
+            if(this.projectContent.acf.visual_report_introduction_style === "text_based"){
+              this.visualReportIntroText = this.projectContent.acf.visual_report_introduction_text
+            }else{
+              this.visualReportIntroKeywords = this.projectContent.acf.visual_report_introduction_keywords
+            }
             this.visualContent = this.projectContent.acf.visual_report
           }
           if(this.projectContent.acf.sketch_project){

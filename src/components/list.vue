@@ -1,96 +1,130 @@
 <template>
 <div id="listView" class="">
-  <div class="right">
-    <div class="about">
-      <div class="blockHeader">
-        <h1>
-          About
-        </h1>
-      </div>
-      <p>
-        Open Set is a design and education platform located in Rotterdam, the Netherlands, that operates internationally. It was initiated as an independent summer school in 2012. Our organization applies design thinking to education, while facilitating collaborations...
-      </p>
-      <p>
-        Read more
-      </p>
-    </div>
+  <div class="third">
+    <div class="thirdInner">
 
-    <div class="news">
-      <div class="newsItem ">
-        <div class="blockHeader">
-          <h1>
-            NEWS
-          </h1>
-        </div>
-      </div>
+      <div class="tableStyle red">
 
 
-
-      <div class="newsItem" v-for="item in newsProp">
-        <div class="newsItemInner">
-          <p>
-
-            {{item.title.rendered}}
-          </p>
-
-          <div v-html="item.content.rendered">
-          </div>
-          <p>
-            Expand
-          </p>
-        </div>
-
-      </div>
-
-
-      <div @click="$emit('getmoreContentNewsListEmit',getMoreContentNews); getMoreContentNews++" id="LoadMore">
-        <!-- <h1>Load More Content</h1> -->
-        <!-- {{getMoreContentNews}}
-        {{newsListPage}} -->
-        <h1 v-if="getMoreContentNews - 1 < newsListPage">Load More News</h1>
-        <h1 v-else>No more News!</h1>
-      </div>
-
-    </div>
-  </div>
-  <div class="left">
-
-    <div class="projects">
-
-
-      <div class="projectItem">
-        <div class="blockHeader">
-          <h1>
+        <div class="projectItem">
+          <div class="blockHeader">
+            <h1>
             Projects
 
           </h1>
+          </div>
+        </div>
+
+        <div class="projectItem" v-for="item in projectsProp">
+          <div class="projectItemInner">
+
+          <router-link :to="{path: 'project/'+item.slug}">
+            <span class="projectItemTitle" v-html="item.title.rendered">
+          </span>
+            <span class="projectItemHalf" v-if="item.acf.student_name">By:
+              <span v-for="(name, index) in item.acf.student_name.split(',')">
+                <span v-if="index != item.acf.student_name.split(',').length -1 ">{{name}}, </span>
+                <span v-else>{{name}}</span>
+              </span>
+          </span>
+            <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
+          </span>
+          </router-link>
+        </div>
+        </div>
+
+
+        <div class="projectItem LoadMoreProjects" id="" @click="$emit('getmoreContentProjectsListEmit',getMoreContentProjects); getMoreContentProjects++">
+          <h1 v-if="getMoreContentProjects - 1 < projectListPage ">Get More Projects</h1>
+          <h1 v-else>No More Projects</h1>
+
         </div>
       </div>
-
-      <div class="projectItem" v-for="item in projectsProp">
-        <router-link :to="{path: 'project/'+item.slug}">
-          <span class="projectItemTitle" v-html="item.title.rendered">
-          </span>
-          <span class="projectItemHalf">
-            {{item.acf.project_type}}
-          </span>
-          <span class="projectItemHalf" v-html="dateStamp(item.date)">
-          </span>
-        </router-link>
-      </div>
-
-
-      <div class="projectItem" id="LoadMoreProjects" @click="$emit('getmoreContentProjectsListEmit',getMoreContentProjects); getMoreContentProjects++">
-        <h1 v-if="getMoreContentProjects - 1 < projectListPage ">Load More Projects</h1>
-        <h1 v-else>You've reached the end.</h1>
-
-      </div>
-
-
     </div>
+  </div>
+
+  <div class="third">
+    <div class="thirdInner">
+
+      <div class="tableStyle green">
 
 
+        <div class="projectItem">
+          <div class="blockHeader">
+            <h1>
+            Reports
+          </h1>
+          </div>
+        </div>
 
+        <div class="projectItem" v-for="item in editorreportsProp">
+          <div class="projectItemInner">
+
+          <router-link :to="{path: 'editorreport/'+item.slug}">
+            <span class="projectItemTitle" v-html="item.title.rendered">
+          </span>
+          <span class="projectItemHalf" v-if="item.acf.student_name">By:
+            <span v-for="(name, index) in item.acf.student_name.split(',')">
+              <span v-if="index != item.acf.student_name.split(',').length -1 ">{{name}}, </span>
+              <span v-else>{{name}}</span>
+            </span>
+        </span>
+          <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
+
+          </span>
+          </router-link>
+        </div>
+        </div>
+
+
+        <div class="projectItem LoadMoreProjects" @click="$emit('getmoreContentReportsListEmit',getMoreContentReports); getMoreContentReports++">
+          <h1 v-if="getMoreContentReports - 1 < reportListPage ">Get More Reports</h1>
+          <h1 v-else>No More Reports</h1>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="third">
+    <div class="thirdInner">
+
+      <div class="tableStyle blue">
+
+
+        <div class="projectItem">
+          <div class="blockHeader">
+            <h1>
+            News
+
+          </h1>
+          </div>
+        </div>
+
+        <div class="projectItem" v-for="item in newsProp">
+          <div class="projectItemInner">
+            <!-- <router-link :to="{path: 'project/'+item.slug}"> -->
+              <span class="projectItemTitle" v-html="item.title.rendered">
+          </span>
+          <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
+
+          </span>
+          <span class="projectItemHalf"  v-html="">
+          </span>
+            <!-- </router-link> -->
+          </div>
+
+        </div>
+
+
+        <div class="projectItem LoadMoreProjects" id="" @click="$emit('getmoreContentNewsListEmit',getMoreContentNews); getMoreContentNews++">
+          <h1 v-if="getMoreContentNews - 1 < newsListPage ">Get More News</h1>
+          <h1 v-else>No More News</h1>
+
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -103,20 +137,21 @@ export default {
     return {
       getMoreContentProjects: 2,
       getMoreContentNews: 2,
+      getMoreContentReports: 2,
       // getMoreContentProjects:1,
       msg: 'Welcome to Your Vue.js App',
-      days: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       mL: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       mS: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     }
   },
 
-  props: ['newsProp', 'projectsProp', 'newsAndProjectsProp', 'projectListPage', 'newsListPage'],
+  props: ['newsProp', 'projectsProp', 'editorreportsProp', 'newsAndProjectsProp', 'projectListPage', 'reportListPage', 'newsListPage'],
 
-  methods:{
+  methods: {
 
 
-    dateStamp: function(input){
+    dateStamp: function(input) {
 
 
       var day = this.days[new Date(input).getDay()]
@@ -124,10 +159,10 @@ export default {
 
       var year = new Date(input).getFullYear()
       var monthL = this.mL[new Date(input).getMonth()]
-      var month = ("0" + (new Date(input).getMonth()+1)).slice(-2)
+      var month = ("0" + (new Date(input).getMonth() + 1)).slice(-2)
       // return this.days[new Date(input).getDay()];
       // return day+"/"+dayNumber+"/"+monthL;
-      return dayNumber+"/"+month+"/"+year;
+      return dayNumber + "." + month + "." + year;
 
     }
   }
@@ -160,7 +195,7 @@ export default {
             margin-top: 0;
             margin-bottom: 0;
             text-transform: uppercase;
-            // text-align: right;
+            text-align: center;
         }
 
     }
@@ -182,7 +217,7 @@ export default {
 
 .news {
     // padding-bottom: 20px;
-    margin-top: $paddingWindowMedium;
+    // margin-top: $paddingWindowMedium;
 
     background: white;
     width: 100%;
@@ -211,9 +246,124 @@ export default {
     }
 }
 
-.projects {
+.tableStyle {
     // margin-top: 20px;
-    background: white;
+
+    &.blue {
+        background: white;
+
+        .projectItem {
+            h1 {
+                color: white;
+            }
+
+            &#LoadMoreProjects {
+                h1 {
+                    color: white;
+                }
+            }
+            &:nth-child(odd) {
+                color: white;
+
+                a {
+
+                    color: white;
+                }
+                background: blue;
+
+            }
+            &:nth-child(even) {
+                &.LoadMoreProjects {
+                    h1 {
+                        color: black;
+                    }
+                }
+
+            }
+
+            a {
+                color: black;
+            }
+
+        }
+
+    }
+
+    &.green {
+        background: lime;
+
+        .projectItem {
+            h1 {
+                color: lime;
+            }
+
+            &#LoadMoreProjects {
+                h1 {
+                    color: lime;
+                }
+            }
+            &:nth-child(odd) {
+                a {
+
+                    color: lime;
+                }
+                background: black;
+
+            }
+            &:nth-child(even) {
+                &.LoadMoreProjects {
+                    h1 {
+                        color: black;
+                    }
+                }
+
+            }
+
+            a {
+                color: black;
+            }
+
+        }
+
+    }
+
+    &.red {
+        background: white;
+
+        .projectItem {
+            h1 {
+                color: white;
+            }
+
+            &#LoadMoreProjects {
+                h1 {
+                    color: white;
+                }
+            }
+            &:nth-child(odd) {
+                a {
+
+                    color: white;
+                }
+                background: red;
+
+            }
+            &:nth-child(even) {
+                &.LoadMoreProjects {
+                    h1 {
+                        color: black;
+                    }
+                }
+
+            }
+
+            a {
+                color: black;
+            }
+
+        }
+
+    }
     // padding: 20px;
     *:first-of-type {
         margin-top: 0;
@@ -224,39 +374,29 @@ export default {
 
     .projectItem {
 
-        overflow: hidden;
+
+        .projectItemInner{
+          overflow: hidden;
+          width: 100%;
+          display: block;
+        }
 
         h1 {
-            color: white;
             font-weight: normal;
         }
 
-        &#LoadMoreProjects {
+        &.LoadMoreProjects {
             cursor: pointer;
+            text-align: center;
+
             h1 {
-                color: white;
+                width: 100%;
                 font-weight: normal;
             }
         }
 
         display: flex;
         height: $paddingWindowLarge*1.6;
-        &:nth-child(odd) {
-            a {
-
-                color: white;
-            }
-            background: red;
-
-        }
-        &:nth-child(even) {
-            &#LoadMoreProjects {
-                h1 {
-                    color: black;
-                }
-            }
-
-        }
 
         width: 100%;
         // justify-content: center;
@@ -267,7 +407,6 @@ export default {
             width: 100%;
             display: block;
             margin: 0;
-            color: black;
             text-decoration: none;
         }
 
@@ -276,14 +415,35 @@ export default {
             clear: both;
             display: inline-block;
             margin-bottom: 5px;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .projectItemHalf {
-            width: 50%;
+            // width: 50%;
+            padding-right: $paddingWindowDesktop;
             float: left;
-            font-size: 75%;
+            font-size: 60%;
         }
 
+    }
+}
+
+.third {
+    float: left;
+    width: 33.3333%;
+    position: absolute;
+    background: lime;
+    overflow-y: auto;
+    height: calc(100% - #{$paddingWindowLarge});
+    // height: 100%;
+    &:nth-of-type(2) {
+        left: 33.33333%;
+    }
+    &:nth-of-type(3) {
+        left: 66.66666%;
     }
 }
 

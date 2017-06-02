@@ -24,7 +24,7 @@
 
   <div class="content">
     <keep-alive>
-      <router-view v-bind:newsListPage="totalNewsListPages"  v-bind:projectListPage="totalProjectListPages" v-on:getmoreContentNewsListEmit="function(input){getmoreContentNewsList(input)}" v-on:getmoreContentProjectsListEmit="function(input){getmoreContentProjectsList(input)}" v-on:getmoreContentProjectsEmit="function(input){getmoreContentProjects(input)}" v-on:getmoreContentNewsEmit="function(input){getmoreContentNews(input)}" v-on:getmoreContentReportEmit="function(input){getmoreContentReport(input)}"v-bind:participantsProp="this.participants" v-bind:newsProp="this.news" v-bind:projectsProp="this.projects" v-bind:newsAndProjectsAndReportsProp="this.newsAndProjectsAndReports">
+      <router-view v-bind:newsListPage="totalNewsListPages"  v-bind:reportListPage="totalReportListPages" v-bind:projectListPage="totalProjectListPages" v-on:getmoreContentNewsListEmit="function(input){getmoreContentNewsList(input)}" v-on:getmoreContentProjectsListEmit="function(input){getmoreContentProjectsList(input)}" v-on:getmoreContentReportsListEmit="function(input){getmoreContentReportsList(input)}" v-on:getmoreContentProjectsEmit="function(input){getmoreContentProjects(input)}" v-on:getmoreContentNewsEmit="function(input){getmoreContentNews(input)}" v-on:getmoreContentReportEmit="function(input){getmoreContentReport(input)}"v-bind:participantsProp="this.participants" v-bind:newsProp="this.news" v-bind:projectsProp="this.projects" v-bind:editorreportsProp="this.reports" v-bind:newsAndProjectsAndReportsProp="this.newsAndProjectsAndReports">
       </router-view>
     </keep-alive>
   </div>
@@ -46,6 +46,7 @@ export default {
       listView: false,
       listParticipants: false,
       totalProjectListPages:0,
+      totalReportListPages:0,
       totalNewsListPages:0,
 
     }
@@ -72,6 +73,8 @@ export default {
       console.log(response)
       console.log(response.headers)
       this.reports = response.body
+      this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+
       this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
     })
 
@@ -96,6 +99,7 @@ export default {
         console.log(response)
         console.log(response.headers)
         console.log(response.headers.map['X-WP-TotalPages'][0])
+
         this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
       })
     },
@@ -132,6 +136,15 @@ export default {
         this.projects = this.projects.concat(response.body)
       })
     },
+    getmoreContentReportsList: function(input){
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?page='+input).then(function(response) {
+        var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+        this.reports = this.reports.concat(response.body)
+      })
+    },
+
+
 
     getmoreContentNewsList: function(input){
       this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?page='+input).then(function(response) {

@@ -5,7 +5,7 @@ import IndexPage from '@/components/IndexPage'
 import List from '@/components/list'
 import NotFound from '@/components/Notfound'
 import Project from '@/components/Project'
-import Editorreport from '@/components/Editorreport'
+import Editorreport from '@/components/EditorreportMain'
 import Participants from '@/components/Participants'
 
 
@@ -17,19 +17,6 @@ Vue.use(Router)
 
 export default new Router({
     mode: 'history',
-    // scrollBehavior (to, from, savedPosition) {
-    //   console.log(savedPosition)
-    //   if (savedPosition) {
-    //     return savedPosition
-    //   } else {
-    //     return { x: 0, y: 0 }
-    //   }
-    // },
-
-    // scrollBehavior (to, from, savedPosition) {
-    //   return { x: 111111110, y: 1111111110 }
-    // },
-
 
     routes: [{
       path: '/',

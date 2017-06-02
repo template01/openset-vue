@@ -15,8 +15,7 @@
 
 
       <template v-if="item.type == 'project'">
-
-      <template v-if="item.acf.default_project">
+      <template v-if="item.acf.project_frontend_style==='red_blurb'">
         <div class="floatItem project projectRed" v-bind:class="randomAnimation()" v-once>
           <h3>
             <router-link :to="{path: 'project/'+item.slug}" v-html="item.title.rendered"></router-link>
@@ -29,23 +28,38 @@
         </div>
 </template>
 
-      <template v-else-if="item.acf.visual_report">
-<div class="floatItem project visualReport">
-  <router-link :to="{path: 'project/'+item.slug}">
-  <div class="cornered">
+
+<template v-else-if="item.acf.project_frontend_style==='circular_image'">
+
+<div class="floatItem project backgroundImage">
+  <div class="actualImage" v-bind:style="{'background-image':'url('+item.acf.circular_image.sizes.large+')'}">
 
   </div>
-  <h3  v-html="item.title.rendered">
+  <router-link :to="{path: 'project/'+item.slug}">
+    <h3 v-html="item.title.rendered">
 
 
-  </h3>
-</router-link>
-  <!-- {{item.acf.simplestyle}} -->
-        <div class="arrowsLink"></div>
+    </h3>
+  </router-link>
+  <div class="arrowsLink"></div>
 </div>
+
+
+<!--
+<div class="floatItem project backgroundImage">
+  <router-link :to="{path: 'project/'+item.slug}">
+    <h3 v-html="item.title.rendered">
+
+
+</h3>
+  </router-link>
+  <div class="arrowsLink"></div>
+</div> -->
 </template>
 
-      <template  v-else-if="item.acf.sketch_project">
+
+
+      <template  v-else-if="item.acf.project_frontend_style==='white_box'">
 <div class="floatItem project visualReport">
 
 
@@ -126,7 +140,7 @@
   </div>
 
   <div @click="$emit('getmoreContentReportEmit',getMoreContentAll); $emit('getmoreContentProjectsEmit',getMoreContentAll); $emit('getmoreContentNewsEmit',getMoreContentAll); getMoreContentAll++" id="LoadMore">
-    <h1 >Load More Content</h1>
+    <h1 >Get More Content</h1>
 
   </div>
 
@@ -245,9 +259,9 @@ export default {
     overflow-y: hidden;
     margin-bottom: $paddingWindowLarge;
 
-    -webkit-box-shadow: inset 0px -1px 0px 0px red;
-    -moz-box-shadow: inset 0px -1px 0px 0px red;
-    box-shadow: inset 0px -1px 0px 0px red;
+    -webkit-box-shadow: inset 0 -1px 0 0 red;
+    -moz-box-shadow: inset 0 -1px 0 0 red;
+    box-shadow: inset 0 -1px 0 0 red;
     #LoadMore {
         cursor: pointer;
         box-shadow: 0 0 -1px -1px blue;
@@ -266,14 +280,12 @@ export default {
         height: $paddingWindowLarge;
         justify-content: center;
 
-        h1{
-          font-size: $fontSizeWindowLarge;
-          color: white;
-          font-weight: normal;
+        h1 {
+            font-size: $fontSizeWindowLarge;
+            color: white;
+            font-weight: normal;
         }
     }
-
-
 
 }
 .floatItem {
@@ -306,6 +318,59 @@ export default {
 }
 
 .project {
+
+    &.backgroundImage {
+        position: relative;
+        .actualImage {
+          border-radius: 100%;
+          // background-image: url('http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/29352107926_0c48089c4e_o-1024x680.jpg');
+            background-image: url(http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/28760690984_cd0f2d8668_o-1024x743.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-clip: border-box;
+            background-origin: border-box;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-color: lime;
+            filter:contrast(2);
+            -webkit-filter:contrast(2);
+            background-blend-mode: multiply;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        a {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+            h3 {
+              display: none;
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                background:black;
+                font-weight: normal;
+                font-size: 3.5vw;
+                -ms-flex-item-align: center;
+                -ms-grid-row-align: center;
+                align-self: center;
+                // color: white;
+                text-align: center;
+                margin: 0;
+                max-height: 16.666666vw;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+        }
+
+        height: 33.33333333vw;
+        width: 33.33333333%;
+
+    }
 
     &.report {
         width: 16.666666%;

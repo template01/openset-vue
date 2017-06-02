@@ -1,12 +1,43 @@
 <template>
 <div class="visualProject">
   <div class="fixedIntro">
-    <div class="fixedIntroInner">
+
+    <div class="fixedIntroInnerWrapper" v-if="introText">
+
+    <div class="fixedIntroInnerColumns">
       <div v-html="title">
       </div>
-      <div v-html="intro">
+      <div v-html="introText">
       </div>
+
     </div>
+  </div>
+
+
+    <div class="fixedIntroInnerWrapper" v-if="introKeywords">
+      <div class="keywordHeader">
+        <div v-html="title">
+        </div>
+        <div>
+          <p>
+            Keywords:
+            <span v-for="item in introKeywords" v-html="item.add_keyword+'&nbsp;'">
+            </span>
+          </p>
+        </div>
+
+      </div>
+      <!-- <div  class="fixedIntroInnerLeft">
+        <div v-for="item in introKeywords">
+          <p v-html="item.add_keyword">
+
+          </p>
+        </div>
+
+        </div> -->
+
+    </div>
+
   </div>
   <div class="visualContent" v-if="positionVisualContentTop>1" v-bind:style="{'top':positionVisualContentTop+'px'}">
 
@@ -32,11 +63,11 @@ export default {
       positionVisualContentTop: 0,
     }
   },
-  props: ['title', 'intro', 'content'],
+  props: ['title', 'introText', 'introKeywords', 'content'],
   methods: {
     positionVisualContent: function() {
       // alert('mounted')
-      this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInner').offsetHeight / 2 + 40
+      this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight
     }
   },
   mounted: function() {
@@ -60,11 +91,45 @@ export default {
         background: black;
         width: 100%;
         height: 100%;
-        columns: 2;
-        -webkit-columns: 2;
+
         line-height: $lineHeight105;
         padding: $paddingWindowMedium;
         z-index: 0;
+
+        .fixedIntroInnerWrapper{
+
+          .keywordHeader{
+            width: 100%;
+            margin-bottom: $paddingWindowLarge;
+            display: inline-block;
+            div{
+              width: 50%;
+              float: left;
+              p{
+                margin: 0;
+              }
+            }
+          }
+
+          .fixedIntroInnerColumns{
+            columns: 2;
+            -webkit-columns: 2;
+          }
+          .fixedIntroInnerLeft{
+            display: inline-block;
+            width: 100%;
+            margin-top: $paddingWindowLarge;
+            margin-bottom: $paddingWindowLarge;
+
+            div{
+              display: block;
+              float: left;
+              width: 50%;
+              text-align: center;
+            }
+          }
+        }
+
     }
 
     .visualContent {
