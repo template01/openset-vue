@@ -18,19 +18,19 @@
         <div class="projectItem" v-for="item in projectsProp">
           <div class="projectItemInner">
 
-          <router-link :to="{path: 'project/'+item.slug}">
-            <span class="projectItemTitle" v-html="item.title.rendered">
+            <router-link :to="{path: 'project/'+item.slug}">
+              <span class="projectItemTitle" v-html="item.title.rendered">
           </span>
-            <span class="projectItemHalf" v-if="item.acf.student_name">By:
+              <span class="projectItemHalf" v-if="item.acf.student_name">By:
               <span v-for="(name, index) in item.acf.student_name.split(',')">
                 <span v-if="index != item.acf.student_name.split(',').length -1 ">{{name}}, </span>
-                <span v-else>{{name}}</span>
+              <span v-else>{{name}}</span>
               </span>
+              </span>
+              <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
           </span>
-            <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
-          </span>
-          </router-link>
-        </div>
+            </router-link>
+          </div>
         </div>
 
 
@@ -60,20 +60,20 @@
         <div class="projectItem" v-for="item in editorreportsProp">
           <div class="projectItemInner">
 
-          <router-link :to="{path: 'editorreport/'+item.slug}">
-            <span class="projectItemTitle" v-html="item.title.rendered">
+            <router-link :to="{path: 'editorreport/'+item.slug}">
+              <span class="projectItemTitle" v-html="item.title.rendered">
           </span>
-          <span class="projectItemHalf" v-if="item.acf.student_name">By:
+              <span class="projectItemHalf" v-if="item.acf.student_name">By:
             <span v-for="(name, index) in item.acf.student_name.split(',')">
               <span v-if="index != item.acf.student_name.split(',').length -1 ">{{name}}, </span>
               <span v-else>{{name}}</span>
-            </span>
-        </span>
-          <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
+              </span>
+              </span>
+              <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
 
           </span>
-          </router-link>
-        </div>
+            </router-link>
+          </div>
         </div>
 
 
@@ -102,9 +102,10 @@
           </div>
         </div>
 
-        <div class="projectItem" v-for="item in newsProp">
-          <div class="projectItemInner">
-            <!-- <router-link :to="{path: 'project/'+item.slug}"> -->
+        <div class="projectItem" v-for="(item, index) in newsProp" :expandedx="true" :key="item">
+          <newsItemListSingle :itemDate="'Date: '+dateStamp(item.date)" :itemIdTitleRendered="item.title.rendered" :itemId="item.id"></newsItemListSingle>
+          <!-- <div class="projectItemInner">
+
               <span class="projectItemTitle" v-html="item.title.rendered">
           </span>
           <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
@@ -112,8 +113,7 @@
           </span>
           <span class="projectItemHalf"  v-html="">
           </span>
-            <!-- </router-link> -->
-          </div>
+          </div> -->
 
         </div>
 
@@ -131,8 +131,14 @@
 </template>
 
 <script>
+import newsItemListSingle from '@/components/newsItemListSingle'
+
 export default {
   name: 'list',
+
+  components: {
+    newsItemListSingle
+  },
   data() {
     return {
       getMoreContentProjects: 2,
@@ -149,6 +155,12 @@ export default {
   props: ['newsProp', 'projectsProp', 'editorreportsProp', 'newsAndProjectsProp', 'projectListPage', 'reportListPage', 'newsListPage'],
 
   methods: {
+
+    toggleExpandendNews(index) {
+      console.log('click');
+      newsProp[index].expandedx = 'assaa';
+      // item.expandedx = 'mananana';
+    },
 
 
     dateStamp: function(input) {
@@ -171,7 +183,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../assets/scss/globalVars.scss";
 
 #listView {
@@ -200,270 +212,277 @@ export default {
 
     }
 
-}
-.about {
+    .about {
 
-    background: white;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
-    *:first-of-type {
-        margin-top: 0;
-    }
-    *:last-of-type {
-        margin-bottom: 0;
-    }
-}
-
-.news {
-    // padding-bottom: 20px;
-    // margin-top: $paddingWindowMedium;
-
-    background: white;
-    width: 100%;
-    border-left: $fontSizeWindowMedium solid blue;
-    // border-left: 1.5vw solid blue;
-    > *:first-of-type {
-        margin-top: 0;
-    }
-    .newsItem {
-        display: flex;
-        align-items: center;
-        min-height: $paddingWindowLarge;
+        background: white;
         padding-left: 20px;
         padding-right: 20px;
-        color: blue;
-        // width: calc(100% - 40px);
+        padding-bottom: 20px;
+        *:first-of-type {
+            margin-top: 0;
+        }
+        *:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    .news {
+        // padding-bottom: 20px;
+        // margin-top: $paddingWindowMedium;
+
+        background: white;
         width: 100%;
-        border-bottom: $fontSizeWindowMedium solid blue;
-        // border-bottom: 1.5vw solid blue;
-
-    }
-
-    h1 {
-        color: blue;
-        font-weight: normal;
-    }
-}
-
-.tableStyle {
-    // margin-top: 20px;
-
-    &.blue {
-        background: white;
-
-        .projectItem {
-            h1 {
-                color: white;
-            }
-
-            &#LoadMoreProjects {
-                h1 {
-                    color: white;
-                }
-            }
-            &:nth-child(odd) {
-                color: white;
-
-                a {
-
-                    color: white;
-                }
-                background: blue;
-
-            }
-            &:nth-child(even) {
-                &.LoadMoreProjects {
-                    h1 {
-                        color: black;
-                    }
-                }
-
-            }
-
-            a {
-                color: black;
-            }
-
+        border-left: $fontSizeWindowMedium solid blue;
+        // border-left: 1.5vw solid blue;
+        > *:first-of-type {
+            margin-top: 0;
         }
+        .newsItem {
+            display: flex;
+            align-items: center;
+            min-height: $paddingWindowLarge;
+            padding-left: 20px;
+            padding-right: 20px;
+            color: blue;
+            // width: calc(100% - 40px);
+            width: 100%;
+            border-bottom: $fontSizeWindowMedium solid blue;
+            // border-bottom: 1.5vw solid blue;
 
-    }
-
-    &.green {
-        background: lime;
-
-        .projectItem {
-            h1 {
-                color: lime;
-            }
-
-            &#LoadMoreProjects {
-                h1 {
-                    color: lime;
-                }
-            }
-            &:nth-child(odd) {
-                a {
-
-                    color: lime;
-                }
-                background: black;
-
-            }
-            &:nth-child(even) {
-                &.LoadMoreProjects {
-                    h1 {
-                        color: black;
-                    }
-                }
-
-            }
-
-            a {
-                color: black;
-            }
-
-        }
-
-    }
-
-    &.red {
-        background: white;
-
-        .projectItem {
-            h1 {
-                color: white;
-            }
-
-            &#LoadMoreProjects {
-                h1 {
-                    color: white;
-                }
-            }
-            &:nth-child(odd) {
-                a {
-
-                    color: white;
-                }
-                background: red;
-
-            }
-            &:nth-child(even) {
-                &.LoadMoreProjects {
-                    h1 {
-                        color: black;
-                    }
-                }
-
-            }
-
-            a {
-                color: black;
-            }
-
-        }
-
-    }
-    // padding: 20px;
-    *:first-of-type {
-        margin-top: 0;
-    }
-    *:last-of-type {
-        margin-bottom: 0;
-    }
-
-    .projectItem {
-
-
-        .projectItemInner{
-          overflow: hidden;
-          width: 100%;
-          display: block;
         }
 
         h1 {
+            color: blue;
             font-weight: normal;
         }
+    }
 
-        &.LoadMoreProjects {
-            cursor: pointer;
-            text-align: center;
+    .tableStyle {
+        // margin-top: 20px;
+
+        &.blue {
+            background: white;
+
+            .projectItem {
+                h1 {
+                    color: white;
+                }
+
+                &#LoadMoreProjects {
+                    h1 {
+                        color: white;
+                    }
+                }
+                &:nth-child(odd) {
+                    color: white;
+
+                    a {
+
+                        color: white;
+                    }
+                    background: blue;
+
+                }
+                &:nth-child(even) {
+                    &.LoadMoreProjects {
+                        h1 {
+                            color: black;
+                        }
+                    }
+
+                }
+
+                a {
+                    color: black;
+                }
+
+            }
+
+        }
+
+        &.green {
+            background: lime;
+
+            .projectItem {
+                h1 {
+                    color: lime;
+                }
+
+                &#LoadMoreProjects {
+                    h1 {
+                        color: lime;
+                    }
+                }
+                &:nth-child(odd) {
+                    a {
+
+                        color: lime;
+                    }
+                    background: black;
+
+                }
+                &:nth-child(even) {
+                    &.LoadMoreProjects {
+                        h1 {
+                            color: black;
+                        }
+                    }
+
+                }
+
+                a {
+                    color: black;
+                }
+
+            }
+
+        }
+
+        &.red {
+            background: white;
+
+            .projectItem {
+                h1 {
+                    color: white;
+                }
+
+                &#LoadMoreProjects {
+                    h1 {
+                        color: white;
+                    }
+                }
+                &:nth-child(odd) {
+                    a {
+
+                        color: white;
+                    }
+                    background: red;
+
+                }
+                &:nth-child(even) {
+                    &.LoadMoreProjects {
+                        h1 {
+                            color: black;
+                        }
+                    }
+
+                }
+
+                a {
+                    color: black;
+                }
+
+            }
+
+        }
+        // padding: 20px;
+        *:first-of-type {
+            margin-top: 0;
+        }
+        *:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .projectItem {
+
+            .projectItemInner {
+                overflow: hidden;
+                width: 100%;
+                display: block;
+
+                .projectItemInnerHeader{
+                  display: inline-block;
+                  width: 100%;
+                  clear: both;
+
+                }
+            }
 
             h1 {
-                width: 100%;
                 font-weight: normal;
             }
-        }
 
-        display: flex;
-        height: $paddingWindowLarge*1.6;
+            &.LoadMoreProjects {
+                cursor: pointer;
+                text-align: center;
 
-        width: 100%;
-        // justify-content: center;
-        align-items: center;
-        padding: 20px;
+                h1 {
+                    width: 100%;
+                    font-weight: normal;
+                }
+            }
 
-        a {
+            display: flex;
+            // min-height: $paddingWindowLarge*1.6;
+
             width: 100%;
-            display: block;
-            margin: 0;
-            text-decoration: none;
+            // justify-content: center;
+            align-items: center;
+            padding: 20px;
+
+            a {
+                width: 100%;
+                display: block;
+                margin: 0;
+                text-decoration: none;
+            }
+
+            .projectItemTitle {
+                width: 100%;
+                clear: both;
+                display: block;
+                margin-bottom: 5px;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .projectItemHalf {
+                // width: 50%;
+                padding-right: $paddingWindowDesktop;
+                float: left;
+                font-size: 60%;
+            }
+
         }
+    }
 
-        .projectItemTitle {
-            width: 100%;
-            clear: both;
-            display: inline-block;
-            margin-bottom: 5px;
-
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+    .third {
+        float: left;
+        width: 33.3333%;
+        position: absolute;
+        background: lime;
+        overflow-y: auto;
+        height: calc(100% - #{$paddingWindowLarge});
+        // height: 100%;
+        &:nth-of-type(2) {
+            left: 33.33333%;
         }
-
-        .projectItemHalf {
-            // width: 50%;
-            padding-right: $paddingWindowDesktop;
-            float: left;
-            font-size: 60%;
+        &:nth-of-type(3) {
+            left: 66.66666%;
         }
-
     }
-}
 
-.third {
-    float: left;
-    width: 33.3333%;
-    position: absolute;
-    background: lime;
-    overflow-y: auto;
-    height: calc(100% - #{$paddingWindowLarge});
-    // height: 100%;
-    &:nth-of-type(2) {
-        left: 33.33333%;
+    .left,
+    .right {
+        background: lime;
+        position: absolute;
+        height: calc(100% - #{$paddingWindowLarge});
+        overflow-y: auto;
+    };
+
+    .left {
+        left: 0;
+        // width: 66.666%;
+        width: 50%;
     }
-    &:nth-of-type(3) {
-        left: 66.66666%;
+
+    .right {
+        right: 0;
+        // width: 33.333%;
+        width: 50%;
     }
-}
 
-.left,
-.right {
-    background: lime;
-    position: absolute;
-    height: calc(100% - #{$paddingWindowLarge});
-    overflow-y: auto;
-};
-
-.left {
-    left: 0;
-    // width: 66.666%;
-    width: 50%;
-}
-
-.right {
-    right: 0;
-    // width: 33.333%;
-    width: 50%;
 }
 </style>

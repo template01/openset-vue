@@ -3,8 +3,14 @@
   <header>
 
     <div class="viewSwitcher">
-      <router-link v-if="listView" to="/">Visual</router-link>
-      <router-link v-else to="/list">Textual</router-link>
+      <template v-if="notOnIndex" >
+        <router-link v-if="listView" to="/list">Back</router-link>
+        <router-link v-else to="/">Back</router-link>
+      </template>
+      <template v-else>
+        <router-link v-if="listView" to="/">Visual</router-link>
+        <router-link v-else to="/list">Textual</router-link>
+      </template>
     </div>
 
     <div class="navigation">
@@ -48,6 +54,7 @@ export default {
       totalProjectListPages:0,
       totalReportListPages:0,
       totalNewsListPages:0,
+      notOnIndex: false
 
     }
   },
@@ -167,6 +174,17 @@ export default {
 
   },
 
+  mounted: function(){
+          if(this.$route.path === '/'){
+            this.notOnIndex = false
+          }else if (this.$route.path === '/list') {
+            this.notOnIndex = false
+
+          }else{
+            this.notOnIndex = true
+          }
+  },
+
   watch: {
 
 
@@ -179,6 +197,20 @@ export default {
       if (this.$route.path === '/') {
         this.listView = false
       }
+
+
+// from.path === '/' || from.path === '/list' && to.path != '/' || to.path != '/list')
+
+      if(from.path === '/' && to.path != '/list'){
+        this.notOnIndex = true
+      }else{
+        this.notOnIndex = false
+      }
+
+      if(from.path === '/list' && to.path != '/'){
+        this.notOnIndex = true
+      }
+
 
       if (from.path === '/' || from.path === '') {
         var scrolltop = window.pageYOffset

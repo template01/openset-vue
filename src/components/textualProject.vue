@@ -1,7 +1,8 @@
 <template>
   <div class="">
     {{title}}<br />
-    sketch
+    textual
+
   </div>
 </template>
 
@@ -14,6 +15,7 @@ export default {
     }
   },
   props:['title']
+
 }
 </script>
 
@@ -21,21 +23,4 @@ export default {
 <style scoped>
 @import "../assets/scss/globalVars.scss";
 
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>

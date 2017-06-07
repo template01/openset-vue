@@ -1,5 +1,5 @@
 <template>
-<div class="visualProject">
+<div class="visualProject" :class="projectColorSchemeProp">
   <div class="fixedIntro">
 
     <div class="fixedIntroInnerWrapper" v-if="introText">
@@ -12,7 +12,6 @@
 
     </div>
   </div>
-
 
     <div class="fixedIntroInnerWrapper" v-if="introKeywords">
       <div class="keywordHeader">
@@ -44,10 +43,10 @@
     <!-- {{content}} -->
     <div class="visualContentSingle" v-for="item in content">
       <!-- {{item}} -->
-      <div v-if="item.acf_fc_layout == 'visual_report_media'">
-        <img class="alignLeft" v-bind:class="[item.align,item.width]" v-bind:src="item.visual_report_media_content.sizes.large" />
+      <div v-if="item.acf_fc_layout == 'visual_media'">
+        <img class="alignLeft" v-bind:class="[item.align,item.width]" v-bind:src="item.visual_media_content.sizes.large" />
       </div>
-      <div class="visualContentTextarea" v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_report_textarea'" v-html="item.visual_report_textarea_content">
+      <div class="visualContentTextarea" v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_textarea'" v-html="item.visual_textarea_content">
       </div>
     </div>
   </div>
@@ -63,7 +62,7 @@ export default {
       positionVisualContentTop: 0,
     }
   },
-  props: ['title', 'introText', 'introKeywords', 'content'],
+  props: ['title', 'introText', 'introKeywords', 'content','projectColorSchemeProp'],
   methods: {
     positionVisualContent: function() {
       // alert('mounted')
@@ -81,14 +80,16 @@ export default {
 @import "../assets/scss/globalVars.scss";
 
 .visualProject {
-    background: black;
+
+
+    background: inherit;
     display: block;
 
     .fixedIntro {
         font-size: $fontSizeWindowMedium;
         position: fixed;
-        color: white;
-        background: black;
+        color: inherit;
+        background: inherit;
         width: 100%;
         height: 100%;
 
@@ -135,7 +136,7 @@ export default {
     .visualContent {
         top: 400px;
         // background: black;
-        color: white;
+        color: inherit;
         z-index: 1;
         position: relative;
 
@@ -162,7 +163,6 @@ export default {
             }
 
             .visualContentTextarea {
-                background: black;
                 line-height: $lineHeight1;
 
                 padding: $paddingWindowMedium;
@@ -173,6 +173,38 @@ export default {
         }
 
     }
+
+
+      &.white_on_black{
+        background: black;
+        .visualContentTextarea{
+          background: white;
+          color: black;
+
+        }
+      }
+      &.black_on_white{
+        background: white;
+        .visualContentTextarea{
+          background: black;
+          color: white;
+        }
+      }
+      &.white_on_red{
+        background: red;
+        .visualContentTextarea{
+          background: white;
+          color: red;
+
+        }
+      }
+      &.black_on_green{
+        background: lime;
+        .visualContentTextarea{
+          background: white;
+        }
+      }
+
 
 }
 

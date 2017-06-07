@@ -88,7 +88,7 @@ export default {
             this.editorAssignment = true
             this.editorAssignmentContent = this.EditorreportContentMain.acf.assignment_content
 
-            // this.visualReportIntro = this.projectContent.acf.visual_report_introduction
+            // this.visualReportIntro = this.projectContent.acf.visual_introduction
             // this.visualContent = this.projectContent.acf.visual_report
           }
           if(this.EditorreportContentMain.acf.extensive_report_or_assignment==="Report"){

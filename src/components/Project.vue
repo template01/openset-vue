@@ -1,15 +1,14 @@
 
 
 <template>
-<div class="">
+<div class="projectWrapper" :class="projectColorScheme">
   <div v-if="NotFoundState">
-    <!-- visual {{this.visualReport}}<br />
+    <!-- visual {{this.visuallyOriented}}<br />
     skecth {{this.sketchProject}}<br />
-    default {{this.defaultProject}} -->
+    default {{this.textualProject}} -->
     <!-- <h1 v-html="this.projectTitle"></h1> -->
-    <visualProject v-bind:introText="this.visualReportIntroText" v-bind:introKeywords="this.visualReportIntroKeywords" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visualReport"></visualProject>
-    <defaultProject v-bind:title="this.projectTitle" v-if="defaultProject"></defaultProject>
-    <sketchProject v-bind:title="this.projectTitle" v-if="sketchProject"></sketchProject>
+    <visualProject :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
+    <textualProject :projectColorSchemeProp="projectColorScheme" v-bind:title="this.projectTitle" v-if="textuallyOriented"></textualProject>
   </div>
   <div v-else>
     <NotFound></NotFound>
@@ -21,8 +20,7 @@
 <script>
 import NotFound from '@/components/Notfound'
 import visualProject from '@/components/visualProject'
-import sketchProject from '@/components/sketchProject'
-import defaultProject from '@/components/defaultProject'
+import textualProject from '@/components/textualProject'
 
 
 export default {
@@ -31,7 +29,7 @@ export default {
   name: 'project',
 
   components: {
-    NotFound, visualProject, sketchProject, defaultProject
+    NotFound, visualProject, textualProject
   },
 
   data() {
@@ -42,13 +40,13 @@ export default {
       projectTitle:'',
       projectSlug:'',
       projectDefaultContent:'',
+      projectColorScheme:'',
       NotFoundState: true,
-      visualReport:false,
-      visualReportIntroText:'',
-      visualReportIntroKeywords:'',
+      visuallyOriented:false,
+      visuallyOrientedIntroText:'',
+      visuallyOrientedIntroKeywords:'',
       visualContent:'',
-      sketchProject:false,
-      defaultProject:false,
+      textuallyOriented:false,
     }
   },
 
@@ -73,20 +71,22 @@ export default {
           this.projectTitle = this.projectContent.title.rendered
           this.projectSlug = this.projectContent.slug
           this.projectDefaultContent = this.projectContent.acf.rendered
-          if(this.projectContent.acf.visual_report){
-            this.visualReport = true
-            if(this.projectContent.acf.visual_report_introduction_style === "text_based"){
-              this.visualReportIntroText = this.projectContent.acf.visual_report_introduction_text
+          this.projectColorScheme = this.projectContent.acf.project_color_scheme
+          if(this.projectContent.acf.content_type ==="visually_oriented"){
+            this.visuallyOriented = true
+            if(this.projectContent.acf.visual_introduction_style === "text_based"){
+              this.visuallyOrientedIntroText = this.projectContent.acf.visual_introduction_text
             }else{
-              this.visualReportIntroKeywords = this.projectContent.acf.visual_report_introduction_keywords
+              this.visuallyOrientedIntroKeywords = this.projectContent.acf.visual_introduction_keywords
             }
-            this.visualContent = this.projectContent.acf.visual_report
+            this.visualContent = this.projectContent.acf.visual
           }
-          if(this.projectContent.acf.sketch_project){
-            this.sketchProject = true
-          }
-          if(this.projectContent.acf.default_project){
-            this.defaultProject = true
+          // if(this.projectContent.acf.sketch_project){
+          //   this.sketchProject = true
+          // }
+          if(this.projectContent.acf.content_type ==="textually_oriented"){
+            this.textuallyOriented = true
+
           }
         }
 
@@ -124,25 +124,30 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
 @import "../assets/scss/globalVars.scss";
 
-h1,
-h2 {
-  font-weight: normal;
+.projectWrapper{
+  min-height: calc(100% - #{$paddingWindowLarge});
+  position: absolute;
+  width: 100%;
+
+  &.white_on_black{
+    background: black;
+    color: white;
+  }
+  &.black_on_white{
+    background: white;
+    color: black;
+  }
+  &.white_on_red{
+    background: red;
+    color: white;
+  }
+  &.black_on_green{
+    background: lime;
+    color: black;
+  }
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
