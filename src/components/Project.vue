@@ -8,7 +8,7 @@
     default {{this.textualProject}} -->
     <!-- <h1 v-html="this.projectTitle"></h1> -->
     <visualProject :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
-    <textualProject :projectColorSchemeProp="projectColorScheme" v-bind:title="this.projectTitle" v-if="textuallyOriented"></textualProject>
+    <textualProject :projectColorSchemeProp="projectColorScheme" v-bind:content="this.textualContent"  v-bind:title="this.projectTitle" v-if="textuallyOriented"></textualProject>
   </div>
   <div v-else>
     <NotFound></NotFound>
@@ -47,6 +47,8 @@ export default {
       visuallyOrientedIntroKeywords:'',
       visualContent:'',
       textuallyOriented:false,
+      textualContent:'',
+
     }
   },
 
@@ -86,6 +88,8 @@ export default {
           // }
           if(this.projectContent.acf.content_type ==="textually_oriented"){
             this.textuallyOriented = true
+            this.textualContent = this.projectContent.acf.textual
+
 
           }
         }

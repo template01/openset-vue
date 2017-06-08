@@ -1,8 +1,8 @@
 <template>
 <div class="visualProject" :class="projectColorSchemeProp">
-  <div class="fixedIntro">
+  <div class="introWrapper fixedIntro"  v-if="introText">
 
-    <div class="fixedIntroInnerWrapper" v-if="introText">
+    <div class="fixedIntroInnerWrapper">
 
     <div class="fixedIntroInnerColumns">
       <div v-html="title">
@@ -12,12 +12,13 @@
 
     </div>
   </div>
-
-    <div class="fixedIntroInnerWrapper" v-if="introKeywords">
+</div>
+<div  class="introWrapper"  v-if="introKeywords">
+    <div >
       <div class="keywordHeader">
         <div v-html="title">
         </div>
-        <div>
+        <div class="keywords">
           <p>
             Keywords:
             <span v-for="item in introKeywords" v-html="item.add_keyword+'&nbsp;'">
@@ -36,8 +37,8 @@
         </div> -->
 
     </div>
+</div>
 
-  </div>
   <div class="visualContent" v-if="positionVisualContentTop>1" v-bind:style="{'top':positionVisualContentTop+'px'}">
 
     <!-- {{content}} -->
@@ -66,7 +67,11 @@ export default {
   methods: {
     positionVisualContent: function() {
       // alert('mounted')
-      this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight
+      if(this.introKeywords){
+        this.positionVisualContentTop = 2
+      }else{
+        this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight
+      }
     }
   },
   mounted: function() {
@@ -84,25 +89,35 @@ export default {
 
     background: inherit;
     display: block;
+    margin-bottom: $paddingWindowLarge;
+    position: absolute;
+    width: 100%;
 
-    .fixedIntro {
+    .introWrapper {
+
+        &.fixedIntro{
+          position: fixed;
+        }
         font-size: $fontSizeWindowMedium;
-        position: fixed;
         color: inherit;
         background: inherit;
         width: 100%;
         height: 100%;
-
+        position: relative;
         line-height: $lineHeight105;
         padding: $paddingWindowMedium;
         z-index: 0;
 
-        .fixedIntroInnerWrapper{
 
           .keywordHeader{
             width: 100%;
             margin-bottom: $paddingWindowLarge;
             display: inline-block;
+            .keywords{
+              float: right;
+              width: 50%;
+
+            }
             div{
               width: 50%;
               float: left;
@@ -129,7 +144,6 @@ export default {
               text-align: center;
             }
           }
-        }
 
     }
 
@@ -147,10 +161,12 @@ export default {
 
             img {
                 max-width: 100%;
-            }
-            *:not(.left):not(.right) {
-                display: block;
                 margin: 0 auto;
+                display: block;
+            }
+            div:not(.left):not(.right) {
+                display: inline-block;
+                width: 100%;
             }
             .right {
                 float: right;
