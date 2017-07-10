@@ -1,9 +1,10 @@
 <template>
 <div id="listView" class="">
-  <div class="third">
+  <div class="third defaultBorderThird">
     <div class="thirdInner">
 
-      <div class="tableStyle red">
+      <!-- <div class="tableStyle red"> -->
+      <div class="tableStyle defaultBorder">
 
 
         <div class="projectItem">
@@ -43,16 +44,17 @@
     </div>
   </div>
 
-  <div class="third">
+  <div class="third defaultBorderThird">
     <div class="thirdInner">
 
-      <div class="tableStyle green">
+      <!-- <div class="tableStyle green"> -->
+      <div class="tableStyle defaultBorder">
 
 
         <div class="projectItem">
           <div class="blockHeader">
             <h1>
-            Reports
+            Reports / Assignments
           </h1>
           </div>
         </div>
@@ -88,7 +90,7 @@
 
 
   <div class="third">
-    <div class="thirdInner">
+    <div class="thirdInner halfHeight">
 
       <div class="tableStyle blue">
 
@@ -125,19 +127,49 @@
         </div>
       </div>
     </div>
+
+
+
+
+    <div class="thirdInner halfHeight">
+      <div class="tableStyle">
+
+        <div class="projectItem  tabHeader50 redItem">
+          <div class="blockHeader ">
+            <h1 class="">
+          Search
+          </h1>
+          </div>
+        </div>
+
+
+        <div class="projectItem tabHeader50 ">
+          <div class="blockHeader ">
+            <h1 class="">
+            About
+            </h1>
+          </div>
+        </div>
+        <searchList class="projectItem"></searchList>
+      </div>
+    </div>
   </div>
+
+</div>
 
 </div>
 </template>
 
 <script>
 import newsItemListSingle from '@/components/newsItemListSingle'
+import searchList from '@/components/searchList'
 
 export default {
   name: 'list',
 
   components: {
-    newsItemListSingle
+    newsItemListSingle,
+    searchList
   },
   data() {
     return {
@@ -208,6 +240,7 @@ export default {
             margin-bottom: 0;
             text-transform: uppercase;
             text-align: center;
+
         }
 
     }
@@ -375,6 +408,26 @@ export default {
             }
 
         }
+
+        &.defaultBorder {
+
+            border-top: 3px solid black;
+
+            .blockHeader{
+
+              margin-top: -3px;
+            }
+
+            .projectItem {
+                border-bottom: 3px solid black;
+                background: white;
+                color: black;
+                a {
+                    color: black;
+                }
+
+            }
+        }
         // padding: 20px;
         *:first-of-type {
             margin-top: 0;
@@ -385,15 +438,25 @@ export default {
 
         .projectItem {
 
+            &.redItem {
+                background: red;
+                color: white;
+            }
+
+            &.tabHeader50 {
+                float: left;
+                width: 50%;
+            }
+
             .projectItemInner {
                 overflow: hidden;
                 width: 100%;
                 display: block;
 
-                .projectItemInnerHeader{
-                  display: inline-block;
-                  width: 100%;
-                  clear: both;
+                .projectItemInnerHeader {
+                    display: inline-block;
+                    width: 100%;
+                    clear: both;
 
                 }
             }
@@ -448,7 +511,16 @@ export default {
         }
     }
 
+    .halfHeight {
+        height: 50%;
+        overflow-y: auto;
+    }
+
     .third {
+
+      // &.defaultBorderThird{
+      //   border-top: 3px solid black;
+      // };
         float: left;
         width: 33.3333%;
         position: absolute;

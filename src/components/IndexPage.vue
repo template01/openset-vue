@@ -76,7 +76,7 @@ export default {
     })
 
 
-    this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport').then(function(response) {
+    this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1').then(function(response) {
       console.log(response)
       console.log(response.headers)
       this.reports = response.body
@@ -101,7 +101,7 @@ export default {
 
   methods:{
     getmoreContentReport: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?page='+input).then(function(response) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1?page='+input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
         console.log(response)
         console.log(response.headers)
@@ -144,7 +144,7 @@ export default {
       })
     },
     getmoreContentReportsList: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?page='+input).then(function(response) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1?page='+input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
         this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
         this.reports = this.reports.concat(response.body)
