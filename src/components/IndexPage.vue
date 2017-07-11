@@ -14,7 +14,7 @@
     </div>
 
     <div class="navigation">
-      <router-link to="/list">About</router-link>
+      <router-link :to="{path:'/list', hash:'about'}" replace>About</router-link>
       <!-- <router-link to="/participants">Participants</router-link> -->
       <!-- <router-link to="http://placeholder-b.template-studio.nl/">Login/Register</router-link> -->
       <a href="http://placeholder-b.template-studio.nl/">Lo<span class="liftedNavigation">g</span>in</a>
@@ -200,16 +200,19 @@ export default {
 
 
 // from.path === '/' || from.path === '/list' && to.path != '/' || to.path != '/list')
+console.log(to.path)
 
-      if(from.path === '/' && to.path != '/list'){
+      if(from.path === '/' && to.path != '/list' ){
         this.notOnIndex = true
       }else{
         this.notOnIndex = false
       }
 
-      if(from.path === '/list' && to.path != '/'){
-        this.notOnIndex = true
-      }
+      // if(from.path === '/list' && to.path != '/'){
+      //   if(to.hash != '#about'){
+      //     this.notOnIndex = true
+      //   }
+      // }
 
 
       if (from.path === '/' || from.path === '') {

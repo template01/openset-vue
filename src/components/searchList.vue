@@ -2,7 +2,9 @@
 <div class="searchList">
   <div class="searchListInner">
 
-    <input type=text v-model="query" placeholder="Type your search here...">
+    <input type=text v-model="query" :placeholder="decodeHtml('&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;&#xF002;')"
+    />
+
     <div class="resultWrapper">
 
       <div v-if="query.length===0">
@@ -10,10 +12,22 @@
       </div>
       <div v-else>
         <div class="results" v-if="noneFound">
-          no results :(
+          No results :(
         </div>
         <div class="results" v-for='item in results'>
-          {{item.title.rendered}}
+          <router-link v-if="item.type === 'project'" :to="{path: 'project/'+item.slug}">
+            <span class="projectItemTitle">{{item.title.rendered}}</span>
+            <span class="projectItemHalf" v-html="'PROJECT'"></span>
+            <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)"></span>
+          </router-link>
+          <router-link v-if="item.type === 'editorreport'" :to="{path: 'editorreport/'+item.slug}">
+            <span class="projectItemTitle">{{item.title.rendered}}</span>
+            <span class="projectItemHalf" v-html="'REPORT / ASSIGNMENT'"></span>
+            <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)"></span>
+          </router-link>
+          <div v-if="item.type === 'news_announcements'">
+            <newsItemListSingle :showType=true :itemDate="'Date: '+dateStamp(item.date)" :itemIdTitleRendered="item.title.rendered" :itemId="item.id"></newsItemListSingle>
+          </div>
         </div>
 
 
@@ -26,17 +40,47 @@
 
 <script>
 import _ from 'lodash'
+import newsItemListSingle from '@/components/newsItemListSingle'
+
 
 export default {
-  name: 'searchList',
+  name: 'aboutList',
+  components: {
+    newsItemListSingle
+  },
   data() {
     return {
       query: '',
       results: [],
-      noneFound: false
+      noneFound: false,
+      days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      mL: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      mS: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     }
   },
   methods: {
+
+    dateStamp: function(input) {
+
+
+      var day = this.days[new Date(input).getDay()]
+      var dayNumber = ("0" + new Date(input).getDate()).slice(-2)
+
+      var year = new Date(input).getFullYear()
+      var monthL = this.mL[new Date(input).getMonth()]
+      var month = ("0" + (new Date(input).getMonth() + 1)).slice(-2)
+      // return this.days[new Date(input).getDay()];
+      // return day+"/"+dayNumber+"/"+monthL;
+      return dayNumber + "." + month + "." + year;
+
+    },
+
+    decodeHtml: function(html) {
+      var txt = document.createElement("textarea");
+      txt.innerHTML = html;
+      return txt.value;
+    },
+
     searchApi: function() {
       this.results = []
 
@@ -92,7 +136,7 @@ export default {
     'query': _.debounce(function() {
       // alert('chaaaaange')
       this.noneFound = false
-      if (this.query.length != 0 && this.query.length > 2) {
+      if (this.query.length != 0 && this.query.length > 1) {
         this.searchApi()
 
       }
@@ -109,29 +153,59 @@ export default {
 
 .searchList {
     position: relative;
-    .resultWrapper {
-    }
+    .resultWrapper {}
 }
 
-.searchListInner{
-  position: absolute;
-  margin: 0;
-  padding: $paddingWindowDesktop;
-  width: 100%;
-  display: block;
-  left: 0;
-  top: 0;
+.searchListInner {
+    position: absolute;
+    margin: 0;
+    padding-left: $paddingWindowDesktop;
+    padding-right: $paddingWindowDesktop;
+    width: 100%;
+    display: block;
+    left: 0;
+    top: 0;
 }
+
+a {
+    width: 100%;
+    display: inline-block;
+    margin: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.projectItemTitle {
+    width: 100%;
+    clear: both;
+    display: block;
+    margin-bottom: 5px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.projectItemHalf {
+    // width: 50%;
+    padding-right: $paddingWindowDesktop;
+    float: left;
+    font-size: 60%;
+
+}
+// input[type='text'] { font-size: 24px; font-family: monospace; }
+
 input {
-  outline: none;
+    // font-family:inherit, FontAwesome;
+    outline: none;
     margin: 0;
     padding: $paddingWindowDesktop;
-    margin-left:-$paddingWindowDesktop;
-    margin-top:-$paddingWindowDesktop !important;
+    margin-left: -$paddingWindowDesktop;
+    // margin-top:-$paddingWindowDesktop !important;
     width: calc(100% + #{$paddingWindowDesktop*2});
     border: 0;
-    border-top:3px solid white;
-    border-bottom:3px solid white;
+    // border-top:3px solid white;
+    // border-bottom:3px solid white;
     display: block;
     color: white;
     background: red;
@@ -139,32 +213,47 @@ input {
     top: 0;
     font-size: inherit;
 
-    &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-        color:    white;
+    &::-webkit-input-placeholder {
+        /* WebKit, Blink, Edge */
+        color: white;
+        font-family: FontAwesome;
+
     }
-    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-       color:    white;
-       opacity:  1;
+    &:-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: white;
+        font-family: FontAwesome;
+
+        opacity: 1;
     }
-    &::-moz-placeholder { /* Mozilla Firefox 19+ */
-       color:    white;
-       opacity:  1;
+    &::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: white;
+        font-family: FontAwesome;
+
+        opacity: 1;
     }
-    &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-       color:    white;
+    &:-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: white;
+        font-family: FontAwesome;
+
     }
-    &::-ms-input-placeholder { /* Microsoft Edge */
-       color:    white;
+    &::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: white;
+        font-family: FontAwesome;
+
     }
 
 }
 
-.results{
-  padding: $paddingWindowDesktop;
-  width: calc(100% + #{$paddingWindowDesktop*2});
-  margin-left:-$paddingWindowDesktop;
-  border-bottom:3px solid red;
-  background: white;
-  color: red;
+.results {
+    padding: $paddingWindowDesktop;
+    width: calc(100% + #{$paddingWindowDesktop*2});
+    margin-left: -$paddingWindowDesktop;
+    border-bottom: 3px solid red;
+    background: white;
+    color: red;
 }
 </style>

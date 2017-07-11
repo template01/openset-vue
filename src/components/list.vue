@@ -134,23 +134,26 @@
     <div class="thirdInner halfHeight">
       <div class="tableStyle">
 
-        <div class="projectItem  tabHeader50 redItem">
+        <div @click="aboutTab=!aboutTab; $router.replace({path:'/list', hash:'about'})" class="projectItem  tabHeader50 ">
           <div class="blockHeader ">
-            <h1 class="">
-          Search
+          <h1 :class="{ 'blink' : addBlink }" >About
+
+          </h1>
+
+
+          </div>
+        </div>
+
+
+        <div @click="aboutTab=!aboutTab;$router.replace({path:'/list', hash:''})" class="projectItem tabHeader50 redItem">
+          <div class="blockHeader ">
+            <h1>SEARCH
+
           </h1>
           </div>
         </div>
-
-
-        <div class="projectItem tabHeader50 ">
-          <div class="blockHeader ">
-            <h1 class="">
-            About
-            </h1>
-          </div>
-        </div>
-        <searchList class="projectItem"></searchList>
+        <searchList  v-if="!aboutTab" class="projectItem"></searchList>
+        <aboutList v-if="aboutTab" class="projectItem"></aboutList>
       </div>
     </div>
   </div>
@@ -163,11 +166,13 @@
 <script>
 import newsItemListSingle from '@/components/newsItemListSingle'
 import searchList from '@/components/searchList'
+import aboutList from '@/components/aboutList'
 
 export default {
   name: 'list',
 
   components: {
+    aboutList,
     newsItemListSingle,
     searchList
   },
@@ -176,11 +181,13 @@ export default {
       getMoreContentProjects: 2,
       getMoreContentNews: 2,
       getMoreContentReports: 2,
+      addBlink:false,
       // getMoreContentProjects:1,
       msg: 'Welcome to Your Vue.js App',
       days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       mL: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       mS: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+      aboutTab: true
     }
   },
 
@@ -208,7 +215,33 @@ export default {
       // return day+"/"+dayNumber+"/"+monthL;
       return dayNumber + "." + month + "." + year;
 
+    },
+
+    addBlinkMethod: function(){
+      this.aboutTab=true
+      // alert(this.aboutTab)
+      this.addBlink=true
+      var vm = this
+      setTimeout(function(){
+        vm.addBlink=false
+      },3000)
     }
+  },
+
+  mounted(){
+    if(this.$route.hash === '#about'){
+      this.addBlinkMethod()
+    }
+  },
+  watch: {
+
+    '$route':function(to,from){
+      if(to.hash==="#about"){
+        this.addBlinkMethod()
+      }
+      // alert('change')
+    }
+
   }
 
 }
@@ -485,7 +518,7 @@ export default {
 
             a {
                 width: 100%;
-                display: block;
+                display: inline-block;
                 margin: 0;
                 text-decoration: none;
             }
@@ -506,6 +539,8 @@ export default {
                 padding-right: $paddingWindowDesktop;
                 float: left;
                 font-size: 60%;
+
+
             }
 
         }
@@ -514,6 +549,9 @@ export default {
     .halfHeight {
         height: 50%;
         overflow-y: auto;
+        position: relative;
+
+
     }
 
     .third {

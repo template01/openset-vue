@@ -7,6 +7,7 @@
         <span v-html="itemIdTitleRendered"></span>
       </span>
       <!-- <span class="projectItemTitle" v-html="itemIdTitleRendered"></span> -->
+      <span class="projectItemHalf" v-if="showType">NEWS</span>
       <span class="projectItemHalf" v-html="itemDate"></span>
     </div>
   </div>
@@ -37,7 +38,7 @@ export default {
       isExpanded: false,
     }
   },
-  props: ['itemId','itemIdTitleRendered','itemDate'],
+  props: ['itemId','itemIdTitleRendered','itemDate','showType'],
   methods: {
 
   },
