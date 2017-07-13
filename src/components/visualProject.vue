@@ -1,23 +1,24 @@
 <template>
 <div class="visualProject" :class="projectColorSchemeProp">
-  <div class="introWrapper fixedIntro"  v-if="introText">
+  <div class="introWrapper fixedIntro" v-if="introText">
+
 
     <div class="fixedIntroInnerWrapper">
 
-    <div class="fixedIntroInnerColumns">
-      <div v-html="title">
-      </div>
-      <div v-html="introText">
-      </div>
-
-    </div>
-  </div>
-</div>
-<div  class="introWrapper"  v-if="introKeywords">
-    <div >
-      <div class="keywordHeader">
+      <div class="fixedIntroInnerColumns">
+        <singleHeader  :nameProp=authorName :date="'date'" :titleProp="title"></singleHeader>
         <div v-html="title">
         </div>
+        <div v-html="introText">
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="introWrapper fixedIntro" v-if="introKeywords">
+    <div class="fixedIntroInnerWrapper">
+      <div class="keywordHeader">
+        <singleHeader :nameProp=authorName :date="'date'" :titleProp="title"></singleHeader>
         <div class="keywords">
           <p>
             Keywords:
@@ -37,7 +38,7 @@
         </div> -->
 
     </div>
-</div>
+  </div>
 
   <div class="visualContent" v-if="positionVisualContentTop>1" v-bind:style="{'top':positionVisualContentTop+'px'}">
 
@@ -47,35 +48,47 @@
       <div v-if="item.acf_fc_layout == 'visual_media'">
         <img class="alignLeft" v-bind:class="[item.align,item.width]" v-bind:src="item.visual_media_content.sizes.large" />
       </div>
-      <div class="visualContentTextarea" v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_textarea'" v-html="item.visual_textarea_content">
-      </div>
+      <!-- <div class="visualContentTextarea" v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_textarea'" v-html="item.visual_textarea_content">
+      </div> -->
     </div>
   </div>
 </div>
 </template>
 
 <script>
+
+import singleHeader from '@/components/singleHeader'
+
 export default {
   name: 'hello',
+  components:{
+    singleHeader
+  },
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
       positionVisualContentTop: 0,
     }
   },
-  props: ['title', 'introText', 'introKeywords', 'content','projectColorSchemeProp'],
+  props: ['title', 'introText', 'introKeywords', 'content', 'projectColorSchemeProp','authorName'],
   methods: {
     positionVisualContent: function() {
-      // alert('mounted')
-      if(this.introKeywords){
-        this.positionVisualContentTop = 2
-      }else{
-        this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight
-      }
+
+        console.log(this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight)
+        this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight + (window.outerWidth / 100)
     }
   },
+  watch: {
+
+  },
   mounted: function() {
-    this.positionVisualContent()
+    // this.positionVisualContent()
+    var vm = this
+    document.addEventListener("DOMContentLoaded", this.positionVisualContent());
+      setTimeout(function(){vm.positionVisualContent()},1000)
+    // window.onload = function(){
+        // console.log("window.onload", e, Date.now() ,window.tdiff,
+    // }
   }
 }
 </script>
@@ -86,7 +99,6 @@ export default {
 
 .visualProject {
 
-
     background: inherit;
     display: block;
     margin-bottom: $paddingWindowLarge;
@@ -95,8 +107,8 @@ export default {
 
     .introWrapper {
 
-        &.fixedIntro{
-          position: fixed;
+        &.fixedIntro {
+            position: fixed;
         }
         font-size: $fontSizeWindowMedium;
         color: inherit;
@@ -105,45 +117,47 @@ export default {
         height: 100%;
         position: relative;
         line-height: $lineHeight105;
-        padding: $paddingWindowMedium;
+        padding: $paddingWindowDesktop;
         z-index: 0;
 
-
-          .keywordHeader{
+        .keywordHeader {
             width: 100%;
-            margin-bottom: $paddingWindowLarge;
             display: inline-block;
-            .keywords{
-              float: right;
-              width: 50%;
+            .keywords {
+                float: right;
+                width: 50%;
+                padding-left: $paddingWindowDesktop/2;
 
             }
-            div{
-              width: 50%;
-              float: left;
-              p{
-                margin: 0;
-              }
-            }
-          }
+            div {
+                width: 50%;
+                padding-right: $paddingWindowDesktop/2;
 
-          .fixedIntroInnerColumns{
+                float: left;
+                p {
+                    margin: 0;
+                }
+
+            }
+        }
+
+        .fixedIntroInnerColumns {
             columns: 2;
             -webkit-columns: 2;
-          }
-          .fixedIntroInnerLeft{
+        }
+        .fixedIntroInnerLeft {
             display: inline-block;
             width: 100%;
             margin-top: $paddingWindowLarge;
             margin-bottom: $paddingWindowLarge;
 
-            div{
-              display: block;
-              float: left;
-              width: 50%;
-              text-align: center;
+            div {
+                display: block;
+                float: left;
+                width: 50%;
+                text-align: center;
             }
-          }
+        }
 
     }
 
@@ -156,7 +170,7 @@ export default {
 
         .visualContentSingle {
             clear: both;
-            padding: $paddingWindowMedium;
+            padding: $paddingWindowDesktop;
             width: 100%;
 
             img {
@@ -190,37 +204,35 @@ export default {
 
     }
 
-
-      &.white_on_black{
+    &.white_on_black {
         background: black;
-        .visualContentTextarea{
-          background: white;
-          color: black;
+        .visualContentTextarea {
+            background: white;
+            color: black;
 
         }
-      }
-      &.black_on_white{
+    }
+    &.black_on_white {
         background: white;
-        .visualContentTextarea{
-          background: black;
-          color: white;
+        .visualContentTextarea {
+            background: black;
+            color: white;
         }
-      }
-      &.white_on_red{
+    }
+    &.white_on_red {
         background: red;
-        .visualContentTextarea{
-          background: white;
-          color: red;
+        .visualContentTextarea {
+            background: white;
+            color: red;
 
         }
-      }
-      &.black_on_green{
+    }
+    &.black_on_green {
         background: lime;
-        .visualContentTextarea{
-          background: white;
+        .visualContentTextarea {
+            background: white;
         }
-      }
-
+    }
 
 }
 

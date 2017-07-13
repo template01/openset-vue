@@ -146,11 +146,11 @@ export default {
     height: calc(100% - #{$paddingWindowLarge});
     padding: $paddingWindowDesktop;
     font-size: $fontSizeWindowMedium;
-
-    &::-webkit-scrollbar {
-        width: 0;
-        // background-color: #F5F5F5;
-    }
+    // 
+    // &::-webkit-scrollbar {
+    //     width: 0;
+    //     // background-color: #F5F5F5;
+    // }
 
 }
 </style>

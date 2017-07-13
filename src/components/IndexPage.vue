@@ -208,11 +208,11 @@ console.log(to.path)
         this.notOnIndex = false
       }
 
-      // if(from.path === '/list' && to.path != '/'){
-      //   if(to.hash != '#about'){
-      //     this.notOnIndex = true
-      //   }
-      // }
+      if(from.path === '/list' && to.path != '/' && to.path != '/list'){
+        if(to.hash != '#about'){
+          this.notOnIndex = true
+        }
+      }
 
 
       if (from.path === '/' || from.path === '') {

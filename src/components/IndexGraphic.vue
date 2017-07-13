@@ -16,21 +16,24 @@
 
       <template v-if="item.type == 'project'">
       <template v-if="item.acf.project_frontend_style==='red_blurb'">
+        <router-link :to="{path: 'project/'+item.slug}">
         <div class="floatItem project projectRed" v-bind:class="randomAnimation()" v-once>
-          <h3>
-            <router-link :to="{path: 'project/'+item.slug}" v-html="item.title.rendered"></router-link>
-
+          <h3  v-html="item.title.rendered">
           </h3>
+          <div class="hoverType"><span>Project</span></div>
+
+          <!-- <span class="projectRedSmall">Project</span> -->
+
           <div class="arrowsLink"></div>
 
           <!-- {{item.acf.simplestyle}} -->
 
         </div>
+        </router-link>
 </template>
 
 
 <template v-else-if="item.acf.project_frontend_style==='circular_image'">
-
 <div class="floatItem project backgroundImage">
   <div class="actualImage" v-bind:style="{'background-image':'url('+item.acf.circular_image.sizes.large+')'}">
 
@@ -41,6 +44,8 @@
 
     </h3>
   </router-link>
+  <div class="hoverType"><span>Project</span></div>
+
   <div class="arrowsLink"></div>
 </div>
 
@@ -68,9 +73,12 @@
   </div>
   <h3  class="whiteTitle" v-html="item.title.rendered">
   </h3>
+
 </router-link>
 
 <div class="arrowsLink"></div>
+<div class="hoverType"><span>Project</span></div>
+
 
 
   <!-- {{item.acf.simplestyle}} -->
@@ -104,7 +112,13 @@
 
           <!-- <div v-for="n in 3" class="arrowsLinkNews" v-bind:class="randomNewsStars()" v-once></div> -->
   </div>
-  <div class="arrowsLink"></div>
+
+  <div class="arrowsLink">
+    <div class="arrowsLinkBlueInner">
+    </div>
+  </div>
+  <div class="hoverType"><span>NEWS</span></div>
+
 
 </div>
 </template>
@@ -118,16 +132,15 @@
 
     </span>
     </span>
-    <span v-if="item.acf.extensive_report_or_assignment==='Assignment'" v-html="item.acf.extensive_report_or_assignment" class="type smallReport">
   </span>
-    <span v-if="item.acf.extensive_report_or_assignment==='Report'" v-html="item.acf.extensive_report_or_assignment" class="type smallReport">
+    <!-- <span v-if="item.acf.extensive_report_or_assignment==='Report'" v-html="item.acf.extensive_report_or_assignment" class="type smallReport"> -->
   </span>
 
     <span class="title smallReport" v-html="item.title.rendered">
-    man
   </span>
 
   </router-link>
+  <div class="hoverType"><span v-html="item.acf.extensive_report_or_assignment"></span></div>
   <div class="arrowsLink"></div>
 </div>
 </template>
@@ -322,9 +335,9 @@ export default {
     &.backgroundImage {
         position: relative;
         .actualImage {
-          border-radius: 100%;
-          // background-image: url('http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/29352107926_0c48089c4e_o-1024x680.jpg');
-            background-image: url(http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/28760690984_cd0f2d8668_o-1024x743.jpg);
+            border-radius: 100%;
+            // background-image: url('http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/29352107926_0c48089c4e_o-1024x680.jpg');
+            background-image: url("http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/28760690984_cd0f2d8668_o-1024x743.jpg");
             background-position: center;
             background-repeat: no-repeat;
             background-clip: border-box;
@@ -346,12 +359,12 @@ export default {
             height: 100%;
 
             h3 {
-              display: none;
+                display: none;
                 position: absolute;
                 bottom: 0;
                 width: 100%;
                 text-align: center;
-                background:black;
+                background: black;
                 font-weight: normal;
                 font-size: 3.5vw;
                 -ms-flex-item-align: center;
@@ -395,8 +408,8 @@ export default {
             position: absolute;
             width: 100%;
             left: 0;
-            line-height: $fontSizeWindowMedium;
-            font-size: $fontSizeWindowMedium;
+            line-height: $fontSizeWindowSmall;
+            font-size: $fontSizeWindowSmall;
             // opacity: 0;
         }
 
@@ -441,6 +454,32 @@ export default {
         }
     }
 
+    .hoverType {
+        background: lime;
+        pointer-events: none;
+        position: absolute;
+        // visibility: hidden;
+        // opacity: 0;
+        transition: height 0.5s;
+        -webkit-transition: height 0.5s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition-delay: 0.0s;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        height: 0;
+        overflow: hidden;
+        top: 0;
+        span {
+          color: black;
+            pointer-events: none;
+            font-size: $fontSizeWindowSmall;
+            line-height: $fontSizeWindowSmall;
+        }
+    }
+
     .arrowsLink {
         background: lime;
         pointer-events: none;
@@ -450,10 +489,11 @@ export default {
         opacity: 0;
         // transition:opacity 1s linear;
         transition-delay: 0.0s;
-
+        transition: width 0.5s;
+        -webkit-transition: width 0.5s;
         left: 100%;
         color: red;
-        width: 100vw;
+        width: 0;
         z-index: 1;
         height: 100%;
         top: 0;
@@ -474,9 +514,14 @@ export default {
         .arrowsLink {
             // display: block;
             transition-delay: 0.3s;
-
+            width: 100vw;
             opacity: 1;
             visibility: visible;
+        }
+
+        .hoverType {
+            height: 50%;
+
         }
     }
     width: 50%;
@@ -489,6 +534,18 @@ export default {
         border-radius: 13% 43% 60% 90%;
         color: white;
         justify-content: center;
+        h3{
+
+          font-weight: normal;
+        }
+
+        .projectRedSmall {
+            position: absolute;
+            bottom: $paddingWindowDesktop;
+            // right: $paddingWindowDesktop;
+            line-height: $fontSizeWindowSmall;
+            font-size: $fontSizeWindowSmall;
+        }
 
         &.addAnimationA {
             // margin: 20px;
@@ -654,6 +711,15 @@ export default {
             }
         }
 
+        .smallWhite {
+            font-size: $fontSizeWindowSmall;
+            line-height: $fontSizeWindowSmall;
+            color: black;
+            position: absolute;
+            width: 100%;
+            bottom: 20px;
+        }
+
         .cornered {
 
             display: flex;
@@ -666,6 +732,7 @@ export default {
             min-height: calc(16.666666vw - 6vw);
             color: white;
             text-align: center;
+
             &.white {
 
                 background: white;
@@ -772,13 +839,44 @@ export default {
     // margin-bottom: -1px;
     width: 16.666666%;
 
+
+
+        .hoverType {
+          -webkit-box-shadow: inset 2vw 2vw 0px 0px white, inset -2vw -2vw 0px 0px white;
+          -moz-box-shadow: inset 2vw 2vw 0px 0px white, inset -2vw -2vw 0px 0px white;
+          box-shadow: inset 2vw 2vw 0px 0px white, inset -2vw -2vw 0px 0px white;
+          overflow: hidden;
+            background: blue;
+            pointer-events: none;
+            position: absolute;
+            // visibility: hidden;
+            // opacity: 0;
+            transition: height 0.5s;
+            -webkit-transition: height 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition-delay: 0.0s;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+            height: 0;
+            overflow: hidden;
+            top: 0;
+            span {
+              color: white;
+                pointer-events: none;
+                font-size: $fontSizeWindowSmall;
+                line-height: $fontSizeWindowSmall;
+            }
+        }
+
     .arrowsLink {
-        background: white;
         pointer-events: none;
         position: absolute;
         // display: none;
-        visibility: hidden;
-        opacity: 0;
+        // visibility: hidden;
+        // opacity: 0;
         // transition:opacity 1s linear;
         transition-delay: 0.0s;
 
@@ -788,11 +886,26 @@ export default {
         z-index: 1;
         height: 100%;
         top: 0;
-        background-size: 5.1vw;
 
-        background-image: url('../assets/svg/backgroundBlue.svg');
-        // background-repeat: repeat-x;
-        animation: animatedBackgroundNews 40s linear infinite;
+
+
+        .arrowsLinkBlueInner{
+          background: white;
+
+          background-size: 5.1vw;
+
+          background-image: url('../assets/svg/backgroundBlue.svg');
+          // background-repeat: repeat-x;
+          animation: animatedBackgroundNews 40s linear infinite;
+          width: 0vw;
+
+          height: 100%;
+          float: right;
+
+          transition: width 0.5s;
+          -webkit-transition: width 0.5s;
+        }
+
     }
     @keyframes animatedBackgroundNews {
         from {
@@ -803,12 +916,16 @@ export default {
         }
     }
     &:hover {
-        .arrowsLink {
+        .arrowsLinkBlueInner {
             // display: block;
             transition-delay: 0.3s;
+            width: 100vw;
+            // opacity: 1;
+            // visibility: visible;
+        }
+        .hoverType {
+            height: 100%;
 
-            opacity: 1;
-            visibility: visible;
         }
     }
     // position: relative;
@@ -967,14 +1084,16 @@ export default {
         // margin: 20px 0 20px -1px;
         padding: 0 1vw;
         height: 16.666666vw;
+        font-size: $fontSizeWindowSmall/2;
+        line-height: $fontSizeWindowSmall;
         * {
             // transform: rotate(15deg);
             color: white;
         }
         // min-height: 200px;
         text-align: center;
-        font-size: 0.7vw;
-        line-height: 0.9;
+        // font-size: 1.5vw;
+        // line-height: 0.9;
 
     }
 

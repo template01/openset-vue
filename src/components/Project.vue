@@ -7,8 +7,8 @@
     skecth {{this.sketchProject}}<br />
     default {{this.textualProject}} -->
     <!-- <h1 v-html="this.projectTitle"></h1> -->
-    <visualProject :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
-    <textualProject :projectColorSchemeProp="projectColorScheme" v-bind:content="this.textualContent"  v-bind:title="this.projectTitle" v-if="textuallyOriented"></textualProject>
+    <visualProject :authorName=projectStudentNames :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
+    <textualProject v-bind:content="this.textualContent"  v-bind:title="this.projectTitle" v-if="textuallyOriented"></textualProject>
   </div>
   <div v-else>
     <NotFound></NotFound>
@@ -41,6 +41,7 @@ export default {
       projectSlug:'',
       projectDefaultContent:'',
       projectColorScheme:'',
+      projectStudentNames:[],
       NotFoundState: true,
       visuallyOriented:false,
       visuallyOrientedIntroText:'',
@@ -74,6 +75,7 @@ export default {
           this.projectSlug = this.projectContent.slug
           this.projectDefaultContent = this.projectContent.acf.rendered
           this.projectColorScheme = this.projectContent.acf.project_color_scheme
+          this.projectStudentNames =  this.projectContent.acf.student_name.split(",")
           if(this.projectContent.acf.content_type ==="visually_oriented"){
             this.visuallyOriented = true
             if(this.projectContent.acf.visual_introduction_style === "text_based"){

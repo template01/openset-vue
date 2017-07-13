@@ -1,5 +1,5 @@
 <template>
-<div class="textualProject" :class="projectColorSchemeProp">
+<div class="textualProject">
   <h1 class="title" v-html="title"></h1>
   <div v-for="item in content">
     <!-- {{item}} -->
@@ -31,7 +31,7 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
-  props: ['title', 'content', 'projectColorSchemeProp']
+  props: ['title', 'content']
 
 }
 </script>
@@ -44,6 +44,7 @@ export default {
 .textualProject {
     padding: $paddingWindowDesktop;
     position: absolute;
+    background: white;
 
     .title {
         width: 100%;
@@ -69,9 +70,10 @@ export default {
         width: 50%;
         line-height: 1.3;
         float: left;
+        clear: both;
 
         font-size: $fontSizeWindowLarge/1.2;
-        font-family: Lyon;
+        // font-family: Lyon;
         @include media(">desktop") {
             font-size: $fontSizeWindowMedium/1.2;
 
@@ -79,6 +81,7 @@ export default {
 
         &.right{
           float: right;
+
         }
 
     }
@@ -87,35 +90,7 @@ export default {
 
     }
 
-    &.white_on_black{
-      background: black;
-      .visualContentTextarea{
-        background: white;
-        color: black;
 
-      }
-    }
-    &.black_on_white{
-      background: white;
-      .visualContentTextarea{
-        background: black;
-        color: white;
-      }
-    }
-    &.white_on_red{
-      background: red;
-      .visualContentTextarea{
-        background: white;
-        color: red;
-
-      }
-    }
-    &.black_on_green{
-      background: lime;
-      .visualContentTextarea{
-        background: white;
-      }
-    }
 
 }
 </style>

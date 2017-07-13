@@ -237,7 +237,9 @@ export default {
 
     '$route':function(to,from){
       if(to.hash==="#about"){
-        this.addBlinkMethod()
+        if(from.path != '/list'){
+          this.addBlinkMethod()
+        }
       }
       // alert('change')
     }
@@ -457,6 +459,11 @@ export default {
                 color: black;
                 a {
                     color: black;
+                }
+
+                &:first-of-type{
+                  background: black;
+                  color: white;
                 }
 
             }
