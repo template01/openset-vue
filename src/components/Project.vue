@@ -7,8 +7,8 @@
     skecth {{this.sketchProject}}<br />
     default {{this.textualProject}} -->
     <!-- <h1 v-html="this.projectTitle"></h1> -->
-    <visualProject :authorName=projectStudentNames :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
-    <textualProject v-bind:content="this.textualContent"  v-bind:title="this.projectTitle" v-if="textuallyOriented"></textualProject>
+    <visualProject :authorName=projectStudentNames :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent" v-bind:date="projectDate"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
+    <textualProject v-bind:content="this.textualContent"  v-bind:title="this.projectTitle" v-bind:date="projectDate" :authorName=projectStudentNames v-if="textuallyOriented"></textualProject>
   </div>
   <div v-else>
     <NotFound></NotFound>
@@ -38,6 +38,7 @@ export default {
       projectSlug: this.$route.params.projectSlug,
       projectContent: Object,
       projectTitle:'',
+      projectDate:'',
       projectSlug:'',
       projectDefaultContent:'',
       projectColorScheme:'',
@@ -72,6 +73,7 @@ export default {
           console.log(response.body)
           this.projectContent = response.body[0]
           this.projectTitle = this.projectContent.title.rendered
+          this.projectDate = this.projectContent.date
           this.projectSlug = this.projectContent.slug
           this.projectDefaultContent = this.projectContent.acf.rendered
           this.projectColorScheme = this.projectContent.acf.project_color_scheme

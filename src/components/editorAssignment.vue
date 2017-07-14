@@ -3,8 +3,7 @@
   assignment
   <div class="fixedIntro">
     <div class="fixedIntroInner">
-      <div v-html="title">
-      </div>
+      <slot></slot>
     </div>
   </div>
   <div class="">

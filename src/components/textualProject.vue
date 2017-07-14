@@ -1,6 +1,10 @@
 <template>
 <div class="textualProject">
-  <h1 class="title" v-html="title"></h1>
+
+
+  <singleHeader :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
+
+  <!-- <h1 class="title" v-html="title"></h1> -->
   <div v-for="item in content">
     <!-- {{item}} -->
     <div :class="item.text_content_align" class="textPiece" v-if="item.acf_fc_layout==='text_piece'">
@@ -24,14 +28,19 @@
 </template>
 
 <script>
+import singleHeader from '@/components/singleHeader'
 export default {
-  name: 'hello',
+
+  name: 'textualProject',
+  components:{
+    singleHeader
+  },
   data() {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
   },
-  props: ['title', 'content']
+  props: ['title', 'content','date','authorName']
 
 }
 </script>
@@ -45,6 +54,7 @@ export default {
     padding: $paddingWindowDesktop;
     position: absolute;
     background: white;
+    color: black;
 
     .title {
         width: 100%;
@@ -72,10 +82,10 @@ export default {
         float: left;
         clear: both;
 
-        font-size: $fontSizeWindowLarge/1.2;
+        font-size: $fontSizeWindowLarge;
         // font-family: Lyon;
         @include media(">desktop") {
-            font-size: $fontSizeWindowMedium/1.2;
+            font-size: $fontSizeWindowMedium;
 
         }
 

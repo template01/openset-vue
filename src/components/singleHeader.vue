@@ -1,9 +1,11 @@
 <template>
   <div class="singleHeader">
-    <h1>{{titleProp}}</h1>
+    <h1 v-html="titleProp"></h1>
     <div class="metaInfo">
       <p>
-        <span v-for="(name,index) in nameProp">{{name}}<span v-if="index < nameProp.length - 1 ">, </span></span>
+        <span>By: </span><span v-for="(name,index) in nameProp" v-html="name"><span v-if="index < nameProp.length - 1 ">, </span></span>
+        <br />
+        <span>Date: </span><span v-html="dateStamp(dateProp)"></span></span>
       </p>
     </div>
   </div>
@@ -15,8 +17,30 @@ export default {
   props:['titleProp','nameProp','dateProp'],
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      mL: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      mS: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     }
+  },
+  methods:{
+
+
+        dateStamp: function(input) {
+
+
+          var day = this.days[new Date(input).getDay()]
+          var dayNumber = ("0" + new Date(input).getDate()).slice(-2)
+
+          var year = new Date(input).getFullYear()
+          var monthL = this.mL[new Date(input).getMonth()]
+          var month = ("0" + (new Date(input).getMonth() + 1)).slice(-2)
+          // return this.days[new Date(input).getDay()];
+          // return day+"/"+dayNumber+"/"+monthL;
+          return dayNumber + "." + month + "." + year;
+
+        },
+
   }
 }
 </script>
@@ -28,15 +52,19 @@ export default {
 
 .singleHeader{
   h1{
+    text-align: left !important;
     font-size: $fontSizeWindowLarge;
     font-weight: normal;
     text-transform: uppercase;
     margin: 0;
+    margin-top: -0.2vw;
   }
 
   .metaInfo{
+    font-family: Calibre; 
+    font-size: $paddingWindowMedium;
     margin-top:  $paddingWindowDesktop;
-    margin-bottom:  $paddingWindowDesktop;
+    // margin-bottom:  $paddingWindowDesktop;
     padding-top:  $paddingWindowDesktop;
     padding-bottom:  $paddingWindowDesktop;
     border-top: 2vw solid;

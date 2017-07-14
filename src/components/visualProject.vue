@@ -1,14 +1,13 @@
 <template>
 <div class="visualProject" :class="projectColorSchemeProp">
+
   <div class="introWrapper fixedIntro" v-if="introText">
 
 
     <div class="fixedIntroInnerWrapper">
 
       <div class="fixedIntroInnerColumns">
-        <singleHeader  :nameProp=authorName :date="'date'" :titleProp="title"></singleHeader>
-        <div v-html="title">
-        </div>
+        <singleHeader :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
         <div v-html="introText">
         </div>
 
@@ -18,7 +17,7 @@
   <div class="introWrapper fixedIntro" v-if="introKeywords">
     <div class="fixedIntroInnerWrapper">
       <div class="keywordHeader">
-        <singleHeader :nameProp=authorName :date="'date'" :titleProp="title"></singleHeader>
+        <singleHeader :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
         <div class="keywords">
           <p>
             Keywords:
@@ -43,10 +42,15 @@
   <div class="visualContent" v-if="positionVisualContentTop>1" v-bind:style="{'top':positionVisualContentTop+'px'}">
 
     <!-- {{content}} -->
+
     <div class="visualContentSingle" v-for="item in content">
       <!-- {{item}} -->
       <div v-if="item.acf_fc_layout == 'visual_media'">
         <img class="alignLeft" v-bind:class="[item.align,item.width]" v-bind:src="item.visual_media_content.sizes.large" />
+      </div>
+      <div v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_media_video'">
+        <div v-html="item.visual_youtube">
+        </div>
       </div>
       <!-- <div class="visualContentTextarea" v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_textarea'" v-html="item.visual_textarea_content">
       </div> -->
@@ -56,12 +60,11 @@
 </template>
 
 <script>
-
 import singleHeader from '@/components/singleHeader'
 
 export default {
-  name: 'hello',
-  components:{
+  name: 'visualProject',
+  components: {
     singleHeader
   },
   data() {
@@ -70,25 +73,49 @@ export default {
       positionVisualContentTop: 0,
     }
   },
-  props: ['title', 'introText', 'introKeywords', 'content', 'projectColorSchemeProp','authorName'],
+  props: ['title', 'introText', 'introKeywords', 'content', 'projectColorSchemeProp', 'authorName', 'date'],
   methods: {
+
+    resizeIframe: function() {
+      var allIframes = this.$el.querySelectorAll('iframe');
+
+      for (var i = 0, len = allIframes.length; i < len; i++) {
+        console.log(allIframes[i].getAttribute("width"))
+        console.log(allIframes[i].getAttribute("height"))
+        var format = allIframes[i].getAttribute("height") / allIframes[i].getAttribute("width")
+        console.log(format)
+        allIframes[i].style.height = format * allIframes[i].offsetWidth + 'px'
+      }
+    },
+
     positionVisualContent: function() {
 
-        console.log(this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight)
-        this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight + (window.outerWidth / 100)
+      this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight + (window.outerWidth / 100)
     }
   },
-  watch: {
+  updated: function() {
+    // alert('chaeeenge')
+    this.resizeIframe()
+    this.positionVisualContent()
 
   },
+
   mounted: function() {
+
     // this.positionVisualContent()
     var vm = this
     document.addEventListener("DOMContentLoaded", this.positionVisualContent());
-      setTimeout(function(){vm.positionVisualContent()},1000)
+    // setTimeout(function() {
+    //   vm.positionVisualContent()
+    // }, 1000)
     // window.onload = function(){
-        // console.log("window.onload", e, Date.now() ,window.tdiff,
+    // console.log("window.onload", e, Date.now() ,window.tdiff,
     // }
+  },
+  created: function() {
+    // alert('created')
+    // this.positionVisualContent()
+
   }
 }
 </script>
@@ -188,8 +215,16 @@ export default {
 
             }
 
-            .Half {
-                max-width: 50%;
+            div {
+                &.Half {
+                    // width: 50% !important;
+                        margin: 0 auto;
+                }
+            }
+            img {
+                &.Half {
+                    max-width: 50%;
+                }
             }
 
             .visualContentTextarea {
@@ -260,6 +295,34 @@ a {
 @import "../assets/scss/globalVars.scss";
 
 .visualProject {
+
+  // div{
+    .Half.right,.Half.left{
+      width: 50%;
+      // display: none;
+      iframe {
+        width: 100%;
+      }
+    }
+
+    .Half.left{
+      margin:initial !important;
+    }
+
+  // }
+
+    .Half{
+      iframe {
+        width: 50%;
+      }
+    }
+
+    iframe {
+        width: 100%;
+        margin: 0 auto;
+        display: block;
+    }
+
     .visualContentTextarea {
         p {
             margin: 0;

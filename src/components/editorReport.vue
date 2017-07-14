@@ -2,7 +2,7 @@
 <div id="editorReport" class="">
   <div class="reportContent">
     <div class="bodyText">
-      <h1 class="reportTitle">{{title}}</h1>
+      <slot></slot>
     </div>
     <div v-for="item in content">
       <div class="bodyText" v-if="item.text_piece_default" v-html="item.text_piece_default">
@@ -45,7 +45,7 @@ export default {
 #editorReport{
   z-index: -1;
   position: absolute;
-  padding-top: 4vw;
+  padding-top: $paddingWindowDesktop;
   .reportContent{
     position: relative;
 

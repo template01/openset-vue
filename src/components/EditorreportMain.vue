@@ -4,15 +4,16 @@
 <div class="">
   <div v-if="NotFoundState">
 
-    <!-- {{editorAssignment}} -->
-    <!-- {{editorReport}} -->
-    <!-- {{EditorreportTitle}} -->
 
-    <!-- {{editorAssignmentContent}} -->
-    <!-- {{editorReportContent}} -->
+    <!-- {{EditorreportContentMain.date}} -->
 
-    <editorAssignment v-bind:content="this.editorAssignmentContent" v-bind:title="this.EditorreportTitle" v-if="editorAssignment"></editorAssignment>
-    <editorReport v-bind:content="this.editorReportContent" v-bind:title="this.EditorreportTitle" v-if="editorReport"></editorReport>
+    <editorAssignment v-bind:content="this.editorAssignmentContent" v-bind:title="this.EditorreportTitle" v-if="editorAssignment">
+      <singleHeader  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
+    </editorAssignment>
+    <editorReport v-bind:content="this.editorReportContent" v-bind:title="this.EditorreportTitle" v-if="editorReport">
+      <singleHeader  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
+
+    </editorReport>
 
     <!-- {{this.EditorreportContentMain.acf.extensive_report_or_assignment}} -->
     <!-- {{this.EditorreportContentMain}} -->
@@ -32,6 +33,7 @@
 import NotFound from '@/components/Notfound'
 import editorAssignment from '@/components/editorAssignment'
 import editorReport from '@/components/editorReport'
+import singleHeader from '@/components/singleHeader'
 
 
 
@@ -43,7 +45,8 @@ export default {
   components: {
     NotFound,
     editorAssignment,
-    editorReport
+    editorReport,
+    singleHeader
   },
 
   data() {
@@ -52,6 +55,8 @@ export default {
       EditorreportSlug: this.$route.params.editorreportSlug,
       // projectContent: Object,
       EditorreportTitle: '',
+      EditorreportDate: '',
+      EditorreportAuthornames:'',
       // projectSlug:'',
       // projectDefaultContent:'',
       NotFoundState: true,
@@ -83,6 +88,8 @@ export default {
         console.log(response.body)
         this.EditorreportContentMain = response.body[0]
         this.EditorreportTitle = this.EditorreportContentMain.title.rendered
+        this.EditorreportDate = this.EditorreportContentMain.date
+        this.EditorreportAuthornames = this.EditorreportContentMain.acf.student_name
         // this.EditorreportSlug = this.EditorreportTitle.slug
         // this.EditorreportDefaultContent = this.EditorreportTitle.acf.rendered
         if (this.EditorreportContentMain.acf.extensive_report_or_assignment === 'Assignment') {
@@ -126,6 +133,9 @@ export default {
           console.log(response.body)
           this.EditorreportContentMain = response.body[0]
           this.EditorreportTitle = this.EditorreportContentMain.title.rendered
+          this.EditorreportDate = this.EditorreportContentMain.date
+          this.EditorreportAuthornames = this.EditorreportContentMain.acf.student_name
+
           // this.EditorreportSlug = this.EditorreportTitle.slug
           // this.EditorreportDefaultContent = this.EditorreportTitle.acf.rendered
           if (this.EditorreportContentMain.acf.extensive_report_or_assignment === 'Assignment') {
