@@ -7,7 +7,7 @@
     <div class="fixedIntroInnerWrapper">
 
       <div class="fixedIntroInnerColumns">
-        <singleHeader :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
+        <singleHeader :typeProp="'project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
         <div v-html="introText">
         </div>
 
@@ -17,7 +17,7 @@
   <div class="introWrapper fixedIntro" v-if="introKeywords">
     <div class="fixedIntroInnerWrapper">
       <div class="keywordHeader">
-        <singleHeader :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
+        <singleHeader :typeProp="'project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
         <div class="keywords">
           <p>
             Keywords:
@@ -46,16 +46,26 @@
     <div class="visualContentSingle" v-for="item in content">
       <!-- {{item}} -->
       <div v-if="item.acf_fc_layout == 'visual_media'">
-        <img class="alignLeft" v-bind:class="[item.align,item.width]" v-bind:src="item.visual_media_content.sizes.large" />
+        <!-- <img class="alignLeft" v-bind:class="[item.align,item.width]" v-bind:src="item.visual_media_content.sizes.large" /> -->
+        <img v-bind:class="[item.width != 'Full'  ?  item.align:item.align , item.width]" v-bind:src="item.visual_media_content.sizes.large" />
+
+        <div :class="projectColorSchemeProp" class="mediaCaption" v-if="item.visual_media_content_caption" v-html="item.visual_media_content_caption">
+
+        </div>
       </div>
       <div v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_media_video'">
         <div v-html="item.visual_youtube">
         </div>
+
       </div>
-      <!-- <div class="visualContentTextarea" v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_textarea'" v-html="item.visual_textarea_content">
-      </div> -->
+      <div :class="projectColorSchemeProp" class="mediaCaption" v-if="item.visual_youtube_caption" v-html="item.visual_youtube_caption"></div>
+
     </div>
+
+    <!-- <div class="visualContentTextarea" v-bind:class="[item.align,item.width]" v-if="item.acf_fc_layout == 'visual_textarea'" v-html="item.visual_textarea_content">
+      </div> -->
   </div>
+</div>
 </div>
 </template>
 
@@ -91,6 +101,14 @@ export default {
     positionVisualContent: function() {
 
       this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight + (window.outerWidth / 100)
+    },
+    //
+    // _.debounce(function(){
+    //   alert('man')
+    // }, 250, { 'maxWait': 1000 });
+
+    test: function() {
+      alert('tesa')
     }
   },
   updated: function() {
@@ -102,15 +120,17 @@ export default {
 
   mounted: function() {
 
-    // this.positionVisualContent()
+    var vm = this
+
     var vm = this
     document.addEventListener("DOMContentLoaded", this.positionVisualContent());
-    // setTimeout(function() {
-    //   vm.positionVisualContent()
-    // }, 1000)
-    // window.onload = function(){
-    // console.log("window.onload", e, Date.now() ,window.tdiff,
-    // }
+
+    window.addEventListener('resize', _.debounce(function() {
+      vm.positionVisualContent()
+      vm.resizeIframe()
+
+
+    }, 250));
   },
   created: function() {
     // alert('created')
@@ -138,6 +158,7 @@ export default {
             position: fixed;
         }
         font-size: $fontSizeWindowMedium;
+            line-height: 1;
         color: inherit;
         background: inherit;
         width: 100%;
@@ -149,6 +170,7 @@ export default {
 
         .keywordHeader {
             width: 100%;
+                line-height: 1;
             display: inline-block;
             .keywords {
                 float: right;
@@ -171,6 +193,7 @@ export default {
         .fixedIntroInnerColumns {
             columns: 2;
             -webkit-columns: 2;
+                line-height: 1;
         }
         .fixedIntroInnerLeft {
             display: inline-block;
@@ -197,8 +220,61 @@ export default {
 
         .visualContentSingle {
             clear: both;
-            padding: $paddingWindowDesktop;
+            padding-top: $paddingWindowDesktop;
+            padding-left: $paddingWindowDesktop;
+            padding-right: $paddingWindowDesktop;
+            &:last-of-type {
+                padding-bottom: $paddingWindowDesktop;
+            }
+
             width: 100%;
+
+            .mediaCaption {
+                font-size: $fontSizeWindowSmall;
+                margin-top: $paddingWindowDesktop;
+                padding: $paddingWindowDesktop;
+                border-radius: $fontSizeWindowSmall;
+                border: $paddingWindowDesktop/10 solid;
+                max-width: 50% !important;
+                width: auto !important;
+                display: block;
+                // float: right;
+                margin-left: 50%;
+
+                &.white_on_black {
+                    background: black;
+                    .visualContentTextarea {
+                        background: white;
+                        color: black;
+                        border-color: black;
+
+                    }
+                }
+                &.black_on_white {
+                    background: white;
+                    .visualContentTextarea {
+                        background: black;
+                        color: white;
+                        border-color: white;
+                    }
+                }
+                &.white_on_red {
+                    background: red;
+                    .visualContentTextarea {
+                        background: white;
+                        color: red;
+                        border-color: red;
+
+                    }
+                }
+                &.black_on_green {
+                    background: lime;
+                    .visualContentTextarea {
+                        background: white;
+                        border-color: white;
+                    }
+                }
+            }
 
             img {
                 max-width: 100%;
@@ -218,7 +294,7 @@ export default {
             div {
                 &.Half {
                     // width: 50% !important;
-                        margin: 0 auto;
+                    margin: 0 auto;
                 }
             }
             img {
@@ -296,25 +372,26 @@ a {
 
 .visualProject {
 
-  // div{
-    .Half.right,.Half.left{
-      width: 50%;
-      // display: none;
-      iframe {
-        width: 100%;
-      }
-    }
-
-    .Half.left{
-      margin:initial !important;
-    }
-
-  // }
-
-    .Half{
-      iframe {
+    // div{
+    .Half.left,
+    .Half.right {
         width: 50%;
-      }
+        // display: none;
+        iframe {
+            width: 100%;
+        }
+    }
+
+    .Half.left {
+        margin: initial !important;
+    }
+
+    // }
+
+    .Half {
+        iframe {
+            width: 50%;
+        }
     }
 
     iframe {

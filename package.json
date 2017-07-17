@@ -9,6 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "in-view": "^0.6.1",
     "include-media": "^1.4.9",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.2",

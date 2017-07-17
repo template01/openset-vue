@@ -34,13 +34,20 @@
       </router-view>
     </keep-alive>
   </div>
+
+  <loading v-if="!loaded"></loading>
+
 </div>
 </template>
 
 <script>
+import loading from '@/components/loading'
+
 export default {
   name: 'indexPage',
-  // components:{Participants},
+  components: {
+    loading
+  },
   data() {
     return {
       news: Array,
@@ -51,10 +58,11 @@ export default {
       indexScrollY: 0,
       listView: false,
       listParticipants: false,
-      totalProjectListPages:0,
-      totalReportListPages:0,
-      totalNewsListPages:0,
-      notOnIndex: false
+      totalProjectListPages: 0,
+      totalReportListPages: 0,
+      totalNewsListPages: 0,
+      notOnIndex: false,
+      loaded: false
 
     }
   },
@@ -73,23 +81,40 @@ export default {
 
       // console.log(this.newsAndProjectsAndReports)
 
+    }).then(function(response) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1').then(function(response) {
+        console.log(response)
+        console.log(response.headers)
+        this.reports = response.body
+        this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+      }).then(function(response) {
+        this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1').then(function(response) {
+          this.projects = response.body
+          this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
+          this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+
+          var vm = this
+          setTimeout(function() {
+            vm.loaded = true
+          }, 500)
+        })
+
+      })
     })
 
 
-    this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1').then(function(response) {
-      console.log(response)
-      console.log(response.headers)
-      this.reports = response.body
-      this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+    // this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1').then(function(response) {
+    //   console.log(response)
+    //   console.log(response.headers)
+    //   this.reports = response.body
+    //   this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+    //
+    //   this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+    // })
 
-      this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
-    })
 
-    this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1').then(function(response) {
-      this.projects = response.body
-      this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
-      this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
-    })
 
     this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/users?exclude=1').then(function(response) {
       this.participants = response.body
@@ -99,9 +124,9 @@ export default {
 
   },
 
-  methods:{
-    getmoreContentReport: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1?page='+input).then(function(response) {
+  methods: {
+    getmoreContentReport: function(input) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1?page=' + input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
         console.log(response)
         console.log(response.headers)
@@ -111,8 +136,8 @@ export default {
       })
     },
 
-    getmoreContentNews: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?page='+input).then(function(response) {
+    getmoreContentNews: function(input) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?page=' + input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
 
         console.log(response)
@@ -122,8 +147,8 @@ export default {
       })
     },
 
-    getmoreContentProjects: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1&page='+input).then(function(response) {
+    getmoreContentProjects: function(input) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1&page=' + input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
         console.log(response)
         console.log(response.headers)
@@ -132,8 +157,8 @@ export default {
       })
     },
 
-    getmoreContentProjectsList: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1&page='+input).then(function(response) {
+    getmoreContentProjectsList: function(input) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?published=1&page=' + input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
         this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
 
@@ -143,8 +168,8 @@ export default {
         this.projects = this.projects.concat(response.body)
       })
     },
-    getmoreContentReportsList: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1?page='+input).then(function(response) {
+    getmoreContentReportsList: function(input) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?published=1?page=' + input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
         this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
         this.reports = this.reports.concat(response.body)
@@ -153,8 +178,8 @@ export default {
 
 
 
-    getmoreContentNewsList: function(input){
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?page='+input).then(function(response) {
+    getmoreContentNewsList: function(input) {
+      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?page=' + input).then(function(response) {
         var totalPages = response.headers.map['X-WP-TotalPages'][0]
         this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
 
@@ -174,15 +199,15 @@ export default {
 
   },
 
-  mounted: function(){
-          if(this.$route.path === '/'){
-            this.notOnIndex = false
-          }else if (this.$route.path === '/list') {
-            this.notOnIndex = false
+  mounted: function() {
+    if (this.$route.path === '/') {
+      this.notOnIndex = false
+    } else if (this.$route.path === '/list') {
+      this.notOnIndex = false
 
-          }else{
-            this.notOnIndex = true
-          }
+    } else {
+      this.notOnIndex = true
+    }
   },
 
   watch: {
@@ -199,17 +224,17 @@ export default {
       }
 
 
-// from.path === '/' || from.path === '/list' && to.path != '/' || to.path != '/list')
-console.log(to.path)
+      // from.path === '/' || from.path === '/list' && to.path != '/' || to.path != '/list')
+      console.log(to.path)
 
-      if(from.path === '/' && to.path != '/list' ){
+      if (from.path === '/' && to.path != '/list') {
         this.notOnIndex = true
-      }else{
+      } else {
         this.notOnIndex = false
       }
 
-      if(from.path === '/list' && to.path != '/' && to.path != '/list'){
-        if(to.hash != '#about'){
+      if (from.path === '/list' && to.path != '/' && to.path != '/list') {
+        if (to.hash != '#about') {
           this.notOnIndex = true
         }
       }
@@ -258,10 +283,10 @@ header {
         justify-content: center;
         a {
 
-          .liftedNavigation{
-            top: -$fontSizeWindowLarge/7;
-            position: relative;
-          }
+            .liftedNavigation {
+                top: -$fontSizeWindowLarge/7;
+                position: relative;
+            }
             padding-right: 20px;
             color: white;
             text-decoration: none;

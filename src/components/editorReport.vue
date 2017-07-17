@@ -1,37 +1,63 @@
 <template>
 <div id="editorReport" class="">
   <div class="reportContent">
-    <div class="bodyText">
+    <div class="bodyText" :class="{'assignmentLayout':assignment}">
       <slot></slot>
     </div>
-    <div v-for="item in content">
-      <div class="bodyText" v-if="item.text_piece_default" v-html="item.text_piece_default">
-      </div>
-      <div class="imageWrapper" v-if="item.image">
-          <img :src="item.image.url"/>
-      </div>
-      <div class="qouteLarge" v-if="item.text_piece_qoute" v-html="item.text_piece_qoute">
+    <div>
+      <div class="bodyText" v-html="content"  :class="{'assignmentLayout':assignment}">
       </div>
     </div>
+    <div class="featuredImage"  :class="{'assignmentLayout':assignment}">
+       <img v-if="featuredImage" :src="featuredImage"/>
+    </div>
+
   </div>
 
 </div>
 </template>
 
 <script>
+import inView from 'in-view'
+
 export default {
   name: 'hello',
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
       positionVisualContentTop: 0,
+      featuredImage: ''
     }
   },
-  props: ['title', 'content'],
+  props: ['title', 'content','assignment'],
   methods: {
+    setFeaturedImage: function(){
+      inView('img').on('enter', el => {
+        console.log(el.getAttribute("srcset"))
+        var srcSet = el.getAttribute("srcset")
+
+        if(!!srcSet){
+          var srcSetArray = srcSet.split(",")
+          console.log(srcSetArray.length)
+          console.log(srcSetArray[srcSetArray.length-1].trim().split(" ")[0])
+          var fullImagePath = srcSetArray[srcSetArray.length-1].trim().split(" ")[0]
+          this.featuredImage = fullImagePath
+
+          // this.featuredImage = el.getAttribute("src")
+        }
+
+
+      });
+
+    }
 
   },
   mounted: function() {
+    this.setFeaturedImage()
+  },
+  updated: function(){
+    // this.setFeaturedImage()
+
   }
 }
 </script>
@@ -47,6 +73,25 @@ export default {
   position: absolute;
   padding-top: $paddingWindowDesktop;
   .reportContent{
+
+    .featuredImage{
+
+      &.assignmentLayout{
+        right: 0;
+      }
+      position: fixed;
+      top: $paddingWindowLarge;
+      width: 50%;
+      height: calc(100% - #{$paddingWindowLarge});
+      padding: $paddingWindowDesktop;
+      display: flex;
+      img{
+        max-width: 100%;
+        align-self: center;
+        margin: 0 auto;
+
+      }
+    }
     position: relative;
 
     .reportTitle{
@@ -76,9 +121,20 @@ export default {
       width: 50%;
       font-size: 2vw;
       margin-left: 50%;
-      font-family: Lyon;
-      padding-left: $paddingWindowMedium;
-      padding-right: $paddingWindowMedium;
+      &.assignmentLayout{
+        margin-left: 0%;
+        font-family: Calibre;
+
+              @include media(">desktop") {
+                font-size: 1.4vw;
+                line-height: 1.2;
+
+              }
+      };
+      font-family: "Times New Roman", Times, serif;
+      line-height: 1.3;
+      padding-left: $paddingWindowDesktop;
+      padding-right: $paddingWindowDesktop;
 
       @include media(">desktop") {
         font-size: 1.2vw;
@@ -95,6 +151,7 @@ export default {
 
 <style lang="scss">
 @import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
 
 
 
@@ -115,6 +172,25 @@ export default {
       }
       .wp-caption{
         width: 100% !important;
+      }
+
+      .wp-caption-text{
+        font-family: Calibre;
+        font-size: $fontSizeWindowSmall;
+        @include media(">=desktop") {
+          margin-left: 50%;
+          font-size: 1vw;
+          line-height: 1vw;
+          width: 50%;
+        }
+        @include media("<desktop") {
+          // font-size: 1vw;
+          // line-height: 1vw;
+
+          padding-left: $paddingWindowDesktop;
+        }
+
+        clear: both;
       }
 
     }

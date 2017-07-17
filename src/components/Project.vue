@@ -7,6 +7,7 @@
     skecth {{this.sketchProject}}<br />
     default {{this.textualProject}} -->
     <!-- <h1 v-html="this.projectTitle"></h1> -->
+    <loading v-if="!loaded"></loading>
     <visualProject :authorName=projectStudentNames :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent" v-bind:date="projectDate"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
     <textualProject v-bind:content="this.textualContent"  v-bind:title="this.projectTitle" v-bind:date="projectDate" :authorName=projectStudentNames v-if="textuallyOriented"></textualProject>
   </div>
@@ -21,6 +22,7 @@
 import NotFound from '@/components/Notfound'
 import visualProject from '@/components/visualProject'
 import textualProject from '@/components/textualProject'
+import loading from '@/components/loading'
 
 
 export default {
@@ -29,7 +31,7 @@ export default {
   name: 'project',
 
   components: {
-    NotFound, visualProject, textualProject
+    NotFound, visualProject, textualProject,loading
   },
 
   data() {
@@ -50,6 +52,7 @@ export default {
       visualContent:'',
       textuallyOriented:false,
       textualContent:'',
+      loaded:false
 
     }
   },
@@ -97,6 +100,11 @@ export default {
 
           }
         }
+
+        var vm = this
+        setTimeout(function(){
+          vm.loaded = true
+        },500)
 
       }, response => {
         // error callback

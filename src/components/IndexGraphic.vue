@@ -236,6 +236,10 @@ export default {
   updated: function() {
     this.packery()
     this.packery()
+    var vm = this;
+    setTimeout(function(){
+      vm.packery()
+    },500)
   },
 
   watch: {

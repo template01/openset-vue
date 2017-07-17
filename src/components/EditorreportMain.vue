@@ -4,24 +4,14 @@
 <div class="">
   <div v-if="NotFoundState">
 
-
-    <!-- {{EditorreportContentMain.date}} -->
-
-    <editorAssignment v-bind:content="this.editorAssignmentContent" v-bind:title="this.EditorreportTitle" v-if="editorAssignment">
-      <singleHeader  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
-    </editorAssignment>
+    <loading v-if="!loaded"></loading>
     <editorReport v-bind:content="this.editorReportContent" v-bind:title="this.EditorreportTitle" v-if="editorReport">
-      <singleHeader  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
-
+      <singleHeader :typeProp="'report'"  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
+    </editorReport>
+    <editorReport :assignment="true" v-bind:content="this.editorAssignmentContent" v-bind:title="this.EditorreportTitle" v-if="editorAssignment">
+      <singleHeader :typeProp="'assignment'" :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
     </editorReport>
 
-    <!-- {{this.EditorreportContentMain.acf.extensive_report_or_assignment}} -->
-    <!-- {{this.EditorreportContentMain}} -->
-    <!-- visual {{this.visualReport}}<br />
-    skecth {{this.sketchProject}}<br />
-    default {{this.defaultProject}} -->
-    <!-- <h1 v-html="this.projectTitle"></h1> -->
-    <!-- <defaultProject v-bind:title="this.projectTitle" v-if="defaultProject"></defaultProject> -->
   </div>
   <div v-else>
     <NotFound></NotFound>
@@ -31,9 +21,10 @@
 
 <script>
 import NotFound from '@/components/Notfound'
-import editorAssignment from '@/components/editorAssignment'
+// import editorAssignment from '@/components/editorAssignment'
 import editorReport from '@/components/editorReport'
 import singleHeader from '@/components/singleHeader'
+import loading from '@/components/loading'
 
 
 
@@ -44,9 +35,10 @@ export default {
 
   components: {
     NotFound,
-    editorAssignment,
+    loading,
+    // editorAssignment,
     editorReport,
-    singleHeader
+    singleHeader,
   },
 
   data() {
@@ -66,6 +58,7 @@ export default {
       editorReportContent: '',
       editorAssignment: false,
       editorAssignmentContent: '',
+      loaded: false
 
       // visualReportIntro:'',
       // sketchProject:false,
@@ -77,46 +70,6 @@ export default {
     this.$destroy()
   },
   methods: {
-    test: function() {
-      alert(';e')
-    },
-    getContentEditorReport: function(apiEndpointParamA) {
-
-
-      this.$http.get(apiEndpointParamA).then(function(response) {
-
-        console.log(response.body)
-        this.EditorreportContentMain = response.body[0]
-        this.EditorreportTitle = this.EditorreportContentMain.title.rendered
-        this.EditorreportDate = this.EditorreportContentMain.date
-        this.EditorreportAuthornames = this.EditorreportContentMain.acf.student_name
-        // this.EditorreportSlug = this.EditorreportTitle.slug
-        // this.EditorreportDefaultContent = this.EditorreportTitle.acf.rendered
-        if (this.EditorreportContentMain.acf.extensive_report_or_assignment === 'Assignment') {
-          this.editorAssignment = true
-          this.editorAssignmentContent = this.EditorreportContentMain.acf.assignment_content
-
-          // this.visualReportIntro = this.projectContent.acf.visual_introduction
-          // this.visualContent = this.projectContent.acf.visual_report
-        }
-        if (this.EditorreportContentMain.acf.extensive_report_or_assignment === "Report") {
-          this.editorReport = true
-          this.editorReportContent = this.EditorreportContentMain.acf.report_content
-        }
-
-        // if(this.projectContent.acf.sketch_project){
-        //   this.sketchProject = true
-        // }
-        // if(this.projectContent.acf.default_project){
-        //   this.defaultProject = true
-        // }
-      }, response => {
-        // error callback
-        this.NotFoundState = false
-      });
-
-    },
-
 
     getContent: function(apiEndpointParamA, apiEndpointParamB) {
 
@@ -150,6 +103,11 @@ export default {
             this.editorReportContent = this.EditorreportContentMain.acf.report_content
           }
         }
+
+        var vm = this
+        setTimeout(function(){
+          vm.loaded = true
+        },500)
 
       }, response => {
         // error callback

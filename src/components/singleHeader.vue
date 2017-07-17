@@ -3,6 +3,8 @@
     <h1 v-html="titleProp"></h1>
     <div class="metaInfo">
       <p>
+        <span class="type" v-html="typeProp"></span>
+        <br />
         <span>By: </span><span v-for="(name,index) in nameProp" v-html="name"><span v-if="index < nameProp.length - 1 ">, </span></span>
         <br />
         <span>Date: </span><span v-html="dateStamp(dateProp)"></span></span>
@@ -14,7 +16,7 @@
 <script>
 export default {
   name: 'singleHeader',
-  props:['titleProp','nameProp','dateProp'],
+  props:['titleProp','nameProp','dateProp','typeProp'],
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -57,12 +59,14 @@ export default {
     font-weight: normal;
     text-transform: uppercase;
     margin: 0;
+    line-height: 1;
     margin-top: -0.2vw;
   }
 
   .metaInfo{
-    font-family: Calibre; 
+    font-family: Calibre;
     font-size: $paddingWindowMedium;
+    line-height: 1;
     margin-top:  $paddingWindowDesktop;
     // margin-bottom:  $paddingWindowDesktop;
     padding-top:  $paddingWindowDesktop;
@@ -72,6 +76,10 @@ export default {
     border-color: inherit;
     p{
       margin: 0;
+    }
+
+    .type{
+      text-transform: uppercase;
     }
   }
 }

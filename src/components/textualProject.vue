@@ -2,7 +2,7 @@
 <div class="textualProject">
 
 
-  <singleHeader :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
+  <singleHeader :typeProp="'Project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
 
   <!-- <h1 class="title" v-html="title"></h1> -->
   <div v-for="item in content">
@@ -11,14 +11,18 @@
       <div v-html="item.text_content">
       </div>
     </div>
-    <div v-if="item.acf_fc_layout==='gallery'">
-      <!-- <img src="http://placehold.it/400x300"/> -->
-      <div v-html="item.text_content">
+
+    <div class="largeQoute" v-if="item.acf_fc_layout==='qoute'">
+      <div class="qouteContent" v-html="item.large_qoute">
       </div>
     </div>
 
+
     <div v-if="item.acf_fc_layout==='image'" class="image">
       <img :src="item.image.url"/>
+      <div class="mediaCaption" v-if="item.image_caption" v-html="item.image_caption">
+
+      </div>
       <!-- <div v-html="item.text_content"> -->
       <!-- </div> -->
     </div>
@@ -76,9 +80,37 @@ export default {
       }
     }
 
+
+                .mediaCaption {
+                  font-size: 1vw;
+                  line-height: 1vw;
+                    margin-top: $paddingWindowDesktop;
+                    max-width: 50% !important;
+                    width: auto !important;
+                    display: block;
+                    // float: right;
+                    margin: 0 auto;
+                    text-align: center;
+
+                }
+
+
+    .largeQoute{
+      width: 100%;
+      line-height: 1.3;
+      float: left;
+      clear: both;
+      font-size: $fontSizeWindowLarge;
+      text-align: center;
+      .qouteContent{
+        margin: 0 auto;
+        width: 75%;
+      }
+    }
+
     .textPiece {
         width: 50%;
-        line-height: 1.3;
+        line-height: 1;
         float: left;
         clear: both;
 
