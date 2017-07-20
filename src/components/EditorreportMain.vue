@@ -8,7 +8,7 @@
     <editorReport v-bind:content="this.editorReportContent" v-bind:title="this.EditorreportTitle" v-if="editorReport">
       <singleHeader :typeProp="'report'"  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
     </editorReport>
-    <editorReport :assignment="true" v-bind:content="this.editorAssignmentContent" v-bind:title="this.EditorreportTitle" v-if="editorAssignment">
+    <editorReport v-bind:content="this.editorAssignmentContent" v-bind:title="this.EditorreportTitle" v-if="editorAssignment">
       <singleHeader :typeProp="'assignment'" :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
     </editorReport>
 

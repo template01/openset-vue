@@ -1,6 +1,7 @@
   <template>
 <div>
   <header>
+    <div id="navigationDefault">
 
     <div class="viewSwitcher">
       <template v-if="notOnIndex" >
@@ -14,11 +15,36 @@
     </div>
 
     <div class="navigation">
-      <router-link :to="{path:'/list', hash:'about'}" replace>About</router-link>
+      <router-link :to="{path:'/list', hash:'about'}">About</router-link>
       <!-- <router-link to="/participants">Participants</router-link> -->
       <!-- <router-link to="http://placeholder-b.template-studio.nl/">Login/Register</router-link> -->
       <a href="http://placeholder-b.template-studio.nl/">Lo<span class="liftedNavigation">g</span>in</a>
     </div>
+  </div>
+  <div id="navigationMobile">
+    <div @click="showMobileMenu = !showMobileMenu"  class="navigationMobileHamburger">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div v-if="showMobileMenu" class="navigationMobileContent">
+      <div class="">
+        <template v-if="notOnIndex" >
+          <router-link v-if="listView" to="/list">Back</router-link>
+          <router-link v-else to="/">Back</router-link>
+        </template>
+        <template v-else>
+          <router-link v-if="listView" to="/">Visual</router-link>
+          <router-link v-else to="/list">Textual</router-link>
+        </template>
+      </div>
+
+      <div class="">
+        <router-link :to="{path:'/list', hash:'about'}">About</router-link>
+      </div>
+      <div class="">
+        <a href="http://placeholder-b.template-studio.nl/">Lo<span class="liftedNavigation">g</span>in</a>
+      </div>
+    </div>
+  </div>
 
     <div class="title">
 
@@ -62,8 +88,8 @@ export default {
       totalReportListPages: 0,
       totalNewsListPages: 0,
       notOnIndex: false,
-      loaded: false
-
+      loaded: false,
+      showMobileMenu: false
     }
   },
 
@@ -215,6 +241,8 @@ export default {
 
     '$route' (to, from) {
 
+      this.showMobileMenu = false
+
       if (this.$route.path === '/list') {
         this.listView = true
       }
@@ -261,15 +289,96 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
 
 header {
-    height: $paddingWindowLarge;
     position: fixed;
     z-index: 0;
     top: 0;
     background: black;
+    height: $paddingWindowLarge;
     width: 100%;
     font-weight: bold;
+    @include media("<desktop") {
+        height: $paddingWindowLarge*2;
+        z-index: 2;
+
+    }
+
+    @include media("<phone") {
+        height: $paddingWindowLarge*4;
+    }
+
+    #navigationDefault {
+        display: block;
+    }
+    #navigationMobile {
+        display: none;
+
+        .navigationMobileHamburger {
+            float: right;
+            color: black;
+            text-decoration: none;
+            height: 100%;
+            width: auto;
+            text-align: center;
+            line-height: $paddingWindowLarge*2;
+            color: lime;
+            font-size: $fontSizeWindowLarge;
+            padding-left: $paddingWindowMobile;
+            padding-right: $paddingWindowMobile;
+            @include media("<phone") {
+              line-height: $paddingWindowLarge*4;
+              font-size: $fontSizeWindowXLarge;
+            }
+
+
+        }
+
+        .navigationMobileContent{
+          background: black;
+          color: black;
+          text-decoration: none;
+          width: 100%;
+          float: right;
+          margin-top: $paddingWindowLarge*2;
+          @include media("<phone") {
+            margin-top: $paddingWindowLarge*4;
+            font-size: $fontSizeWindowXLarge;
+            line-height: $fontSizeWindowXLarge;
+
+          }
+          text-align: center;
+          line-height: $fontSizeWindowLarge;
+          font-size: $fontSizeWindowLarge;
+          position: absolute;
+          font-weight: normal;
+          padding: $paddingWindowMobile;
+          text-align: right;
+          a {
+              text-transform: uppercase;
+              color: lime;
+              text-decoration: none;
+              height: 100%;
+              width: 100%;
+              line-height: $paddingWindowLarge;
+              @include media("<desktop") {
+                  line-height: $paddingWindowLarge*2;
+              }
+              text-align: center;
+          }
+
+        }
+
+    }
+    @include media("<tablet") {
+        #navigationDefault {
+            display: none;
+        }
+        #navigationMobile {
+            display: block;
+        }
+    }
 
     .navigation {
         // width: $paddingWindowLarge;
@@ -280,6 +389,9 @@ header {
         display: flex;
         align-items: center;
         height: $paddingWindowLarge;
+        @include media("<desktop") {
+            height: $paddingWindowLarge*2;
+        }
         justify-content: center;
         a {
 
@@ -287,10 +399,14 @@ header {
                 top: -$fontSizeWindowLarge/7;
                 position: relative;
             }
-            padding-right: 20px;
             color: white;
             text-decoration: none;
-            padding-left: 20px;
+            padding-right: $paddingWindowDesktop;
+            padding-left: $paddingWindowDesktop;
+            @include media("<desktop") {
+                padding-left: $paddingWindowMobile;
+                padding-right: $paddingWindowMobile;
+            }
         }
 
         button {
@@ -301,19 +417,27 @@ header {
             border: 0;
             font-size: inherit;
             font-weight: inherit;
-            padding-right: 20px;
+            padding-right: $paddingWindowDesktop;
+            @include media("<desktop") {
+                padding-right: $paddingWindowMobile;
+            }
         }
     }
 
     .viewSwitcher {
         // width: $paddingWindowLarge;
-        padding-right: 20px;
-        padding-left: 20px;
+        padding-right: $paddingWindowDesktop;
+        padding-left: $paddingWindowDesktop;
 
         float: right;
         display: flex;
         align-items: center;
         height: $paddingWindowLarge;
+        @include media("<desktop") {
+            height: $paddingWindowLarge*2;
+            padding-left: $paddingWindowMobile;
+            padding-right: $paddingWindowMobile;
+        }
         justify-content: center;
         background: white;
         font-size: $fontSizeWindowLarge;
@@ -325,6 +449,9 @@ header {
             height: 100%;
             width: 100%;
             line-height: $paddingWindowLarge;
+            @include media("<desktop") {
+                line-height: $paddingWindowLarge*2;
+            }
             text-align: center;
         }
     }
@@ -337,20 +464,44 @@ header {
             font-weight: normal;
             // float: right;
             margin: 0;
+            @include media("<phone") {
+              font-size: $fontSizeWindowXLarge;
+
+            }
         }
         background: white;
         float: left;
         display: flex;
         align-items: center;
         height: $paddingWindowLarge;
+        @include media("<desktop") {
+            height: $paddingWindowLarge*2;
+        }
+        @include media("<phone") {
+          height: $paddingWindowLarge*4;
+          font-size: $fontSizeWindowLarge*2;
+
+        }
         justify-content: center;
         width: auto;
-        padding-left: 20px;
-        padding-right: 20px;
-
+        padding-left: $paddingWindowDesktop;
+        padding-right: $paddingWindowDesktop;
+        @include media("<desktop") {
+            padding-left: $paddingWindowMobile;
+            padding-right: $paddingWindowMobile;
+        }
     }
 }
 .content {
     margin-top: $paddingWindowLarge;
+    @include media("<desktop") {
+        margin-top: $paddingWindowLarge*2;
+    }
+    @include media("<phone") {
+      margin-top: $paddingWindowLarge*4;
+
+    }
+
+
 }
 </style>

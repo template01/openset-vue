@@ -90,53 +90,27 @@
 
 
   <div class="third">
-    <div class="thirdInner halfHeight">
 
-      <div class="tableStyle blue">
-
-
-        <div class="projectItem">
-          <div class="blockHeader">
-            <h1>
-            News
-
-          </h1>
-          </div>
-        </div>
-
-        <div class="projectItem" v-for="(item, index) in newsProp" :expandedx="true" :key="item">
-          <newsItemListSingle :itemDate="'Date: '+dateStamp(item.date)" :itemIdTitleRendered="item.title.rendered" :itemId="item.id"></newsItemListSingle>
-          <!-- <div class="projectItemInner">
-
-              <span class="projectItemTitle" v-html="item.title.rendered">
-          </span>
-          <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
-
-          </span>
-          <span class="projectItemHalf"  v-html="">
-          </span>
-          </div> -->
-
-        </div>
-
-
-        <div class="projectItem LoadMoreProjects" id="" @click="$emit('getmoreContentNewsListEmit',getMoreContentNews); getMoreContentNews++">
-          <h1 v-if="getMoreContentNews - 1 < newsListPage ">Get More News</h1>
-          <h1 v-else>No More News</h1>
-
-        </div>
-      </div>
-    </div>
-
-
-
-
-    <div class="thirdInner halfHeight">
+    <div class="thirdInner ">
       <div class="tableStyle">
 
-        <div @click="aboutTab=!aboutTab; $router.replace({path:'/list', hash:'about'})" class="projectItem  tabHeader50 ">
+        <div v-if="aboutTab" class="projectItem greenItem">
+          <div class="blockHeader leftAlign ">
+            <h1>
+              <span  @click="aboutTab=false; $router.replace({path:'/list', hash:''})" class="close black pointy"></span>
+              <span>ABOUT</span>
+
+
+                  </h1>
+          </div>
+        </div>
+
+        <aboutList v-if="aboutTab" class="projectItem noMarginTop"></aboutList>
+
+
+        <div @click="newsTab=!newsTab; $router.replace({path:'/list', hash:''})" class="projectItem  tabHeader50 blueItem">
           <div class="blockHeader ">
-          <h1 :class="{ 'blink' : addBlink }" >About
+            <h1>NEWS
 
           </h1>
 
@@ -145,15 +119,39 @@
         </div>
 
 
-        <div @click="aboutTab=!aboutTab;$router.replace({path:'/list', hash:''})" class="projectItem tabHeader50 redItem">
+        <div @click="newsTab=!newsTab;$router.replace({path:'/list', hash:''})" class="projectItem tabHeader50 redItem">
           <div class="blockHeader ">
             <h1>SEARCH
 
           </h1>
           </div>
         </div>
-        <searchList  v-if="!aboutTab" class="projectItem"></searchList>
-        <aboutList v-if="aboutTab" class="projectItem"></aboutList>
+        <searchList v-if="!newsTab" class="projectItem"></searchList>
+        <!-- <aboutList v-if="newsTab" class="projectItem"></aboutList> -->
+        <div v-if="newsTab" class="tableStyle blue">
+
+          <div class="projectItem" v-for="(item, index) in newsProp" :expandedx="true" :key="item">
+            <newsItemListSingle :itemDate="'Date: '+dateStamp(item.date)" :itemIdTitleRendered="item.title.rendered" :itemId="item.id"></newsItemListSingle>
+            <!-- <div class="projectItemInner">
+
+                <span class="projectItemTitle" v-html="item.title.rendered">
+            </span>
+            <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
+
+            </span>
+            <span class="projectItemHalf"  v-html="">
+            </span>
+            </div> -->
+
+          </div>
+
+
+          <div class="projectItem LoadMoreProjects" id="" @click="$emit('getmoreContentNewsListEmit',getMoreContentNews); getMoreContentNews++">
+            <h1 v-if="getMoreContentNews - 1 < newsListPage ">Get More News</h1>
+            <h1 v-else>No More News</h1>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -181,13 +179,14 @@ export default {
       getMoreContentProjects: 2,
       getMoreContentNews: 2,
       getMoreContentReports: 2,
-      addBlink:false,
+      addBlink: false,
       // getMoreContentProjects:1,
       msg: 'Welcome to Your Vue.js App',
       days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       mL: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       mS: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-      aboutTab: true
+      newsTab: true,
+      aboutTab: false
     }
   },
 
@@ -217,28 +216,32 @@ export default {
 
     },
 
-    addBlinkMethod: function(){
-      this.aboutTab=true
-      // alert(this.aboutTab)
-      this.addBlink=true
+    addBlinkMethod: function() {
+      this.newsTab = true
+      // alert(this.newsTab)
+      this.addBlink = true
       var vm = this
-      setTimeout(function(){
-        vm.addBlink=false
-      },3000)
+      setTimeout(function() {
+        vm.addBlink = false
+      }, 3000)
     }
   },
 
-  mounted(){
-    if(this.$route.hash === '#about'){
-      this.addBlinkMethod()
+  mounted() {
+    if (this.$route.hash === '#about') {
+      // this.addBlinkMethod()
+      this.aboutTab = true
+
+
     }
   },
   watch: {
 
-    '$route':function(to,from){
-      if(to.hash==="#about"){
-        if(from.path != '/list'){
-          this.addBlinkMethod()
+    '$route': function(to, from) {
+      if (to.hash === "#about") {
+        this.aboutTab = true
+        if (from.path != '/list') {
+          // this.addBlinkMethod()
         }
       }
       // alert('change')
@@ -252,13 +255,18 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 @import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
 
 #listView {
     background: lime;
     min-height: calc(100vh - $paddingWindowLarg);
 
     // font-size: 18px;
-    font-size: $fontSizeWindowMedium;
+    @include media("<tablet") {
+        font-size: $fontSizeWindowLarge;
+
+    }
+
     line-height: 1;
 
     .blockHeader {
@@ -266,16 +274,29 @@ export default {
         min-height: $paddingWindowLarge;
 
         h1 {
-            // color: lime;
             line-height: $paddingWindowLarge;
 
-            font-size: 4vw;
+            font-size: $fontSizeWindowLarge;
             font-weight: normal;
             margin-top: 0;
             margin-bottom: 0;
             text-transform: uppercase;
             text-align: center;
 
+        }
+
+        &.leftAlign {
+            h1 {
+                text-align: left;
+                display: flex;
+                span {
+                    align-self: center;
+                    &:nth-of-type(2) {
+                        padding-left: $paddingWindowDesktop;
+
+                    }
+                }
+            }
         }
 
     }
@@ -329,39 +350,41 @@ export default {
         // margin-top: 20px;
 
         &.blue {
-            background: white;
+            background: blue;
+            color: white;
 
             .projectItem {
+
                 h1 {
-                    color: white;
+                    color: blue;
                 }
 
                 &#LoadMoreProjects {
                     h1 {
-                        color: white;
+                        color: blue;
                     }
                 }
                 &:nth-child(odd) {
-                    color: white;
+                    color: blue;
 
                     a {
 
-                        color: white;
+                        color: blue;
                     }
-                    background: blue;
+                    background: white;
 
                 }
                 &:nth-child(even) {
                     &.LoadMoreProjects {
                         h1 {
-                            color: black;
+                            color: white;
                         }
                     }
 
                 }
 
                 a {
-                    color: black;
+                    color: white;
                 }
 
             }
@@ -446,24 +469,37 @@ export default {
 
         &.defaultBorder {
 
-            border-top: 3px solid black;
+            // border-top: 3px solid black;
+            // -webkit-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,1);
+            // -moz-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,1);
+            // box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,1);
 
-            .blockHeader{
+            .blockHeader {
 
-              margin-top: -3px;
+                // margin-top: -3px;
+
             }
 
             .projectItem {
-                border-bottom: 3px solid black;
+                // border-bottom: 3px solid black;
+                -webkit-box-shadow: inset 0 -3px 0 0 rgba(0,0,0,1);
+                -moz-box-shadow: inset 0 -3px 0 0 rgba(0,0,0,1);
+                box-shadow: inset 0 -3px 0 0 rgba(0,0,0,1);
+
+                @include media("<desktop") {
+                  padding: $paddingWindowMobile;
+                  -webkit-box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
+                  -moz-box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
+                  box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
+                }
                 background: white;
                 color: black;
                 a {
                     color: black;
                 }
-
-                &:first-of-type{
-                  background: black;
-                  color: white;
+                &:first-of-type {
+                    background: black;
+                    color: white;
                 }
 
             }
@@ -483,6 +519,21 @@ export default {
                 color: white;
             }
 
+            &.blueItem {
+                background: blue;
+                color: white;
+            }
+
+            &.greenItem {
+                background: lime;
+                color: black;
+
+                &.invertedColor {
+                    background: black;
+                    color: lime;
+
+                }
+            }
             &.tabHeader50 {
                 float: left;
                 width: 50%;
@@ -506,6 +557,13 @@ export default {
             }
 
             &.LoadMoreProjects {
+                line-height: $fontSizeWindowLarge;
+                font-size: $fontSizeWindowLarge;
+
+                h1 {
+                    font-size: inherit;
+
+                }
                 cursor: pointer;
                 text-align: center;
 
@@ -521,7 +579,15 @@ export default {
             width: 100%;
             // justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: $paddingWindowDesktop;
+
+            @include media("<desktop") {
+              padding: $paddingWindowMobile;
+            }
+
+            &.noMarginTop {
+                padding-top: 0;
+            }
 
             a {
                 width: 100%;
@@ -547,7 +613,6 @@ export default {
                 float: left;
                 font-size: 60%;
 
-
             }
 
         }
@@ -558,14 +623,13 @@ export default {
         overflow-y: auto;
         position: relative;
 
-
     }
 
     .third {
 
-      // &.defaultBorderThird{
-      //   border-top: 3px solid black;
-      // };
+        // &.defaultBorderThird{
+        //   border-top: 3px solid black;
+        // };
         float: left;
         width: 33.3333%;
         position: absolute;
@@ -579,6 +643,17 @@ export default {
         &:nth-of-type(3) {
             left: 66.66666%;
         }
+        @include media("<tablet") {
+            width: 100%;
+            position: relative;
+            &:nth-of-type(2) {
+                left: 0;
+            }
+            &:nth-of-type(3) {
+                left: 0;
+            }
+        }
+
     }
 
     .left,

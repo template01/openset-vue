@@ -9,7 +9,9 @@
       </div>
     </div>
     <div class="featuredImage"  :class="{'assignmentLayout':assignment}">
-       <img v-if="featuredImage" :src="featuredImage"/>
+      <transition name="slide-fade">
+        <img v-if="featuredImage" :src="featuredImage"/>
+      </transition>
     </div>
 
   </div>
@@ -32,19 +34,29 @@ export default {
   props: ['title', 'content','assignment'],
   methods: {
     setFeaturedImage: function(){
-      inView('img').on('enter', el => {
-        console.log(el.getAttribute("srcset"))
+      inView('.bodyText img').on('enter', el => {
+
         var srcSet = el.getAttribute("srcset")
 
         if(!!srcSet){
           var srcSetArray = srcSet.split(",")
-          console.log(srcSetArray.length)
-          console.log(srcSetArray[srcSetArray.length-1].trim().split(" ")[0])
           var fullImagePath = srcSetArray[srcSetArray.length-1].trim().split(" ")[0]
           this.featuredImage = fullImagePath
 
           // this.featuredImage = el.getAttribute("src")
         }
+
+
+      }).on('exit', el => {
+        if(inView('.bodyText img').check().current.length===0){
+
+          this.featuredImage = ''
+        }
+        console.log('CHECK START')
+        console.log(inView('img').check())
+        console.log('CHECK')
+
+
 
 
       });
@@ -77,8 +89,9 @@ export default {
     .featuredImage{
 
       &.assignmentLayout{
-        right: 0;
       }
+      right: 0;
+
       position: fixed;
       top: $paddingWindowLarge;
       width: 50%;
@@ -122,15 +135,15 @@ export default {
       font-size: 2vw;
       margin-left: 50%;
       &.assignmentLayout{
-        margin-left: 0%;
-        font-family: Calibre;
-
-              @include media(">desktop") {
-                font-size: 1.4vw;
-                line-height: 1.2;
-
-              }
+        // font-family: Calibre;
+        //
+        // @include media(">desktop") {
+        //   font-size: 1.4vw;
+        //   line-height: 1.2;
+        //
+        // }
       };
+      margin-left: 0%;
       font-family: "Times New Roman", Times, serif;
       line-height: 1.3;
       padding-left: $paddingWindowDesktop;
@@ -196,5 +209,21 @@ export default {
     }
 
   }
+
+
+  /* Enter and leave animations can use different */
+  /* durations and timing functions.              */
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s ease;
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for <2.1.8 */ {
+    transform: translateY(-$paddingWindowDesktop);
+    opacity: 0;
+  }
+
 }
 </style>

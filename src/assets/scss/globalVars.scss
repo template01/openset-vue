@@ -6,12 +6,15 @@ $breakpoints: (phone: 640px, tablet: 800px, desktop: 1025px);
 $fontSizeWindowSmall:1.5vw;
 $fontSizeWindowMedium:2vw;
 $fontSizeWindowLarge:4vw;
+$fontSizeWindowXLarge:6vw;
 $paddingWindowLarge:4vw;
 $paddingWindowMedium:2vw;
 $lineHeight1: 1;
 $lineHeight105: 1.05;
 
 $paddingWindowDesktop: 20px;
+$paddingWindowMobile: 10px;
+
 
 .blink {
   animation: blink-animation 1s steps(2, start) infinite;

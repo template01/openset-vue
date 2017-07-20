@@ -72,6 +72,12 @@ h1, h2 {
   position: fixed;
   background: black;
   top: $paddingWindowLarge;
+  @include media("<desktop") {
+      top: $paddingWindowLarge*2;
+  }
+  @include media("<phone") {
+      top: $paddingWindowLarge*4;
+  }
   display: flex;
   align-content: center;
   height: 100%;

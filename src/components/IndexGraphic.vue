@@ -268,6 +268,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
+
 
 #visualView {
     background: lime;
@@ -308,6 +310,9 @@ export default {
 .floatItem {
     float: left;
     min-height: 16.666666vw;
+    @include media("<desktop") {
+      min-height: 25vw;
+    }
 
     // background: rgb(244, 244, 244);
     justify-content: center;
@@ -378,6 +383,9 @@ export default {
                 text-align: center;
                 margin: 0;
                 max-height: 16.666666vw;
+                @include media("<desktop") {
+                  max-height: 25vw;
+                }
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
@@ -386,12 +394,20 @@ export default {
 
         height: 33.33333333vw;
         width: 33.33333333%;
-
+        @include media("<desktop") {
+          width: 50%;
+          height: 50vw;
+        }
     }
 
     &.report {
         width: 16.666666%;
         height: 33.33333333vw;
+        @include media("<desktop") {
+          width: 25%;
+          height: 50vw;
+        }
+
         background: black;
         a {
             cursor: pointer;
@@ -441,6 +457,11 @@ export default {
                 color: lime;
                 text-align: center;
                 line-height: 33.3333333vw;
+                @include media("<desktop") {
+
+                  line-height: 50vw;
+
+                }
                 left: -0.25vw;
 
                 font-size: 26.666vw;
@@ -532,6 +553,9 @@ export default {
 
     &.projectRed {
         width: 33.333%;
+        @include media("<desktop") {
+          width: 50%;
+        }
         display: flex;
         align-items: center;
         background: red;
@@ -539,7 +563,7 @@ export default {
         color: white;
         justify-content: center;
         h3{
-
+          line-height: 1;
           font-weight: normal;
         }
 
@@ -596,6 +620,7 @@ export default {
         h3 {
             font-size: 3.5vw;
             // line-height: 8vw;
+
             color: white;
 
             word-break: break-all;
@@ -679,6 +704,9 @@ export default {
 
     &.visualReport {
         width: 33.333%;
+        @include media("<desktop") {
+          width: 50%;
+        }
         // display: flex;
         // justify-content: center;
         // align-items: center;
@@ -688,6 +716,7 @@ export default {
             width: 100%;
             font-weight: normal;
             font-size: 3.5vw;
+            line-height: 1;
             // line-height: 8vw;
             // word-break: break-all;
             align-self: center;
@@ -696,6 +725,9 @@ export default {
             // float: right;
             margin: 0;
             max-height: 16.666666vw;
+            @include media("<desktop") {
+              max-height: 25vw;
+            }
             // white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -734,6 +766,9 @@ export default {
             margin: 3vw 0;
             padding: 0 3vw;
             min-height: calc(16.666666vw - 6vw);
+            @include media("<desktop") {
+              min-height:  calc(25vw - 6vw);
+            }
             color: white;
             text-align: center;
 
@@ -754,6 +789,7 @@ export default {
                 }
 
             }
+
             // a,
             // h2,
             // h3 {
@@ -842,7 +878,9 @@ export default {
     // margin-left: 1px;
     // margin-bottom: -1px;
     width: 16.666666%;
-
+    @include media("<desktop") {
+      width: 25%;
+    }
 
 
         .hoverType {
@@ -1088,6 +1126,11 @@ export default {
         // margin: 20px 0 20px -1px;
         padding: 0 1vw;
         height: 16.666666vw;
+        @include media("<desktop") {
+          height: 25vw;
+        }
+
+
         font-size: $fontSizeWindowSmall/2;
         line-height: $fontSizeWindowSmall;
         * {

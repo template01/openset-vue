@@ -5,7 +5,18 @@
       <p>
         <span class="type" v-html="typeProp"></span>
         <br />
-        <span>By: </span><span v-for="(name,index) in nameProp" v-html="name"><span v-if="index < nameProp.length - 1 ">, </span></span>
+        <span>By: </span>
+        <span v-if="Array.isArray(nameProp)">
+        <span v-if="nameProp.length>1" v-for="(name,index) in nameProp" >
+          <span v-if="index<nameProp.length -1" v-html="name+', '"></span>
+          <span v-else v-html="name"></span>
+        </span>
+        <span v-else v-html="nameProp[0]"></span>
+      </span>
+      <span v-else>
+        <span v-html="nameProp"></span>
+
+      </span>
         <br />
         <span>Date: </span><span v-html="dateStamp(dateProp)"></span></span>
       </p>
@@ -66,6 +77,17 @@ export default {
   .metaInfo{
     font-family: Calibre;
     font-size: $paddingWindowMedium;
+
+    @include media("<desktop") {
+      font-size: $fontSizeWindowLarge;
+      margin-top:  $paddingWindowMobile;
+      padding-top:  $paddingWindowMobile;
+      padding-bottom:  $paddingWindowMobile;
+
+    }
+
+
+
     line-height: 1;
     margin-top:  $paddingWindowDesktop;
     // margin-bottom:  $paddingWindowDesktop;

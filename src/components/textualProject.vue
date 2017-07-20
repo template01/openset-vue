@@ -2,7 +2,7 @@
 <div class="textualProject">
 
 
-  <singleHeader :typeProp="'Project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
+  <singleHeader class="halfWidth" :typeProp="'Project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
 
   <!-- <h1 class="title" v-html="title"></h1> -->
   <div v-for="item in content">
@@ -55,6 +55,12 @@ export default {
 @import "../../node_modules/include-media/dist/_include-media.scss";
 
 .textualProject {
+
+    .halfWidth{
+      width: 50%;
+      padding-right: $paddingWindowDesktop;
+    }
+
     padding: $paddingWindowDesktop;
     position: absolute;
     background: white;
@@ -82,8 +88,16 @@ export default {
 
 
                 .mediaCaption {
-                  font-size: 1vw;
-                  line-height: 1vw;
+                  // font-size: 1vw;
+                  font-size: inherit;
+                  // line-height: 1vw;
+
+                  font-size:$fontSizeWindowSmall;
+                          // font-family: Lyon;
+                          @include media(">desktop") {
+
+                          }
+
                     margin-top: $paddingWindowDesktop;
                     max-width: 50% !important;
                     width: auto !important;
@@ -97,7 +111,7 @@ export default {
 
     .largeQoute{
       width: 100%;
-      line-height: 1.3;
+      line-height: 1;
       float: left;
       clear: both;
       font-size: $fontSizeWindowLarge;

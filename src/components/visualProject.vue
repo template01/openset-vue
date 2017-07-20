@@ -6,11 +6,13 @@
 
     <div class="fixedIntroInnerWrapper">
 
-      <div class="fixedIntroInnerColumns">
+      <div class="fixedIntroHalf">
         <singleHeader :typeProp="'project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
+
+      </div>
+      <div class="fixedIntroHalf">
         <div v-html="introText">
         </div>
-
       </div>
     </div>
   </div>
@@ -115,6 +117,16 @@ export default {
     // alert('chaeeenge')
     this.resizeIframe()
     this.positionVisualContent()
+    var vm = this
+    setTimeout(function() {
+      vm.positionVisualContent()
+    }, 250)
+    setTimeout(function() {
+      vm.positionVisualContent()
+    }, 500)
+    setTimeout(function() {
+      vm.positionVisualContent()
+    }, 1000)
 
   },
 
@@ -143,22 +155,36 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
 
 .visualProject {
 
     background: inherit;
     display: block;
-    margin-bottom: $paddingWindowLarge;
+    margin-bottom: $paddingWindowDesktop;
+    @include media("<desktop") {
+        margin-bottom: $paddingWindowMobile;
+    }
     position: absolute;
     width: 100%;
 
     .introWrapper {
 
+        .fixedIntroInnerWrapper {
+            display: inline-block;
+        }
+
         &.fixedIntro {
             position: fixed;
         }
         font-size: $fontSizeWindowMedium;
-            line-height: 1;
+        @include media("<desktop") {
+            font-size: $fontSizeWindowLarge;
+            padding: $paddingWindowMobile;
+
+        }
+
+        line-height: 1;
         color: inherit;
         background: inherit;
         width: 100%;
@@ -166,11 +192,14 @@ export default {
         position: relative;
         line-height: $lineHeight105;
         padding: $paddingWindowDesktop;
+        @include media("<desktop") {
+            padding: $paddingWindowMobile;
+        }
         z-index: 0;
 
         .keywordHeader {
             width: 100%;
-                line-height: 1;
+            line-height: 1;
             display: inline-block;
             .keywords {
                 float: right;
@@ -188,13 +217,38 @@ export default {
                 }
 
             }
+            @include media("<desktop") {
+                .keywords {
+                    width: 100%;
+                    padding-left: 0;
+                    padding-top: $paddingWindowMobile;
+
+                }
+                div {
+                    width: 100%;
+                    padding-right: 0;
+                }
+            }
+
         }
 
-        .fixedIntroInnerColumns {
-            columns: 2;
-            -webkit-columns: 2;
-                line-height: 1;
+        .fixedIntroHalf {
+            width: 50%;
+            float: left;
+            // display: table-cell;
+            &:first-of-type {
+                padding-right: $paddingWindowDesktop;
+
+            }
+            @include media("<desktop") {
+                width: 100%;
+                &:first-of-type {
+                    padding-right: 0;
+
+                }
+            }
         }
+
         .fixedIntroInnerLeft {
             display: inline-block;
             width: 100%;
@@ -226,6 +280,15 @@ export default {
             &:last-of-type {
                 padding-bottom: $paddingWindowDesktop;
             }
+            @include media("<desktop") {
+                padding-top: $paddingWindowMobile;
+                padding-left: $paddingWindowMobile;
+                padding-right: $paddingWindowMobile;
+                &:last-of-type {
+                    padding-bottom: $paddingWindowMobile;
+                }
+
+            }
 
             width: 100%;
 
@@ -235,6 +298,16 @@ export default {
                 padding: $paddingWindowDesktop;
                 border-radius: $fontSizeWindowSmall;
                 border: $paddingWindowDesktop/10 solid;
+                @include media("<desktop") {
+                    font-size: $fontSizeWindowLarge;
+
+                    margin-top: $paddingWindowMobile;
+                    padding: $paddingWindowMobile;
+                    border-radius: $fontSizeWindowMedium;
+                    border: $paddingWindowMobile/10 solid;
+
+                }
+
                 max-width: 50% !important;
                 width: auto !important;
                 display: block;
@@ -300,6 +373,10 @@ export default {
             img {
                 &.Half {
                     max-width: 50%;
+                    @include media("<desktop") {
+                      max-width: 100%;
+
+                    }
                 }
             }
 
@@ -369,6 +446,7 @@ a {
 
 <style lang="scss">
 @import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
 
 .visualProject {
 
@@ -376,6 +454,10 @@ a {
     .Half.left,
     .Half.right {
         width: 50%;
+        @include media("<desktop") {
+            width: 100%;
+
+        }
         // display: none;
         iframe {
             width: 100%;
@@ -391,6 +473,10 @@ a {
     .Half {
         iframe {
             width: 50%;
+            @include media("<desktop") {
+                width: 100%;
+
+            }
         }
     }
 
@@ -405,5 +491,21 @@ a {
             margin: 0;
         }
     }
+    .fixedIntroHalf {
+        *:first-of-type {
+            margin-top: 0;
+        }
+        *:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+    @include media("<desktop") {
+        .fixedIntroHalf:last-of-type {
+            *:first-of-type {
+                margin-top: $paddingWindowMobile;
+            }
+        }
+    }
+
 }
 </style>
