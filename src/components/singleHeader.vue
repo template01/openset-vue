@@ -72,6 +72,11 @@ export default {
     margin: 0;
     line-height: 1;
     margin-top: -0.2vw;
+    @include media("<phone") {
+      font-size: $fontSizeWindowXLarge;
+    }
+
+
   }
 
   .metaInfo{
@@ -84,6 +89,11 @@ export default {
       padding-top:  $paddingWindowMobile;
       padding-bottom:  $paddingWindowMobile;
 
+    }
+
+
+    @include media("<phone") {
+      font-size: $fontSizeWindowXLarge;
     }
 
 

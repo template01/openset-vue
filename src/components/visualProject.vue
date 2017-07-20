@@ -101,8 +101,12 @@ export default {
     },
 
     positionVisualContent: function() {
+      if(window.innerWidth > 1024){
+        this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight + (window.outerWidth / 100)
+      }else{
+        this.positionVisualContentTop = 2
 
-      this.positionVisualContentTop = this.$el.querySelector('.fixedIntroInnerWrapper').offsetHeight + (window.outerWidth / 100)
+      }
     },
     //
     // _.debounce(function(){
@@ -163,7 +167,8 @@ export default {
     display: block;
     margin-bottom: $paddingWindowDesktop;
     @include media("<desktop") {
-        margin-bottom: $paddingWindowMobile;
+      padding-bottom: $paddingWindowMobile;
+        margin-bottom: 0;
     }
     position: absolute;
     width: 100%;
@@ -176,6 +181,13 @@ export default {
 
         &.fixedIntro {
             position: fixed;
+            @include media("<desktop") {
+              position: relative;
+              padding-bottom: 0;
+
+
+            }
+
         }
         font-size: $fontSizeWindowMedium;
         @include media("<desktop") {
@@ -183,6 +195,12 @@ export default {
             padding: $paddingWindowMobile;
 
         }
+
+        @include media("<phone") {
+            font-size: $fontSizeWindowMediumFixed;
+
+        }
+
 
         line-height: 1;
         color: inherit;
@@ -306,6 +324,10 @@ export default {
                     border-radius: $fontSizeWindowMedium;
                     border: $paddingWindowMobile/10 solid;
 
+                }
+
+                @include media("<phone") {
+                    font-size: $fontSizeWindowMediumFixed;
                 }
 
                 max-width: 50% !important;

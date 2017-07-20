@@ -59,8 +59,16 @@ export default {
     .halfWidth{
       width: 50%;
       padding-right: $paddingWindowDesktop;
-    }
+      @include media("<desktop") {
+        padding-right: 0;
+        width: 100%;
+      }
 
+    }
+    @include media("<desktop") {
+      padding: $paddingWindowMobile;
+
+    }
     padding: $paddingWindowDesktop;
     position: absolute;
     background: white;
@@ -93,10 +101,12 @@ export default {
                   // line-height: 1vw;
 
                   font-size:$fontSizeWindowSmall;
-                          // font-family: Lyon;
-                          @include media(">desktop") {
 
-                          }
+                  @include media("<desktop") {
+                    font-size: $fontSizeWindowMediumFixed;
+                    max-width: 85% !important;
+
+                  }
 
                     margin-top: $paddingWindowDesktop;
                     max-width: 50% !important;
@@ -119,10 +129,21 @@ export default {
       .qouteContent{
         margin: 0 auto;
         width: 75%;
+        @include media("<phone") {
+          width: 85%;
+
+        }
+      }
+
+      @include media("<phone") {
+        font-size: $fontSizeWindowXLargeFixed;
+
       }
     }
 
     .textPiece {
+
+
         width: 50%;
         line-height: 1;
         float: left;
@@ -130,6 +151,12 @@ export default {
 
         font-size: $fontSizeWindowLarge;
         // font-family: Lyon;
+        @include media("<desktop") {
+          font-size: $fontSizeWindowLargeFixed;
+
+          width: 100%;
+        }
+
         @include media(">desktop") {
             font-size: $fontSizeWindowMedium;
 

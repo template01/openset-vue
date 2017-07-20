@@ -70,6 +70,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
+
 
 .newsMenu {
     .newsTitle {
@@ -79,6 +81,11 @@ export default {
         line-height: 50px;
         margin-left: $paddingWindowDesktop;
         font-size: $fontSizeWindowLarge !important;
+
+        @include media("<phone") {
+          font-size: $fontSizeWindowXLarge !important;
+        }
+
     }
 
     .newsClose {
@@ -106,6 +113,15 @@ export default {
 .newsItemExpandedTop {
     background: blue;
     width: 33.333%;
+
+    @include media("<desktop") {
+      width: 50%;
+    }
+
+    @include media("<phone") {
+      width: 100%;
+    }
+
     right: 0;
     height: $paddingWindowLarge;
     position: fixed;
@@ -117,6 +133,19 @@ export default {
     overflow-y: auto;
     background: white;
     width: 33.333%;
+
+    @include media("<desktop") {
+      width: 50%;
+      right: -120%;
+
+    }
+
+    @include media("<phone") {
+      width: calc(100% - 4vw);
+      right: -120%;
+
+    }
+
     z-index: 2;
     right: -50%;
     position: fixed;
@@ -138,6 +167,24 @@ export default {
     // -moz-box-shadow: 0px -100px 0px 0px blue;
     // box-shadow: 0px -100px 0px 0px blue;
 
+    @include media("<desktop") {
+
+          -webkit-box-shadow:  -2vw  0 0 0 blue;
+          -moz-box-shadow:  -2vw  0 0 0 blue;
+          box-shadow: -2vw  0 0 0 blue;
+
+
+    }
+
+    @include media("<phone") {
+
+          -webkit-box-shadow:  -4vw  0 0 0 blue;
+          -moz-box-shadow:  -4vw  0 0 0 blue;
+          box-shadow: -4vw  0 0 0 blue;
+
+
+    }
+
     -webkit-box-shadow:  -2vw  0 0 0 blue;
     -moz-box-shadow:  -2vw  0 0 0 blue;
     box-shadow: -2vw  0 0 0 blue;
@@ -145,8 +192,18 @@ export default {
     // height: 500px;
     height: calc(100% - #{$paddingWindowLarge});
     padding: $paddingWindowDesktop;
+
+    @include media("<desktop") {
+      padding: $paddingWindowMobile;
+      font-size: $fontSizeWindowLarge;
+    }
+
+    @include media("<phone") {
+      font-size: $fontSizeWindowXLarge;
+    }
+
     font-size: $fontSizeWindowMedium;
-    // 
+    //
     // &::-webkit-scrollbar {
     //     width: 0;
     //     // background-color: #F5F5F5;

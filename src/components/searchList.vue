@@ -165,6 +165,15 @@ export default {
     display: block;
     left: 0;
     top: 0;
+
+    @include media("<desktop") {
+      position: relative;
+      padding-left: $paddingWindowMobile;
+      padding-right: $paddingWindowMobile;
+      margin-top: -$paddingWindowMobile !important;
+
+    }
+
 }
 
 a {
@@ -252,7 +261,16 @@ input {
     padding: $paddingWindowDesktop;
     width: calc(100% + #{$paddingWindowDesktop*2});
     margin-left: -$paddingWindowDesktop;
-    border-bottom: 3px solid red;
+    -webkit-box-shadow: inset 0 -3px 0 0 red;
+    -moz-box-shadow: inset 0 -3px 0 0 red;
+    box-shadow: inset 0 -3px 0 0 red;
+    @include media("<desktop") {
+      padding: $paddingWindowMobile;
+      -webkit-box-shadow: inset 0 -2px 0 0 red;
+      -moz-box-shadow: inset 0 -2px 0 0 red;
+      box-shadow: inset 0 -2px 0 0 red;
+    }
+
     background: white;
     color: red;
 }

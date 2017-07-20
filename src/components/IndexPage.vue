@@ -23,7 +23,8 @@
   </div>
   <div id="navigationMobile">
     <div @click="showMobileMenu = !showMobileMenu"  class="navigationMobileHamburger">
-      <i class="fa fa-bars" aria-hidden="true"></i>
+      <!-- <i class="fa fa-bars" aria-hidden="true"></i> -->
+      <span>☰</span>
     </div>
     <div v-if="showMobileMenu" class="navigationMobileContent">
       <div class="">

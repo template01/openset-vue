@@ -1,13 +1,42 @@
 <template>
 <div id="listView" class="">
+
+
+
+  <div class="third hideDesktop">
+
+    <div class="thirdInner ">
+      <div class="tableStyle">
+
+        <div v-if="aboutTab" class="projectItem greenItem mobileHeader">
+          <div class="blockHeader leftAlign ">
+            <h1>
+                <span  @click="aboutTab=false; $router.replace({path:'/list', hash:''})" class="close black pointy"></span>
+                <span>ABOUT</span>
+
+
+                    </h1>
+          </div>
+        </div>
+
+        <aboutList v-if="aboutTab" class="projectItem noMarginTop"></aboutList>
+
+
+      </div>
+    </div>
+  </div>
+
+
   <div class="third defaultBorderThird">
     <div class="thirdInner">
+
+
 
       <!-- <div class="tableStyle red"> -->
       <div class="tableStyle defaultBorder">
 
 
-        <div class="projectItem">
+        <div class="projectItem mobileHeader" @click="setMobileExpanded('mobileProjects')">
           <div class="blockHeader">
             <h1>
             Projects
@@ -16,7 +45,7 @@
           </div>
         </div>
 
-        <div class="projectItem" v-for="item in projectsProp">
+        <div class="projectItem" v-bind:class="{ mobileHeader: mobileProjects }" v-for="item in projectsProp">
           <div class="projectItemInner">
 
             <router-link :to="{path: 'project/'+item.slug}">
@@ -35,7 +64,7 @@
         </div>
 
 
-        <div class="projectItem LoadMoreProjects" id="" @click="$emit('getmoreContentProjectsListEmit',getMoreContentProjects); getMoreContentProjects++">
+        <div class="projectItem LoadMoreProjects" v-bind:class="{ mobileHeader: mobileProjects }" id="" @click="$emit('getmoreContentProjectsListEmit',getMoreContentProjects); getMoreContentProjects++">
           <h1 v-if="getMoreContentProjects - 1 < projectListPage ">Get More Projects</h1>
           <h1 v-else>No More Projects</h1>
 
@@ -51,7 +80,8 @@
       <div class="tableStyle defaultBorder">
 
 
-        <div class="projectItem">
+
+        <div class="projectItem mobileHeader" @click="setMobileExpanded('mobileReports')">
           <div class="blockHeader">
             <h1>
             Reports / Assignments
@@ -59,7 +89,7 @@
           </div>
         </div>
 
-        <div class="projectItem" v-for="item in editorreportsProp">
+        <div class="projectItem" v-bind:class="{ mobileHeader: mobileReports }" v-for="item in editorreportsProp">
           <div class="projectItemInner">
 
             <router-link :to="{path: 'editorreport/'+item.slug}">
@@ -79,7 +109,7 @@
         </div>
 
 
-        <div class="projectItem LoadMoreProjects" @click="$emit('getmoreContentReportsListEmit',getMoreContentReports); getMoreContentReports++">
+        <div class="projectItem LoadMoreProjects" v-bind:class="{ mobileHeader: mobileReports }" @click="$emit('getmoreContentReportsListEmit',getMoreContentReports); getMoreContentReports++">
           <h1 v-if="getMoreContentReports - 1 < reportListPage ">Get More Reports</h1>
           <h1 v-else>No More Reports</h1>
 
@@ -94,7 +124,7 @@
     <div class="thirdInner ">
       <div class="tableStyle">
 
-        <div v-if="aboutTab" class="projectItem greenItem">
+        <div v-if="aboutTab" class="projectItem greenItem mobileHeader hideMobile">
           <div class="blockHeader leftAlign ">
             <h1>
               <span  @click="aboutTab=false; $router.replace({path:'/list', hash:''})" class="close black pointy"></span>
@@ -105,10 +135,10 @@
           </div>
         </div>
 
-        <aboutList v-if="aboutTab" class="projectItem noMarginTop"></aboutList>
+        <aboutList v-if="aboutTab" class="projectItem noMarginTop hideMobile"></aboutList>
 
 
-        <div @click="newsTab=!newsTab; $router.replace({path:'/list', hash:''})" class="projectItem  tabHeader50 blueItem">
+        <div @click="setMobileExpanded('mobileNews'); newsTab=!newsTab; $router.replace({path:'/list', hash:''})" class="projectItem  tabHeader50 blueItem mobileHeader">
           <div class="blockHeader ">
             <h1>NEWS
 
@@ -119,18 +149,18 @@
         </div>
 
 
-        <div @click="newsTab=!newsTab;$router.replace({path:'/list', hash:''})" class="projectItem tabHeader50 redItem">
+        <div @click="setMobileExpanded('mobileSearch'); newsTab=!newsTab;$router.replace({path:'/list', hash:''})" class="projectItem tabHeader50 redItem mobileHeader">
           <div class="blockHeader ">
             <h1>SEARCH
 
           </h1>
           </div>
         </div>
-        <searchList v-if="!newsTab" class="projectItem"></searchList>
+        <searchList v-if="!newsTab" class="projectItem" v-bind:class="{ mobileHeader: mobileSearch }"></searchList>
         <!-- <aboutList v-if="newsTab" class="projectItem"></aboutList> -->
         <div v-if="newsTab" class="tableStyle blue">
 
-          <div class="projectItem" v-for="(item, index) in newsProp" :expandedx="true" :key="item">
+          <div class="projectItem" v-for="(item, index) in newsProp" :expandedx="true" :key="item" v-bind:class="{ mobileHeader: mobileNews }">
             <newsItemListSingle :itemDate="'Date: '+dateStamp(item.date)" :itemIdTitleRendered="item.title.rendered" :itemId="item.id"></newsItemListSingle>
             <!-- <div class="projectItemInner">
 
@@ -146,7 +176,7 @@
           </div>
 
 
-          <div class="projectItem LoadMoreProjects" id="" @click="$emit('getmoreContentNewsListEmit',getMoreContentNews); getMoreContentNews++">
+          <div class="projectItem LoadMoreProjects" id="" v-bind:class="{ mobileHeader: mobileNews }" @click="$emit('getmoreContentNewsListEmit',getMoreContentNews); getMoreContentNews++">
             <h1 v-if="getMoreContentNews - 1 < newsListPage ">Get More News</h1>
             <h1 v-else>No More News</h1>
 
@@ -186,7 +216,11 @@ export default {
       mL: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       mS: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
       newsTab: true,
-      aboutTab: false
+      aboutTab: false,
+      mobileProjects: false,
+      mobileReports: false,
+      mobileNews: false,
+      mobileSearch: false,
     }
   },
 
@@ -224,7 +258,44 @@ export default {
       setTimeout(function() {
         vm.addBlink = false
       }, 3000)
+    },
+
+    setMobileExpanded: function(toggleArea) {
+
+
+
+      if (toggleArea === 'mobileProjects') {
+        this.mobileProjects = !this.mobileProjects;
+        this.mobileNews = false;
+        this.mobileSearch = false;
+        this.mobileReports = false;
+      }
+      if (toggleArea === 'mobileSearch') {
+        this.mobileSearch = !this.mobileSearch;
+        this.mobileNews = false;
+        this.mobileProjects = false;
+        this.mobileReports = false;
+
+        this.newsTab = true
+      }
+      if (toggleArea === 'mobileNews') {
+        this.mobileNews = !this.mobileNews;
+        this.mobileProjects = false;
+        this.mobileSearch = false;
+        this.mobileReports = false;
+
+        this.newsTab = false
+
+      }
+      if (toggleArea === 'mobileReports') {
+        this.mobileReports = !this.mobileReports;
+        this.mobileNews = false;
+        this.mobileSearch = false;
+        this.mobileProjects = false;
+      }
     }
+
+
   },
 
   mounted() {
@@ -240,6 +311,13 @@ export default {
     '$route': function(to, from) {
       if (to.hash === "#about") {
         this.aboutTab = true
+        this.mobileProjects = false;
+        this.mobileReports = false;
+        this.mobileNews = false;
+        this.mobileSearch = false;
+
+        window.scrollTo(0,0)
+
         if (from.path != '/list') {
           // this.addBlinkMethod()
         }
@@ -260,14 +338,37 @@ export default {
 #listView {
     background: lime;
     min-height: calc(100vh - $paddingWindowLarg);
+    line-height: 1;
 
-    // font-size: 18px;
-    @include media("<tablet") {
+    font-size: $fontSizeWindowMedium;
+    @include media("<desktop") {
         font-size: $fontSizeWindowLarge;
 
     }
+    @include media("<phone") {
+        font-size: $fontSizeWindowXLarge;
 
-    line-height: 1;
+    }
+    @include media("<desktop") {
+        .hideMobile {
+            display: none !important;
+        }
+        .hideDesktop {
+            display: block !important;
+
+        }
+
+    }
+    @include media(">desktop") {
+        .hideMobile {
+            display: block !important;
+        }
+        .hideDesktop {
+            display: none !important;
+
+        }
+
+    }
 
     .blockHeader {
         width: 100%;
@@ -468,8 +569,11 @@ export default {
         }
 
         &.defaultBorder {
-
-            // border-top: 3px solid black;
+            @include media("<desktop") {
+                .projectItem:first-of-type {
+                    border-bottom: 2px solid white;
+                }
+            }
             // -webkit-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,1);
             // -moz-box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,1);
             // box-shadow: inset 0px -3px 0px 0px rgba(0,0,0,1);
@@ -485,12 +589,11 @@ export default {
                 -webkit-box-shadow: inset 0 -3px 0 0 rgba(0,0,0,1);
                 -moz-box-shadow: inset 0 -3px 0 0 rgba(0,0,0,1);
                 box-shadow: inset 0 -3px 0 0 rgba(0,0,0,1);
-
                 @include media("<desktop") {
-                  padding: $paddingWindowMobile;
-                  -webkit-box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
-                  -moz-box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
-                  box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
+                    padding: $paddingWindowMobile;
+                    -webkit-box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
+                    -moz-box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
+                    box-shadow: inset 0 -2px 0 0 rgba(0,0,0,1);
                 }
                 background: white;
                 color: black;
@@ -559,6 +662,9 @@ export default {
             &.LoadMoreProjects {
                 line-height: $fontSizeWindowLarge;
                 font-size: $fontSizeWindowLarge;
+                @include media("<phone") {
+                    font-size: $fontSizeWindowXLarge;
+                }
 
                 h1 {
                     font-size: inherit;
@@ -580,9 +686,25 @@ export default {
             // justify-content: center;
             align-items: center;
             padding: $paddingWindowDesktop;
-
             @include media("<desktop") {
-              padding: $paddingWindowMobile;
+                padding: $paddingWindowMobile;
+                &:not(.mobileHeader) {
+                    display: none;
+
+                }
+
+                &.mobileHeader {
+
+                    h1 {
+                        font-size: $fontSizeWindowLarge;
+                        line-height: $paddingWindowLarge*2;
+                        @include media("<phone") {
+                            line-height: $paddingWindowLarge*4;
+                            font-size: $fontSizeWindowXLarge;
+                        }
+                    }
+                }
+
             }
 
             &.noMarginTop {
@@ -611,7 +733,10 @@ export default {
                 // width: 50%;
                 padding-right: $paddingWindowDesktop;
                 float: left;
-                font-size: 60%;
+                font-size: $fontSizeWindowSmall;
+                @include media("<phone") {
+                    font-size: $fontSizeWindowLarge;
+                }
 
             }
 
@@ -637,19 +762,19 @@ export default {
         overflow-y: auto;
         height: calc(100% - #{$paddingWindowLarge});
         // height: 100%;
-        &:nth-of-type(2) {
+        &:nth-of-type(3) {
             left: 33.33333%;
         }
-        &:nth-of-type(3) {
+        &:nth-of-type(4) {
             left: 66.66666%;
         }
-        @include media("<tablet") {
+        @include media("<desktop") {
             width: 100%;
             position: relative;
-            &:nth-of-type(2) {
+            &:nth-of-type(3) {
                 left: 0;
             }
-            &:nth-of-type(3) {
+            &:nth-of-type(4) {
                 left: 0;
             }
         }

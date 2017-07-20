@@ -22,7 +22,6 @@
           </h3>
           <div class="hoverType"><span>Project</span></div>
 
-          <!-- <span class="projectRedSmall">Project</span> -->
 
           <div class="arrowsLink"></div>
 
@@ -39,10 +38,7 @@
 
   </div>
   <router-link :to="{path: 'project/'+item.slug}">
-    <h3 v-html="item.title.rendered">
 
-
-    </h3>
   </router-link>
   <div class="hoverType"><span>Project</span></div>
 
@@ -132,9 +128,9 @@
 
     </span>
     </span>
-  </span>
+    </span>
     <!-- <span v-if="item.acf.extensive_report_or_assignment==='Report'" v-html="item.acf.extensive_report_or_assignment" class="type smallReport"> -->
-  </span>
+    </span>
 
     <span class="title smallReport" v-html="item.title.rendered">
   </span>
@@ -237,9 +233,9 @@ export default {
     this.packery()
     this.packery()
     var vm = this;
-    setTimeout(function(){
+    setTimeout(function() {
       vm.packery()
-    },500)
+    }, 500)
   },
 
   watch: {
@@ -270,13 +266,19 @@ export default {
 @import "../assets/scss/globalVars.scss";
 @import "../../node_modules/include-media/dist/_include-media.scss";
 
-
 #visualView {
     background: lime;
     min-height: 100vh;
     overflow-x: hidden;
     overflow-y: hidden;
     margin-bottom: $paddingWindowLarge;
+    @include media("<phone") {
+        margin-bottom: $paddingWindowLarge*4;
+    }
+    @include media("<desktop") {
+        margin-bottom: $paddingWindowLarge*2;
+
+    }
 
     -webkit-box-shadow: inset 0 -1px 0 0 red;
     -moz-box-shadow: inset 0 -1px 0 0 red;
@@ -292,17 +294,32 @@ export default {
         height: $paddingWindowLarge;
         // width: $paddingWindowLarge;
         font-weight: normal;
+        @include media("<phone") {
+            margin-top: $paddingWindowLarge*4;
+            font-size: $fontSizeWindowXLarge;
+            line-height: $fontSizeWindowXLarge;
+            height: $paddingWindowLarge*4;
+
+        }
+        @include media("<desktop") {
+            margin-top: $paddingWindowLarge*2;
+            height: $paddingWindowLarge*2;
+
+        }
 
         float: right;
         display: flex;
         align-items: center;
-        height: $paddingWindowLarge;
         justify-content: center;
 
         h1 {
             font-size: $fontSizeWindowLarge;
             color: white;
             font-weight: normal;
+            @include media("<phone") {
+                font-size: $fontSizeWindowXLarge;
+
+            }
         }
     }
 
@@ -311,7 +328,7 @@ export default {
     float: left;
     min-height: 16.666666vw;
     @include media("<desktop") {
-      min-height: 25vw;
+        min-height: 25vw;
     }
 
     // background: rgb(244, 244, 244);
@@ -367,36 +384,13 @@ export default {
             width: 100%;
             height: 100%;
 
-            h3 {
-                display: none;
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                text-align: center;
-                background: black;
-                font-weight: normal;
-                font-size: 3.5vw;
-                -ms-flex-item-align: center;
-                -ms-grid-row-align: center;
-                align-self: center;
-                // color: white;
-                text-align: center;
-                margin: 0;
-                max-height: 16.666666vw;
-                @include media("<desktop") {
-                  max-height: 25vw;
-                }
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
         }
 
         height: 33.33333333vw;
         width: 33.33333333%;
         @include media("<desktop") {
-          width: 50%;
-          height: 50vw;
+            width: 50%;
+            height: 50vw;
         }
     }
 
@@ -404,8 +398,8 @@ export default {
         width: 16.666666%;
         height: 33.33333333vw;
         @include media("<desktop") {
-          width: 25%;
-          height: 50vw;
+            width: 25%;
+            height: 50vw;
         }
 
         background: black;
@@ -430,6 +424,14 @@ export default {
             left: 0;
             line-height: $fontSizeWindowSmall;
             font-size: $fontSizeWindowSmall;
+            @include media("<desktop") {
+                font-size: $fontSizeWindowMedium;
+                line-height: $fontSizeWindowMedium;
+            }
+            @include media("<phone") {
+                font-size: $fontSizeWindowLarge;
+                line-height: $fontSizeWindowLarge;
+            }
             // opacity: 0;
         }
 
@@ -459,7 +461,7 @@ export default {
                 line-height: 33.3333333vw;
                 @include media("<desktop") {
 
-                  line-height: 50vw;
+                    line-height: 50vw;
 
                 }
                 left: -0.25vw;
@@ -498,10 +500,18 @@ export default {
         overflow: hidden;
         top: 0;
         span {
-          color: black;
+            color: black;
             pointer-events: none;
             font-size: $fontSizeWindowSmall;
             line-height: $fontSizeWindowSmall;
+            @include media("<desktop") {
+                font-size: $fontSizeWindowMedium;
+                line-height: $fontSizeWindowMedium;
+            }
+            @include media("<phone") {
+                font-size: $fontSizeWindowLarge;
+                line-height: $fontSizeWindowLarge;
+            }
         }
     }
 
@@ -554,7 +564,7 @@ export default {
     &.projectRed {
         width: 33.333%;
         @include media("<desktop") {
-          width: 50%;
+            width: 50%;
         }
         display: flex;
         align-items: center;
@@ -562,17 +572,9 @@ export default {
         border-radius: 13% 43% 60% 90%;
         color: white;
         justify-content: center;
-        h3{
-          line-height: 1;
-          font-weight: normal;
-        }
-
-        .projectRedSmall {
-            position: absolute;
-            bottom: $paddingWindowDesktop;
-            // right: $paddingWindowDesktop;
-            line-height: $fontSizeWindowSmall;
-            font-size: $fontSizeWindowSmall;
+        h3 {
+            line-height: 1;
+            font-weight: normal;
         }
 
         &.addAnimationA {
@@ -618,7 +620,11 @@ export default {
         a,
         h2,
         h3 {
-            font-size: 3.5vw;
+            font-size: $fontSizeWindowLarge;
+            @include media("<desktop") {
+                font-size: $fontSizeWindowXLarge;
+                line-height: $fontSizeWindowXLarge;
+            }
             // line-height: 8vw;
 
             color: white;
@@ -705,7 +711,7 @@ export default {
     &.visualReport {
         width: 33.333%;
         @include media("<desktop") {
-          width: 50%;
+            width: 50%;
         }
         // display: flex;
         // justify-content: center;
@@ -715,7 +721,11 @@ export default {
         h3 {
             width: 100%;
             font-weight: normal;
-            font-size: 3.5vw;
+            font-size: $fontSizeWindowLarge;
+            @include media("<desktop") {
+                font-size: $fontSizeWindowXLarge;
+                line-height: $fontSizeWindowXLarge;
+            }
             line-height: 1;
             // line-height: 8vw;
             // word-break: break-all;
@@ -726,7 +736,7 @@ export default {
             margin: 0;
             max-height: 16.666666vw;
             @include media("<desktop") {
-              max-height: 25vw;
+                max-height: 25vw;
             }
             // white-space: nowrap;
             overflow: hidden;
@@ -767,7 +777,7 @@ export default {
             padding: 0 3vw;
             min-height: calc(16.666666vw - 6vw);
             @include media("<desktop") {
-              min-height:  calc(25vw - 6vw);
+                min-height: calc(25vw - 6vw);
             }
             color: white;
             text-align: center;
@@ -873,45 +883,66 @@ export default {
 
     cursor: pointer;
     min-height: 0;
+    h1 {
+        font-size: $fontSizeWindowSmall;
+        @include media("<desktop") {
+            font-size: $fontSizeWindowMedium;
+            line-height: $fontSizeWindowMedium;
+        }
+        @include media("<phone") {
+            font-size: $fontSizeWindowLarge;
+            line-height: $fontSizeWindowLarge;
+        }
+    }
 
     background-color: lime;
     // margin-left: 1px;
     // margin-bottom: -1px;
     width: 16.666666%;
     @include media("<desktop") {
-      width: 25%;
+        width: 25%;
+    }
+    @include media("<phone") {
+        width: 50%;
     }
 
-
-        .hoverType {
-          -webkit-box-shadow: inset 2vw 2vw 0px 0px white, inset -2vw -2vw 0px 0px white;
-          -moz-box-shadow: inset 2vw 2vw 0px 0px white, inset -2vw -2vw 0px 0px white;
-          box-shadow: inset 2vw 2vw 0px 0px white, inset -2vw -2vw 0px 0px white;
-          overflow: hidden;
-            background: blue;
+    .hoverType {
+        -webkit-box-shadow: inset 2vw 2vw 0 0 white, inset -2vw -2vw 0 0 white;
+        -moz-box-shadow: inset 2vw 2vw 0 0 white, inset -2vw -2vw 0 0 white;
+        box-shadow: inset 2vw 2vw 0 0 white, inset -2vw -2vw 0 0 white;
+        overflow: hidden;
+        background: blue;
+        pointer-events: none;
+        position: absolute;
+        // visibility: hidden;
+        // opacity: 0;
+        transition: height 0.5s;
+        -webkit-transition: height 0.5s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition-delay: 0.0s;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        height: 0;
+        overflow: hidden;
+        top: 0;
+        span {
+            color: white;
             pointer-events: none;
-            position: absolute;
-            // visibility: hidden;
-            // opacity: 0;
-            transition: height 0.5s;
-            -webkit-transition: height 0.5s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition-delay: 0.0s;
-            left: 0;
-            width: 100%;
-            z-index: 1;
-            height: 0;
-            overflow: hidden;
-            top: 0;
-            span {
-              color: white;
-                pointer-events: none;
-                font-size: $fontSizeWindowSmall;
-                line-height: $fontSizeWindowSmall;
+            font-size: $fontSizeWindowSmall;
+            line-height: $fontSizeWindowSmall;
+            @include media("<desktop") {
+                font-size: $fontSizeWindowMedium;
+                line-height: $fontSizeWindowMedium;
+            }
+            @include media("<phone") {
+                font-size: $fontSizeWindowLarge;
+                line-height: $fontSizeWindowLarge;
             }
         }
+    }
 
     .arrowsLink {
         pointer-events: none;
@@ -929,23 +960,21 @@ export default {
         height: 100%;
         top: 0;
 
+        .arrowsLinkBlueInner {
+            background: white;
 
+            background-size: 5.1vw;
 
-        .arrowsLinkBlueInner{
-          background: white;
+            background-image: url('../assets/svg/backgroundBlue.svg');
+            // background-repeat: repeat-x;
+            animation: animatedBackgroundNews 40s linear infinite;
+            width: 0;
 
-          background-size: 5.1vw;
+            height: 100%;
+            float: right;
 
-          background-image: url('../assets/svg/backgroundBlue.svg');
-          // background-repeat: repeat-x;
-          animation: animatedBackgroundNews 40s linear infinite;
-          width: 0vw;
-
-          height: 100%;
-          float: right;
-
-          transition: width 0.5s;
-          -webkit-transition: width 0.5s;
+            transition: width 0.5s;
+            -webkit-transition: width 0.5s;
         }
 
     }
@@ -1127,10 +1156,11 @@ export default {
         padding: 0 1vw;
         height: 16.666666vw;
         @include media("<desktop") {
-          height: 25vw;
+            height: 25vw;
         }
-
-
+        @include media("<phone") {
+            height: 50vw;
+        }
         font-size: $fontSizeWindowSmall/2;
         line-height: $fontSizeWindowSmall;
         * {

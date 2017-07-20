@@ -84,9 +84,17 @@ export default {
   z-index: -1;
   position: absolute;
   padding-top: $paddingWindowDesktop;
+
+  @include media("<desktop") {
+    padding-top: $paddingWindowMobile;
+
+  }
+
   .reportContent{
 
     .featuredImage{
+
+
 
       &.assignmentLayout{
       }
@@ -97,12 +105,21 @@ export default {
       width: 50%;
       height: calc(100% - #{$paddingWindowLarge});
       padding: $paddingWindowDesktop;
+
+      @include media("<desktop") {
+        padding: $paddingWindowMobile;
+      }
+
       display: flex;
       img{
         max-width: 100%;
         align-self: center;
         margin: 0 auto;
 
+      }
+
+      @include media("<desktop") {
+        display: none;
       }
     }
     position: relative;
@@ -131,8 +148,19 @@ export default {
     }
 
     .bodyText{
+
+      @include media("<desktop") {
+        width: 100%;
+      }
+
       width: 50%;
-      font-size: 2vw;
+      font-size: $fontSizeWindowLargeFixed;
+      @include media("<phone") {
+        font-size: $fontSizeWindowMediumFixed;
+      }
+
+
+      line-height: 120%;
       margin-left: 50%;
       &.assignmentLayout{
         // font-family: Calibre;
@@ -145,12 +173,16 @@ export default {
       };
       margin-left: 0%;
       font-family: "Times New Roman", Times, serif;
-      line-height: 1.3;
       padding-left: $paddingWindowDesktop;
       padding-right: $paddingWindowDesktop;
+      @include media("<desktop") {
+        padding-left: $paddingWindowMobile;
+        padding-right: $paddingWindowMobile;
 
+      }
       @include media(">desktop") {
-        font-size: 1.2vw;
+        font-size: $fontSizeWindowLargeFixed;
+
 
       }
 
@@ -189,10 +221,9 @@ export default {
 
       .wp-caption-text{
         font-family: Calibre;
-        font-size: $fontSizeWindowSmall;
+        font-size: $fontSizeWindowMediumFixed;
         @include media(">=desktop") {
-          margin-left: 50%;
-          font-size: 1vw;
+          font-size: $fontSizeWindowMediumFixed;
           line-height: 1vw;
           width: 50%;
         }
@@ -201,6 +232,7 @@ export default {
           // line-height: 1vw;
 
           padding-left: $paddingWindowDesktop;
+          padding-right: $paddingWindowDesktop;
         }
 
         clear: both;
