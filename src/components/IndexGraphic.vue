@@ -148,9 +148,9 @@
 
   </div>
 
-  <div @click="$emit('getmoreContentReportEmit',getMoreContentAll); $emit('getmoreContentProjectsEmit',getMoreContentAll); $emit('getmoreContentNewsEmit',getMoreContentAll); getMoreContentAll++" id="LoadMore">
-    <h1 >Get More Content</h1>
-
+  <div @click="setOld_newsAndProjectsAndReportsProp(); $emit('getmoreContentReportEmit',getMoreContentAll); $emit('getmoreContentProjectsEmit',getMoreContentAll); $emit('getmoreContentNewsEmit',getMoreContentAll); getMoreContentAll++" id="LoadMore">
+    <h1 v-if="!allContentLoaded">Get More Content</h1>
+    <h1 v-else>No More Content</h1>
   </div>
 
 </div>
@@ -167,6 +167,8 @@ export default {
       newsItemExpandedId: '',
       newsItemExpandedTrue: false,
       getMoreContentAll: 2,
+      newsAndProjectsAndReportsPropOld:  '',
+      allContentLoaded: false,
     }
   },
 
@@ -187,7 +189,20 @@ export default {
 
   methods: {
 
-
+    setOld_newsAndProjectsAndReportsProp: function(){
+      this.newsAndProjectsAndReportsPropOld=this.newsAndProjectsAndReportsProp.length
+      var vm = this;
+      setTimeout(function(){
+        if(vm.newsAndProjectsAndReportsProp.length === vm.newsAndProjectsAndReportsPropOld){
+          vm.allContentLoaded = true
+        }
+      },500)
+      setTimeout(function(){
+        if(vm.newsAndProjectsAndReportsProp.length === vm.newsAndProjectsAndReportsPropOld){
+          vm.allContentLoaded = true
+        }
+      },1000)
+    },
 
     renderNewsItem: function(indexParam) {
       console.log('hey')
@@ -279,10 +294,10 @@ export default {
         margin-bottom: $paddingWindowLarge*2;
 
     }
-
-    -webkit-box-shadow: inset 0 -1px 0 0 red;
-    -moz-box-shadow: inset 0 -1px 0 0 red;
-    box-shadow: inset 0 -1px 0 0 red;
+    //
+    // -webkit-box-shadow: inset 0 -1px 0 0 red;
+    // -moz-box-shadow: inset 0 -1px 0 0 red;
+    // box-shadow: inset 0 -1px 0 0 red;
     #LoadMore {
         cursor: pointer;
         box-shadow: 0 0 -1px -1px blue;

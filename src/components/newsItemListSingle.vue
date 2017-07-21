@@ -8,6 +8,18 @@
       </span>
       <!-- <span class="projectItemTitle" v-html="itemIdTitleRendered"></span> -->
       <span class="projectItemHalf" v-if="showType">NEWS</span>
+      <span class="projectItemHalf" v-html="">By:
+        <span v-if="Array.isArray(itemStudentNames)">
+        <span v-if="nameProp.length>1" v-for="(name,index) in itemStudentNames" >
+          <span v-if="index<nameProp.length -1" v-html="name+', '"></span>
+          <span v-else v-html="name"></span>
+        </span>
+        <span v-else v-html="itemStudentNames[0]"></span>
+      </span>
+      <span v-else>
+        <span v-html="itemStudentNames"></span>
+      </span>
+      </span>
       <span class="projectItemHalf" v-html="itemDate"></span>
     </div>
   </div>
@@ -36,9 +48,10 @@ export default {
       newsTitleRendered: '',
       newsContentRendered: '',
       isExpanded: false,
+      projectStudentNames:[],
     }
   },
-  props: ['itemId','itemIdTitleRendered','itemDate','showType'],
+  props: ['itemId','itemIdTitleRendered','itemDate','itemStudentNames','showType'],
   methods: {
 
   },
@@ -58,6 +71,8 @@ export default {
         this.newsContent = response.body
         this.newsContentRendered = response.body.content.rendered
         this.newsTitleRendered = response.body.title.rendered
+        this.projectStudentNames =  this.newsContent.acf.student_name.split(",")
+
       }, response => {
         // error callback
         this.NotFoundState = false
@@ -104,4 +119,14 @@ export default {
 </style>
 
 <style lang="scss">
+.newsItemExpanded{
+  a{
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 2px solid;
+    display: inline !important;
+  }
+
+}
+
 </style>

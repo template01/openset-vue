@@ -24,6 +24,19 @@ body,html{
   background: lime;
 }
 
+a {
+   outline: 0;
+}
+
+::selection {
+  background: blue; /* WebKit/Blink Browsers */
+  color: lime; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: blue; /* Gecko Browsers */
+  color: lime; /* Gecko Browsers */
+}
+
 *{
   box-sizing: border-box;
 }

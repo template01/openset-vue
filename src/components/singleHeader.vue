@@ -3,8 +3,8 @@
     <h1 v-html="titleProp"></h1>
     <div class="metaInfo">
       <p>
-        <span class="type" v-html="typeProp"></span>
-        <br />
+        <span v-if="typeProp" class="type" v-html="typeProp"></span>
+        <br v-if="typeProp" />
         <span>By: </span>
         <span v-if="Array.isArray(nameProp)">
         <span v-if="nameProp.length>1" v-for="(name,index) in nameProp" >
@@ -15,7 +15,6 @@
       </span>
       <span v-else>
         <span v-html="nameProp"></span>
-
       </span>
         <br />
         <span>Date: </span><span v-html="dateStamp(dateProp)"></span></span>

@@ -21,7 +21,6 @@
 
 <script>
 import NotFound from '@/components/Notfound'
-// import editorAssignment from '@/components/editorAssignment'
 import editorReport from '@/components/editorReport'
 import singleHeader from '@/components/singleHeader'
 import loading from '@/components/loading'

@@ -7,17 +7,17 @@
     <div class="newsMenu">
       <span @click="$emit('closeNews')" class="close black pointy newsClose"></span>
       <p class="newsTitle">
-        NEWS
+        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
       </p>
     </div>
     <div>
+      <div class="newsContentWrapper">
+        <h1 class="loading" v-if="!loaded">LOADING...</h1>
+        <singleHeader v-if="loaded" :nameProp='projectStudentNames' :dateProp="date" :titleProp="newsTitleRendered"></singleHeader>
 
-      <p class="" v-html="newsTitleRendered">
-      </p>
-      <div v-html="newsContentRendered">
-      </div>
+        <div v-if="loaded" class="newsContentReal" v-html="newsContentRendered">
+        </div>
 
-      <div v-html="newsContentRendered">
       </div>
     </div>
   </div>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import singleHeader from '@/components/singleHeader'
+
 export default {
   name: 'hello',
   data() {
@@ -35,7 +37,14 @@ export default {
       newsContent: '',
       newsTitleRendered: '',
       newsContentRendered: '',
+      date: '',
+      projectStudentNames: [],
+      loaded: false,
+
     }
+  },
+  components: {
+    singleHeader
   },
   props: ['itemId', 'isExpanded'],
   methods: {
@@ -52,6 +61,10 @@ export default {
         this.newsContent = response.body
         this.newsContentRendered = response.body.content.rendered
         this.newsTitleRendered = response.body.title.rendered
+        this.date = response.body.date
+        this.projectStudentNames = this.newsContent.acf.student_name.split(",")
+        this.loaded = true
+
       }, response => {
         // error callback
         this.NotFoundState = false
@@ -72,7 +85,6 @@ export default {
 @import "../assets/scss/globalVars.scss";
 @import "../../node_modules/include-media/dist/_include-media.scss";
 
-
 .newsMenu {
     .newsTitle {
         width: calc(100% - 100px);
@@ -81,9 +93,9 @@ export default {
         line-height: 50px;
         margin-left: $paddingWindowDesktop;
         font-size: $fontSizeWindowLarge !important;
-
         @include media("<phone") {
-          font-size: $fontSizeWindowXLarge !important;
+            font-size: 40px !important;
+            margin-top: 4px;
         }
 
     }
@@ -97,13 +109,12 @@ export default {
         &::before {
             background: blue;
         }
-
         &:hover {
-          &::before, &::after {
-            background: red;
-          }
+            &::after,
+            &::before {
+                background: red;
+            }
         }
-
 
     }
     clear: both;
@@ -113,13 +124,11 @@ export default {
 .newsItemExpandedTop {
     background: blue;
     width: 33.333%;
-
     @include media("<desktop") {
-      width: 50%;
+        width: 50%;
     }
-
     @include media("<phone") {
-      width: 100%;
+        width: 100%;
     }
 
     right: 0;
@@ -134,15 +143,34 @@ export default {
     background: white;
     width: 33.333%;
 
-    @include media("<desktop") {
-      width: 50%;
-      right: -120%;
+
+    .loading{
+      font-weight: normal;
+      margin: 0;
+      line-height: 1;
+      @include media("<desktop") {
+        font-size: $fontSizeWindowLarge;
+      }
+      @include media("<phone") {
+        font-size: $fontSizeWindowXLarge;
+      }
+
 
     }
+    .newsContentWrapper {
+        margin-top: $paddingWindowDesktop;
+        @include media("<desktop") {
+            margin-top: $paddingWindowDesktop;
+        }
+    }
+    @include media("<desktop") {
+        width: 50%;
+        right: -120%;
 
+    }
     @include media("<phone") {
-      width: calc(100% - 4vw);
-      right: -120%;
+        width: calc(100% - 4vw);
+        right: -120%;
 
     }
 
@@ -166,40 +194,42 @@ export default {
     // -webkit-box-shadow: 0px -100px 0px 0px blue;
     // -moz-box-shadow: 0px -100px 0px 0px blue;
     // box-shadow: 0px -100px 0px 0px blue;
-
     @include media("<desktop") {
 
-          -webkit-box-shadow:  -2vw  0 0 0 blue;
-          -moz-box-shadow:  -2vw  0 0 0 blue;
-          box-shadow: -2vw  0 0 0 blue;
-
+        -webkit-box-shadow: -2vw 0 0 0 blue;
+        -moz-box-shadow: -2vw 0 0 0 blue;
+        box-shadow: -2vw 0 0 0 blue;
 
     }
-
     @include media("<phone") {
 
-          -webkit-box-shadow:  -4vw  0 0 0 blue;
-          -moz-box-shadow:  -4vw  0 0 0 blue;
-          box-shadow: -4vw  0 0 0 blue;
-
+        -webkit-box-shadow: -4vw 0 0 0 blue;
+        -moz-box-shadow: -4vw 0 0 0 blue;
+        box-shadow: -4vw 0 0 0 blue;
 
     }
 
-    -webkit-box-shadow:  -2vw  0 0 0 blue;
-    -moz-box-shadow:  -2vw  0 0 0 blue;
-    box-shadow: -2vw  0 0 0 blue;
+    -webkit-box-shadow: -2vw 0 0 0 blue;
+    -moz-box-shadow: -2vw 0 0 0 blue;
+    box-shadow: -2vw 0 0 0 blue;
 
     // height: 500px;
+    -webkit-overflow-scrolling: touch; /* lets it scroll lazy */
     height: calc(100% - #{$paddingWindowLarge});
-    padding: $paddingWindowDesktop;
-
     @include media("<desktop") {
-      padding: $paddingWindowMobile;
-      font-size: $fontSizeWindowLarge;
+        height: calc(100% - 8vw);
+    }
+    @include media("<phone") {
+        height: calc(100% - 16vw);
     }
 
+    padding: $paddingWindowDesktop;
+    @include media("<desktop") {
+        padding: $paddingWindowMobile;
+        font-size: $fontSizeWindowLarge;
+    }
     @include media("<phone") {
-      font-size: $fontSizeWindowXLarge;
+        font-size: $fontSizeWindowXLarge;
     }
 
     font-size: $fontSizeWindowMedium;
@@ -213,4 +243,23 @@ export default {
 </style>
 
 <style lang="scss">
+@import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
+
+.newsContentReal {
+    *:first-child {
+        margin-top: $paddingWindowDesktop;
+        @include media("<desktop") {
+            margin-top: $paddingWindowMobile;
+        }
+    }
+
+    a{
+      color: inherit;
+      text-decoration: none;
+      -webkit-box-shadow: inset 0px -2px 0px 0px blue;
+      -moz-box-shadow: inset 0px -2px 0px 0px blue;
+      box-shadow: inset 0px -2px 0px 0px blue;
+    }
+}
 </style>

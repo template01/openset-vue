@@ -101,9 +101,9 @@
               <span v-else>{{name}}</span>
               </span>
               </span>
-              <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
+              <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)"></span>
+              <span class="projectItemHalf" v-html="'Type: '+item.acf.extensive_report_or_assignment"></span>
 
-          </span>
             </router-link>
           </div>
         </div>
@@ -161,7 +161,7 @@
         <div v-if="newsTab" class="tableStyle blue">
 
           <div class="projectItem" v-for="(item, index) in newsProp" :expandedx="true" :key="item" v-bind:class="{ mobileHeader: mobileNews }">
-            <newsItemListSingle :itemDate="'Date: '+dateStamp(item.date)" :itemIdTitleRendered="item.title.rendered" :itemId="item.id"></newsItemListSingle>
+            <newsItemListSingle :itemDate="'Date: '+dateStamp(item.date)" :itemStudentNames="item.acf.student_name" :itemIdTitleRendered="item.title.rendered" :itemId="item.id"></newsItemListSingle>
             <!-- <div class="projectItemInner">
 
                 <span class="projectItemTitle" v-html="item.title.rendered">
@@ -316,7 +316,7 @@ export default {
         this.mobileNews = false;
         this.mobileSearch = false;
 
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
 
         if (from.path != '/list') {
           // this.addBlinkMethod()

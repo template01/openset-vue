@@ -48,8 +48,9 @@
   </div>
 
     <div class="title">
-
-      <h1>OPEN SET COMMUNITY</h1>
+      <router-link to="/">
+        <h1>OPEN SET COMMUNITY</h1>
+      </router-link>
     </div>
 
 
@@ -458,6 +459,9 @@ header {
     }
 
     .title {
+      a{
+        text-decoration: none;
+      }
         h1 {
             color: lime;
             font-size: $fontSizeWindowLarge;

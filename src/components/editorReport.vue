@@ -201,6 +201,7 @@ export default {
 
 
 #editorReport{
+  background: white;
   .reportContent{
     .bodyText{
         h1:not(.reportTitle),h2:not(.reportTitle),h3:not(.reportTitle),h4:not(.reportTitle),h5:not(.reportTitle),h6:not(.reportTitle){
