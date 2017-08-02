@@ -1,6 +1,19 @@
 <template>
 <div class="visualProject" :class="projectColorSchemeProp">
 
+  <div class="introWrapper fixedIntro" v-if="introNone">
+
+
+    <div class="fixedIntroInnerWrapper">
+
+      <div class="fixedIntroHalf">
+        <singleHeader :typeProp="'project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
+
+      </div>
+
+    </div>
+  </div>
+
   <div class="introWrapper fixedIntro" v-if="introText">
 
 
@@ -85,7 +98,7 @@ export default {
       positionVisualContentTop: 0,
     }
   },
-  props: ['title', 'introText', 'introKeywords', 'content', 'projectColorSchemeProp', 'authorName', 'date'],
+  props: ['title', 'introText', 'introKeywords', 'introNone', 'content', 'projectColorSchemeProp', 'authorName', 'date'],
   methods: {
 
     resizeIframe: function() {
@@ -317,7 +330,7 @@ export default {
                 border-radius: $fontSizeWindowSmall;
                 border: $paddingWindowDesktop/10 solid;
                 @include media("<desktop") {
-                    font-size: $fontSizeWindowLarge;
+                    font-size: $fontSizeWindowMedium;
 
                     margin-top: $paddingWindowMobile;
                     padding: $paddingWindowMobile;
@@ -327,7 +340,10 @@ export default {
                 }
 
                 @include media("<phone") {
-                    font-size: $fontSizeWindowMediumFixed;
+                    font-size: $fontSizeWindowSmallFixed;
+                    max-width: 100% !important;
+                    margin-left: 0%;
+
                 }
 
                 max-width: 50% !important;

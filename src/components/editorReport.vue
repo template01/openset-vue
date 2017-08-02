@@ -160,7 +160,7 @@ export default {
       }
 
 
-      line-height: 120%;
+      line-height: 1.25;
       margin-left: 50%;
       &.assignmentLayout{
         // font-family: Calibre;
@@ -172,7 +172,7 @@ export default {
         // }
       };
       margin-left: 0%;
-      font-family: "Times New Roman", Times, serif;
+      font-family: "Lyon", Times, serif;
       padding-left: $paddingWindowDesktop;
       padding-right: $paddingWindowDesktop;
       @include media("<desktop") {
@@ -221,11 +221,13 @@ export default {
       }
 
       .wp-caption-text{
+        padding-left: $paddingWindowDesktop;
+        
         font-family: Calibre;
         font-size: $fontSizeWindowMediumFixed;
         @include media(">=desktop") {
           font-size: $fontSizeWindowMediumFixed;
-          line-height: 1vw;
+          line-height: $fontSizeWindowMediumFixed;
           width: 50%;
         }
         @include media("<desktop") {

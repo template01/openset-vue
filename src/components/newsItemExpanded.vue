@@ -56,7 +56,7 @@ export default {
   methods: {
     getContent: function(itemIdParam) {
 
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements/' + itemIdParam).then(function(response) {
+      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements/' + itemIdParam).then(function(response) {
 
         this.newsContent = response.body
         this.newsContentRendered = response.body.content.rendered

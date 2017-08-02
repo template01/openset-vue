@@ -8,14 +8,14 @@
     default {{this.textualProject}} -->
     <!-- <h1 v-html="this.projectTitle"></h1> -->
     <loading v-if="!loaded"></loading>
-    <visualProject :authorName=projectStudentNames :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:content="this.visualContent" v-bind:date="projectDate"  v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
-    <textualProject v-bind:content="this.textualContent"  v-bind:title="this.projectTitle" v-bind:date="projectDate" :authorName=projectStudentNames v-if="textuallyOriented"></textualProject>
+    <visualProject :authorName=projectStudentNames :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:introNone="this.visuallyOrientedIntroNone" v-bind:content="this.visualContent"
+      v-bind:date="projectDate" v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
+    <textualProject v-bind:content="this.textualContent" v-bind:title="this.projectTitle" v-bind:date="projectDate" :authorName=projectStudentNames v-if="textuallyOriented"></textualProject>
   </div>
   <div v-else>
     <NotFound></NotFound>
   </div>
 </div>
-
 </template>
 
 <script>
@@ -31,7 +31,10 @@ export default {
   name: 'project',
 
   components: {
-    NotFound, visualProject, textualProject,loading
+    NotFound,
+    visualProject,
+    textualProject,
+    loading
   },
 
   data() {
@@ -39,40 +42,43 @@ export default {
       // projectId: this.$route.params.projectId,
       projectSlug: this.$route.params.projectSlug,
       projectContent: Object,
-      projectTitle:'',
-      projectDate:'',
-      projectSlug:'',
-      projectDefaultContent:'',
-      projectColorScheme:'',
-      projectStudentNames:[],
+      projectTitle: '',
+      projectDate: '',
+      projectSlug: '',
+      projectDefaultContent: '',
+      projectColorScheme: '',
+      projectStudentNames: [],
       NotFoundState: true,
-      visuallyOriented:false,
-      visuallyOrientedIntroText:'',
-      visuallyOrientedIntroKeywords:'',
-      visualContent:'',
-      textuallyOriented:false,
-      textualContent:'',
-      loaded:false
+      visuallyOriented: false,
+      visuallyOrientedIntroText: '',
+      visuallyOrientedIntroKeywords: '',
+      visuallyOrientedIntroNone: '',
+      visualContent: '',
+      textuallyOriented: false,
+      textualContent: '',
+      loaded: false
 
     }
   },
 
-  deactivated:function(){
+  deactivated: function() {
     this.$destroy()
   },
-  methods:{
-    test:function(){
+  methods: {
+    test: function() {
       alert(';e')
     },
-    getContent: function(apiEndpointParamA,apiEndpointParamB){
+    getContent: function(apiEndpointParamA, apiEndpointParamB) {
 
 
       this.$http.get(apiEndpointParamA).then(function(response) {
 
-        if(response.body.length===0){
-          this.$router.push({ path: this.projectSlug})
+        if (response.body.length === 0) {
+          this.$router.push({
+            path: this.projectSlug
+          })
           this.getContent(apiEndpointParamB)
-        }else{
+        } else {
           console.log(response.body)
           this.projectContent = response.body[0]
           this.projectTitle = this.projectContent.title.rendered
@@ -80,20 +86,24 @@ export default {
           this.projectSlug = this.projectContent.slug
           this.projectDefaultContent = this.projectContent.acf.rendered
           this.projectColorScheme = this.projectContent.acf.project_color_scheme
-          this.projectStudentNames =  this.projectContent.acf.student_name.split(",")
-          if(this.projectContent.acf.content_type ==="visually_oriented"){
+          this.projectStudentNames = this.projectContent.acf.student_name.split(",")
+          if (this.projectContent.acf.content_type === "visually_oriented") {
             this.visuallyOriented = true
-            if(this.projectContent.acf.visual_introduction_style === "text_based"){
+            if (this.projectContent.acf.visual_introduction_style === "text_based") {
               this.visuallyOrientedIntroText = this.projectContent.acf.visual_introduction_text
-            }else{
+            }
+            if (this.projectContent.acf.visual_introduction_style === "keyword_based") {
               this.visuallyOrientedIntroKeywords = this.projectContent.acf.visual_introduction_keywords
+            }
+            if (this.projectContent.acf.visual_introduction_style === "no_intro") {
+              this.visuallyOrientedIntroNone = true
             }
             this.visualContent = this.projectContent.acf.visual
           }
           // if(this.projectContent.acf.sketch_project){
           //   this.sketchProject = true
           // }
-          if(this.projectContent.acf.content_type ==="textually_oriented"){
+          if (this.projectContent.acf.content_type === "textually_oriented") {
             this.textuallyOriented = true
             this.textualContent = this.projectContent.acf.textual
 
@@ -102,9 +112,9 @@ export default {
         }
 
         var vm = this
-        setTimeout(function(){
+        setTimeout(function() {
           vm.loaded = true
-        },500)
+        }, 500)
 
       }, response => {
         // error callback
@@ -112,28 +122,27 @@ export default {
       });
 
     }
-  }
-  ,
+  },
 
   created: function() {
-    this.projectSlug =this.$route.params.projectSlug
-    var apiEndpoint = 'http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?slug=' + this.projectSlug+'&published=1'
-    var unofficialApiEndpoint = 'http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?slug=' + this.projectSlug+'&notpublished=1'
+    this.projectSlug = this.$route.params.projectSlug
+    var apiEndpoint = 'http://community.openset.nl/backend/wp-json/wp/v2/project?slug=' + this.projectSlug + '&published=1'
+    var unofficialApiEndpoint = 'http://community.openset.nl/backend/wp-json/wp/v2/project?slug=' + this.projectSlug + '&notpublished=1'
 
-    if(this.$route.query.status==='unofficial'){
-      this.getContent(unofficialApiEndpoint,apiEndpoint)
-    }else{
-      this.getContent(apiEndpoint,apiEndpoint)
+    if (this.$route.query.status === 'unofficial') {
+      this.getContent(unofficialApiEndpoint, apiEndpoint)
+    } else {
+      this.getContent(apiEndpoint, apiEndpoint)
     }
 
 
-// http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?slug=man&notpublished=1
+    // http://community.openset.nl/backend/wp-json/wp/v2/project?slug=man&notpublished=1
     // alert(apiRoute)
 
 
 
 
-},
+  },
 
 
 }
@@ -143,27 +152,26 @@ export default {
 <style scoped lang="scss">
 @import "../assets/scss/globalVars.scss";
 
-.projectWrapper{
-  min-height: calc(100% - #{$paddingWindowLarge});
-  position: absolute;
-  width: 100%;
+.projectWrapper {
+    min-height: calc(100% - #{$paddingWindowLarge});
+    position: absolute;
+    width: 100%;
 
-  &.white_on_black{
-    background: black;
-    color: white;
-  }
-  &.black_on_white{
-    background: white;
-    color: black;
-  }
-  &.white_on_red{
-    background: red;
-    color: white;
-  }
-  &.black_on_green{
-    background: lime;
-    color: black;
-  }
+    &.white_on_black {
+        background: black;
+        color: white;
+    }
+    &.black_on_white {
+        background: white;
+        color: black;
+    }
+    &.white_on_red {
+        background: red;
+        color: white;
+    }
+    &.black_on_green {
+        background: lime;
+        color: black;
+    }
 }
-
 </style>

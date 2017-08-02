@@ -377,8 +377,6 @@ export default {
         position: relative;
         .actualImage {
             border-radius: 100%;
-            // background-image: url('http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/29352107926_0c48089c4e_o-1024x680.jpg');
-            background-image: url("http://placeholder-b.template-studio.nl/wp-content/uploads/2017/04/28760690984_cd0f2d8668_o-1024x743.jpg");
             background-position: center;
             background-repeat: no-repeat;
             background-clip: border-box;

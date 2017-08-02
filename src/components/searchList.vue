@@ -11,8 +11,13 @@
 
       </div>
       <div v-else>
-        <div class="results" v-if="noneFound">
-          No results :(
+        <div class="results" v-if="searching || noneFound">
+          <span v-if="noneFound">
+            No results :(
+            </span>
+          <span v-if="searching">
+          Searching...
+        </span>
         </div>
         <div class="results" v-for='item in results'>
           <router-link v-if="item.type === 'project'" :to="{path: 'project/'+item.slug}">
@@ -52,6 +57,7 @@ export default {
     return {
       query: '',
       results: [],
+      searching: false,
       noneFound: false,
       days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       mL: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -83,9 +89,12 @@ export default {
 
     searchApi: function() {
       this.results = []
+      this.searching = true
 
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?search=' + this.query + '&published=1').then(function(response) {
+      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?search=' + this.query + '&published=1').then(function(response) {
         this.results = this.results.concat(response.body)
+        this.searching = false
+
         var vm = this
         setTimeout(function() {
           if (vm.results.length === 0) {
@@ -93,15 +102,17 @@ export default {
           } else {
             vm.noneFound = false
           }
-        }, 500)
+        }, 100)
 
       }, response => {
         this.NotFoundState = false
       });
 
 
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/project?search=' + this.query + '&published=1').then(function(response) {
+      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?search=' + this.query + '&published=1').then(function(response) {
         this.results = this.results.concat(response.body)
+        this.searching = false
+
         var vm = this
         setTimeout(function() {
           if (vm.results.length === 0) {
@@ -109,14 +120,16 @@ export default {
           } else {
             vm.noneFound = false
           }
-        }, 500)
+        }, 100)
 
       }, response => {
         this.NotFoundState = false
       });
 
-      this.$http.get('http://placeholder-b.template-studio.nl/wp-json/wp/v2/news_announcements?search=' + this.query).then(function(response) {
+      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements?search=' + this.query).then(function(response) {
         this.results = this.results.concat(response.body)
+        this.searching = false
+
         var vm = this
         setTimeout(function() {
           if (vm.results.length === 0) {
@@ -124,7 +137,7 @@ export default {
           } else {
             vm.noneFound = false
           }
-        }, 500)
+        }, 100)
 
       }, response => {
         this.NotFoundState = false
@@ -165,12 +178,11 @@ export default {
     display: block;
     left: 0;
     top: 0;
-
     @include media("<desktop") {
-      position: relative;
-      padding-left: $paddingWindowMobile;
-      padding-right: $paddingWindowMobile;
-      margin-top: -$paddingWindowMobile !important;
+        position: relative;
+        padding-left: $paddingWindowMobile;
+        padding-right: $paddingWindowMobile;
+        margin-top: -$paddingWindowMobile !important;
 
     }
 
@@ -265,10 +277,10 @@ input {
     -moz-box-shadow: inset 0 -3px 0 0 red;
     box-shadow: inset 0 -3px 0 0 red;
     @include media("<desktop") {
-      padding: $paddingWindowMobile;
-      -webkit-box-shadow: inset 0 -2px 0 0 red;
-      -moz-box-shadow: inset 0 -2px 0 0 red;
-      box-shadow: inset 0 -2px 0 0 red;
+        padding: $paddingWindowMobile;
+        -webkit-box-shadow: inset 0 -2px 0 0 red;
+        -moz-box-shadow: inset 0 -2px 0 0 red;
+        box-shadow: inset 0 -2px 0 0 red;
     }
 
     background: white;

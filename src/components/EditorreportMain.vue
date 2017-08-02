@@ -92,14 +92,14 @@ export default {
           // this.EditorreportDefaultContent = this.EditorreportTitle.acf.rendered
           if (this.EditorreportContentMain.acf.extensive_report_or_assignment === 'Assignment') {
             this.editorAssignment = true
-            this.editorAssignmentContent = this.EditorreportContentMain.acf.assignment_content
+            this.editorAssignmentContent = this.EditorreportContentMain.content.rendered
 
             // this.visualReportIntro = this.projectContent.acf.visual_introduction
             // this.visualContent = this.projectContent.acf.visual_report
           }
           if (this.EditorreportContentMain.acf.extensive_report_or_assignment === "Report") {
             this.editorReport = true
-            this.editorReportContent = this.EditorreportContentMain.acf.report_content
+            this.editorReportContent = this.EditorreportContentMain.content.rendered
           }
         }
 
@@ -118,11 +118,11 @@ export default {
   },
 
   created: function() {
-    // var apiEndpoint = 'http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?slug=' + this.EditorreportSlug
+    // var apiEndpoint = 'http://community.openset.nl/backend/wp-json/wp/v2/editorreport?slug=' + this.EditorreportSlug
     // this.getContentEditorReport(apiEndpoint)
 
-    var apiEndpoint = 'http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?slug=' + this.EditorreportSlug + '&published=1'
-    var unofficialApiEndpoint = 'http://placeholder-b.template-studio.nl/wp-json/wp/v2/editorreport?slug=' + this.EditorreportSlug + '&notpublished=1'
+    var apiEndpoint = 'http://community.openset.nl/backend/wp-json/wp/v2/editorreport?slug=' + this.EditorreportSlug + '&published=1'
+    var unofficialApiEndpoint = 'http://community.openset.nl/backend/wp-json/wp/v2/editorreport?slug=' + this.EditorreportSlug + '&notpublished=1'
 
     if (this.$route.query.status === 'unofficial') {
       // this.getContent(unofficialApiEndpoint,apiEndpoint)
@@ -163,4 +163,87 @@ li {
 a {
   color: #42b983;
 }
+</style>
+
+<style lang="scss">
+@import "../assets/scss/globalVars.scss";
+@import "../../node_modules/include-media/dist/_include-media.scss";
+
+#editorReport{
+
+.bodyText{
+  h1{
+    text-align: center;
+    font-size: $fontSizeWindowLarge;
+    font-weight: normal;
+    text-transform: uppercase;
+    line-height: 1;
+    @include media("<phone") {
+      font-size: $fontSizeWindowXLarge;
+    }
+
+
+  }
+
+
+  h2,h3,h4,h5,h6{
+    text-transform: uppercase;
+
+    font-size: $fontSizeWindowMedium;
+
+    @include media("<desktop") {
+      font-size: $fontSizeWindowLarge;
+    }
+
+    @include media("<phone") {
+      font-size: $fontSizeWindowXLarge;
+    }
+
+  }
+
+}
+.endnote{
+  background:   red;
+  border-radius: 100%;
+  width:  $fontSizeWindowMediumFixed;
+  height:  $fontSizeWindowMediumFixed;
+  display: inline-block;
+  position: relative;
+  a{
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-family: Calibre;
+    line-height:  $fontSizeWindowMediumFixed;
+    position: absolute;
+    width: 100%;
+    font-size: $fontSizeWindowMediumFixed/1.5;
+  }
+
+
+}
+.endnotes{
+
+  li{
+    // display: inline-block;
+    margin-bottom: $fontSizeWindowMediumFixed/3;
+  }
+          font-family: Calibre;
+          font-size: $fontSizeWindowMediumFixed;
+          @include media(">=desktop") {
+            font-size: $fontSizeWindowMediumFixed;
+            line-height: $fontSizeWindowMediumFixed;
+          }
+          @include media("<desktop") {
+            // font-size: 1vw;
+            // line-height: 1vw;
+
+            padding-left: $paddingWindowDesktop;
+            padding-right: $paddingWindowDesktop;
+          }
+
+          clear: both;
+}
+}
+
 </style>
