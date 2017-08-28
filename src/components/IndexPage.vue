@@ -103,7 +103,13 @@ export default {
 
     this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements').then(function(response) {
       this.news = response.body
-      this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+      // this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+
+      if (response.headers.map['X-WP-TotalPages'] == null) {
+        this.totalNewsListPages = response.headers.map['x-wp-totalpages'][0]
+      } else {
+        this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+      }
 
       this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
 
@@ -114,13 +120,26 @@ export default {
         console.log(response)
         console.log(response.headers)
         this.reports = response.body
-        this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          this.totalReportListPages = response.headers.map['x-wp-totalpages'][0]
+        } else {
+          this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+        }
+
+
 
         this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
       }).then(function(response) {
         this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1').then(function(response) {
           this.projects = response.body
-          this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
+
+          if (response.headers.map['X-WP-TotalPages'] == null) {
+            this.totalProjectListPages = response.headers.map['x-wp-totalpages'][0]
+          } else {
+            this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
+          }
+
+
           this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
 
           var vm = this
@@ -155,51 +174,66 @@ export default {
   methods: {
     getmoreContentReport: function(input) {
       this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1?page=' + input).then(function(response) {
-        var totalPages = response.headers.map['X-WP-TotalPages'][0]
-        console.log(response)
-        console.log(response.headers)
-        console.log(response.headers.map['X-WP-TotalPages'][0])
 
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          var totalPages = response.headers.map['x-wp-totalpages'][0]
+        } else {
+          var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        }
         this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
       })
     },
 
     getmoreContentNews: function(input) {
       this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements?page=' + input).then(function(response) {
-        var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          var totalPages = response.headers.map['x-wp-totalpages'][0]
+        } else {
+          var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        }
 
-        console.log(response)
-        console.log(response.headers)
-        console.log(response.headers.map['X-WP-TotalPages'][0])
         this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
       })
     },
 
     getmoreContentProjects: function(input) {
       this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1&page=' + input).then(function(response) {
-        var totalPages = response.headers.map['X-WP-TotalPages'][0]
-        console.log(response)
-        console.log(response.headers)
-        console.log(response.headers.map['X-WP-TotalPages'][0])
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          var totalPages = response.headers.map['x-wp-totalpages'][0]
+        } else {
+          var totalPages = response.headers.map['X-WP-TotalPages'][0]
+        }
         this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
       })
     },
 
     getmoreContentProjectsList: function(input) {
       this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1&page=' + input).then(function(response) {
-        var totalPages = response.headers.map['X-WP-TotalPages'][0]
-        this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
 
-        console.log(response)
-        console.log(response.headers)
-        console.log(response.headers.map['X-WP-TotalPages'][0])
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          var totalPages = response.headers.map['x-wp-totalpages'][0]
+          this.totalProjectListPages = response.headers.map['x-wp-totalpages'][0]
+
+        } else {
+          var totalPages = response.headers.map['X-WP-TotalPages'][0]
+          this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
+
+        }
         this.projects = this.projects.concat(response.body)
       })
     },
     getmoreContentReportsList: function(input) {
       this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1?page=' + input).then(function(response) {
-        var totalPages = response.headers.map['X-WP-TotalPages'][0]
-        this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+
+
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          var totalPages = response.headers.map['x-wp-totalpages'][0]
+          this.totalReportListPages = response.headers.map['x-wp-totalpages'][0]
+
+        } else {
+          var totalPages = response.headers.map['X-WP-TotalPages'][0]
+          this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
+        }
         this.reports = this.reports.concat(response.body)
       })
     },
@@ -208,8 +242,16 @@ export default {
 
     getmoreContentNewsList: function(input) {
       this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements?page=' + input).then(function(response) {
-        var totalPages = response.headers.map['X-WP-TotalPages'][0]
-        this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          var totalPages = response.headers.map['x-wp-totalpages'][0]
+          this.totalNewsListPages = response.headers.map['x-wp-totalpages'][0]
+
+        } else {
+          var totalPages = response.headers.map['X-WP-TotalPages'][0]
+          this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+        }
+
 
         console.log(response)
         console.log(response.headers)
@@ -306,7 +348,6 @@ header {
         z-index: 2;
 
     }
-
     @include media("<phone") {
         height: $paddingWindowLarge*4;
     }
@@ -330,45 +371,44 @@ header {
             padding-left: $paddingWindowMobile;
             padding-right: $paddingWindowMobile;
             @include media("<phone") {
-              line-height: $paddingWindowLarge*4;
-              font-size: $fontSizeWindowXLarge;
+                line-height: $paddingWindowLarge*4;
+                font-size: $fontSizeWindowXLarge;
             }
-
 
         }
 
-        .navigationMobileContent{
-          background: black;
-          color: black;
-          text-decoration: none;
-          width: 100%;
-          float: right;
-          margin-top: $paddingWindowLarge*2;
-          @include media("<phone") {
-            margin-top: $paddingWindowLarge*4;
-            font-size: $fontSizeWindowXLarge;
-            line-height: $fontSizeWindowXLarge;
+        .navigationMobileContent {
+            background: black;
+            color: black;
+            text-decoration: none;
+            width: 100%;
+            float: right;
+            margin-top: $paddingWindowLarge*2;
+            @include media("<phone") {
+                margin-top: $paddingWindowLarge*4;
+                font-size: $fontSizeWindowXLarge;
+                line-height: $fontSizeWindowXLarge;
 
-          }
-          text-align: center;
-          line-height: $fontSizeWindowLarge;
-          font-size: $fontSizeWindowLarge;
-          position: absolute;
-          font-weight: normal;
-          padding: $paddingWindowMobile;
-          text-align: right;
-          a {
-              text-transform: uppercase;
-              color: lime;
-              text-decoration: none;
-              height: 100%;
-              width: 100%;
-              line-height: $paddingWindowLarge;
-              @include media("<desktop") {
-                  line-height: $paddingWindowLarge*2;
-              }
-              text-align: center;
-          }
+            }
+            text-align: center;
+            line-height: $fontSizeWindowLarge;
+            font-size: $fontSizeWindowLarge;
+            position: absolute;
+            font-weight: normal;
+            padding: $paddingWindowMobile;
+            text-align: right;
+            a {
+                text-transform: uppercase;
+                color: lime;
+                text-decoration: none;
+                height: 100%;
+                width: 100%;
+                line-height: $paddingWindowLarge;
+                @include media("<desktop") {
+                    line-height: $paddingWindowLarge*2;
+                }
+                text-align: center;
+            }
 
         }
 
@@ -459,9 +499,9 @@ header {
     }
 
     .title {
-      a{
-        text-decoration: none;
-      }
+        a {
+            text-decoration: none;
+        }
         h1 {
             color: lime;
             font-size: $fontSizeWindowLarge;
@@ -470,7 +510,7 @@ header {
             // float: right;
             margin: 0;
             @include media("<phone") {
-              font-size: $fontSizeWindowXLarge;
+                font-size: $fontSizeWindowXLarge;
 
             }
         }
@@ -483,8 +523,8 @@ header {
             height: $paddingWindowLarge*2;
         }
         @include media("<phone") {
-          height: $paddingWindowLarge*4;
-          font-size: $fontSizeWindowLarge*2;
+            height: $paddingWindowLarge*4;
+            font-size: $fontSizeWindowLarge*2;
 
         }
         justify-content: center;
@@ -503,10 +543,9 @@ header {
         margin-top: $paddingWindowLarge*2;
     }
     @include media("<phone") {
-      margin-top: $paddingWindowLarge*4;
+        margin-top: $paddingWindowLarge*4;
 
     }
-
 
 }
 </style>
