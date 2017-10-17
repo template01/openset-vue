@@ -1,150 +1,109 @@
-
 <template>
 <div id="visualView">
 
-
-
-  <!-- <button @click="counter++">click</button> -->
-  <!-- {{counter}} -->
   <newsItemExpanded v-on:closeNews="newsItemExpandedTrue=false" v-bind:itemId="newsItemExpandedId" v-bind:isExpanded="newsItemExpandedTrue"></newsItemExpanded>
 
   <div id="postContent">
 
     <div v-for="(item, index) in newsAndProjectsAndReportsOrdered" :key="item.id">
 
-
-
       <template v-if="item.type == 'project'">
-      <template v-if="item.acf.project_frontend_style==='red_blurb'">
-        <router-link :to="{path: 'project/'+item.slug}">
-        <div class="floatItem project projectRed" v-bind:class="randomAnimation()" v-once>
-          <h3  v-html="item.title.rendered">
+                    <template v-if="item.acf.project_frontend_style==='red_blurb'">
+                        <router-link :to="{path: 'project/'+item.slug}">
+                            <div class="floatItem project projectRed" v-bind:class="randomAnimation()" v-once>
+                                <h3 v-html="item.title.rendered">
           </h3>
-          <div class="hoverType"><span>Project</span></div>
+                                <div class="hoverType"><span>Project</span></div>
 
+                                <div class="arrowsLink"></div>
 
-          <div class="arrowsLink"></div>
+                            </div>
+                        </router-link>
+                    </template>
 
-          <!-- {{item.acf.simplestyle}} -->
+      <template v-else-if="item.acf.project_frontend_style==='circular_image'">
+                        <div class="floatItem project backgroundImage">
+                            <div class="actualImage" v-bind:style="{'background-image':'url('+item.acf.circular_image.sizes.large+')'}">
 
-        </div>
-        </router-link>
-</template>
+                            </div>
+                            <router-link :to="{path: 'project/'+item.slug}">
 
+                            </router-link>
+                            <div class="hoverType"><span>Project</span></div>
 
-<template v-else-if="item.acf.project_frontend_style==='circular_image'">
-<div class="floatItem project backgroundImage">
-  <div class="actualImage" v-bind:style="{'background-image':'url('+item.acf.circular_image.sizes.large+')'}">
+                            <div class="arrowsLink"></div>
+                        </div>
+                    </template>
 
-  </div>
-  <router-link :to="{path: 'project/'+item.slug}">
+      <template v-else-if="item.acf.project_frontend_style==='white_box'">
+                        <div class="floatItem project visualReport">
 
-  </router-link>
-  <div class="hoverType"><span>Project</span></div>
-
-  <div class="arrowsLink"></div>
-</div>
-
-
-<!--
-<div class="floatItem project backgroundImage">
-  <router-link :to="{path: 'project/'+item.slug}">
-    <h3 v-html="item.title.rendered">
-
-
-</h3>
-  </router-link>
-  <div class="arrowsLink"></div>
-</div> -->
-</template>
-
-
-
-      <template  v-else-if="item.acf.project_frontend_style==='white_box'">
-<div class="floatItem project visualReport">
-
-
-  <router-link :to="{path: 'project/'+item.slug}">
-  <div class="cornered white">
-  </div>
-  <h3  class="whiteTitle" v-html="item.title.rendered">
+                            <router-link :to="{path: 'project/'+item.slug}">
+                                <div class="cornered white">
+                                </div>
+                                <h3 class="whiteTitle" v-html="item.title.rendered">
   </h3>
 
-</router-link>
+                            </router-link>
 
-<div class="arrowsLink"></div>
-<div class="hoverType"><span>Project</span></div>
+                            <div class="arrowsLink"></div>
+                            <div class="hoverType"><span>Project</span></div>
 
-
-
-  <!-- {{item.acf.simplestyle}} -->
-
-</div>
-</template>
-
+                        </div>
+                    </template>
 
       <template v-else>
-<div class="floatItem project">
-  <h3>
-            <router-link :to="{path: 'project/'+item.slug}" v-html="item.title.rendered"></router-link>
-          </h3>
-  <!-- {{item.acf.simplestyle}} -->
+                        <div class="floatItem project">
+                            <h3>
+  <router-link :to="{path: 'project/'+item.slug}" v-html="item.title.rendered"></router-link>
+  </h3>
 
-</div>
-</template>
+                        </div>
+                    </template>
 
+      </template>
 
-    </template>
+      <template v-else-if="item.type == 'news_announcements'">
+                    <div class="floatItem splashNews" @click="renderNewsItem(item.id)">
 
-
-    <template v-else-if="item.type == 'news_announcements'">
-<div class="floatItem splashNews"  @click="renderNewsItem(item.id)">
-
-  <div class="blueCircle" v-bind:class="randomNewsBorder()" v-once>
-    <h1>
+                        <div class="blueCircle" v-bind:class="randomNewsBorder()" v-once>
+                            <h1>
             {{item.title.rendered}}
           </h1>
 
+                        </div>
 
-          <!-- <div v-for="n in 3" class="arrowsLinkNews" v-bind:class="randomNewsStars()" v-once></div> -->
-  </div>
+                        <div class="arrowsLink">
+                            <div class="arrowsLinkBlueInner">
+                            </div>
+                        </div>
+                        <div class="hoverType"><span>NEWS</span></div>
 
-  <div class="arrowsLink">
-    <div class="arrowsLinkBlueInner">
-    </div>
-  </div>
-  <div class="hoverType"><span>NEWS</span></div>
+                    </div>
+                </template>
 
+      <template v-else-if="item.type == 'editorreport'">
+                    <div class="floatItem project report">
+                        <router-link :to="{path: 'editorreport/'+item.slug}">
 
-</div>
-</template>
-
-<template v-else-if="item.type == 'editorreport'">
-<div class="floatItem project report">
-  <router-link :to="{path: 'editorreport/'+item.slug}">
-
-    <span class="largeLetter">
+                            <span class="largeLetter">
     <span v-html="item.title.rendered.charAt(0)">
 
     </span>
-    </span>
-    </span>
-    <!-- <span v-if="item.acf.extensive_report_or_assignment==='Report'" v-html="item.acf.extensive_report_or_assignment" class="type smallReport"> -->
-    </span>
+                            </span>
+                            </span>
+                            </span>
 
-    <span class="title smallReport" v-html="item.title.rendered">
+                            <span class="title smallReport" v-html="item.title.rendered">
   </span>
 
-  </router-link>
-  <div class="hoverType"><span v-html="item.acf.extensive_report_or_assignment"></span></div>
-  <div class="arrowsLink"></div>
-</div>
-</template>
+                        </router-link>
+                        <div class="hoverType"><span v-html="item.acf.extensive_report_or_assignment"></span></div>
+                        <div class="arrowsLink"></div>
+                    </div>
+                </template>
 
-
-
-  </div>
-
+    </div>
 
   </div>
 
@@ -167,7 +126,7 @@ export default {
       newsItemExpandedId: '',
       newsItemExpandedTrue: false,
       getMoreContentAll: 2,
-      newsAndProjectsAndReportsPropOld:  '',
+      newsAndProjectsAndReportsPropOld: '',
       allContentLoaded: false,
     }
   },
@@ -189,19 +148,19 @@ export default {
 
   methods: {
 
-    setOld_newsAndProjectsAndReportsProp: function(){
-      this.newsAndProjectsAndReportsPropOld=this.newsAndProjectsAndReportsProp.length
+    setOld_newsAndProjectsAndReportsProp: function() {
+      this.newsAndProjectsAndReportsPropOld = this.newsAndProjectsAndReportsProp.length
       var vm = this;
-      setTimeout(function(){
-        if(vm.newsAndProjectsAndReportsProp.length === vm.newsAndProjectsAndReportsPropOld){
+      setTimeout(function() {
+        if (vm.newsAndProjectsAndReportsProp.length === vm.newsAndProjectsAndReportsPropOld) {
           vm.allContentLoaded = true
         }
-      },500)
-      setTimeout(function(){
-        if(vm.newsAndProjectsAndReportsProp.length === vm.newsAndProjectsAndReportsPropOld){
+      }, 500)
+      setTimeout(function() {
+        if (vm.newsAndProjectsAndReportsProp.length === vm.newsAndProjectsAndReportsPropOld) {
           vm.allContentLoaded = true
         }
-      },1000)
+      }, 1000)
     },
 
     renderNewsItem: function(indexParam) {
@@ -253,20 +212,7 @@ export default {
     }, 500)
   },
 
-  watch: {
-
-    // newsAndProjectsAndReportsOrdered:function(val){
-    //
-    //   this.packery()
-    //   this.packery()
-    //
-    // }
-  },
   activated: function() {
-    // var vm = this;
-    // setTimeout(function(){
-    //   vm.packery()
-    // },1000)
     this.packery()
     this.packery()
 

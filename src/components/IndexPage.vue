@@ -70,6 +70,7 @@
 
 <script>
 import loading from '@/components/loading'
+import axios from 'axios'
 
 
 export default {
@@ -102,14 +103,65 @@ export default {
       this.listView = true
     }
 
-    this.getInitData()
+    // this.getInitData()
+    this.getInitDataAxios()
 
   },
 
   methods: {
 
+
+    getInitDataAxios: async function() {
+      try {
+        const news_announcementsPromise = axios('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements');
+        const editorreportPromise = axios('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1');
+        const projectPromise = axios('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1');
+        // await all three promises to come back and destructure the result into their own variables
+        const [news_announcementsRes, editorreportRes, projectRes] = await Promise.all([news_announcementsPromise, editorreportPromise, projectPromise]);
+
+        this.news = news_announcementsRes.data
+
+        if (!news_announcementsRes.headers.hasOwnProperty("X-WP-TotalPages")) {
+          this.totalNewsListPages = news_announcementsRes.headers['x-wp-totalpages'][0]
+        } else {
+          this.totalNewsListPages = news_announcementsRes.headers['X-WP-TotalPages'][0]
+        }
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(news_announcementsRes.data)
+
+
+
+        this.reports = editorreportRes.data
+        if (!editorreportRes.headers.hasOwnProperty("X-WP-TotalPages")) {
+          this.totalReportListPages = editorreportRes.headers['x-wp-totalpages'][0]
+        } else {
+          this.totalReportListPages = editorreportRes.headers['X-WP-TotalPages'][0]
+        }
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(editorreportRes.data)
+
+
+
+
+        this.projects = projectRes.data
+        if (!projectRes.headers.hasOwnProperty("X-WP-TotalPages")) {
+          this.totalProjectListPages = projectRes.headers['x-wp-totalpages'][0]
+        } else {
+          this.totalProjectListPages = projectRes.headers['X-WP-TotalPages'][0]
+        }
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(projectRes.data)
+
+        this.loaded = true
+
+
+
+      } catch (e) {
+        console.error(e); // 💩
+      }
+
+
+    },
+
     getInitData: async function() {
-      await this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements').then(function(response) {
+      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements').then(function(response) {
         this.news = response.body
         // this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
 
@@ -123,7 +175,7 @@ export default {
 
       })
 
-      await this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1').then(function(response) {
+      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1').then(function(response) {
         console.log(response)
         console.log(response.headers)
         this.reports = response.body
@@ -135,7 +187,7 @@ export default {
         this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
       })
 
-      await this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1').then(function(response) {
+      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1').then(function(response) {
         this.projects = response.body
 
         if (response.headers.map['X-WP-TotalPages'] == null) {
