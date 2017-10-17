@@ -6,7 +6,7 @@ import router from './router'
 import vueResource from 'vue-resource'
 Vue.use(vueResource)
 
-// 
+//
 // import inView from 'in-view'
 // Vue.use(inView)
 

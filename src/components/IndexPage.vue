@@ -71,6 +71,7 @@
 <script>
 import loading from '@/components/loading'
 
+
 export default {
   name: 'indexPage',
   components: {
@@ -101,22 +102,28 @@ export default {
       this.listView = true
     }
 
-    this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements').then(function(response) {
-      this.news = response.body
-      // this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+    this.getInitData()
 
-      if (response.headers.map['X-WP-TotalPages'] == null) {
-        this.totalNewsListPages = response.headers.map['x-wp-totalpages'][0]
-      } else {
-        this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
-      }
+  },
 
-      this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+  methods: {
 
-      // console.log(this.newsAndProjectsAndReports)
+    getInitData: async function() {
+      await this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/news_announcements').then(function(response) {
+        this.news = response.body
+        // this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
 
-    }).then(function(response) {
-      this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1').then(function(response) {
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          this.totalNewsListPages = response.headers.map['x-wp-totalpages'][0]
+        } else {
+          this.totalNewsListPages = response.headers.map['X-WP-TotalPages'][0]
+        }
+
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+
+      })
+
+      await this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1').then(function(response) {
         console.log(response)
         console.log(response.headers)
         this.reports = response.body
@@ -125,53 +132,27 @@ export default {
         } else {
           this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
         }
+        this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
+      })
 
+      await this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1').then(function(response) {
+        this.projects = response.body
+
+        if (response.headers.map['X-WP-TotalPages'] == null) {
+          this.totalProjectListPages = response.headers.map['x-wp-totalpages'][0]
+        } else {
+          this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
+        }
 
 
         this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
-      }).then(function(response) {
-        this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/project?published=1').then(function(response) {
-          this.projects = response.body
-
-          if (response.headers.map['X-WP-TotalPages'] == null) {
-            this.totalProjectListPages = response.headers.map['x-wp-totalpages'][0]
-          } else {
-            this.totalProjectListPages = response.headers.map['X-WP-TotalPages'][0]
-          }
-
-
-          this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
-
-          var vm = this
-          setTimeout(function() {
-            vm.loaded = true
-          }, 500)
-        })
 
       })
-    })
 
+      this.loaded = true
 
-    // this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1').then(function(response) {
-    //   console.log(response)
-    //   console.log(response.headers)
-    //   this.reports = response.body
-    //   this.totalReportListPages = response.headers.map['X-WP-TotalPages'][0]
-    //
-    //   this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
-    // })
+    },
 
-
-
-    this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/users?exclude=1').then(function(response) {
-      this.participants = response.body
-      // this.newsAndProjectsAndReports = this.newsAndProjectsAndReports.concat(response.body)
-    })
-
-
-  },
-
-  methods: {
     getmoreContentReport: function(input) {
       this.$http.get('http://community.openset.nl/backend/wp-json/wp/v2/editorreport?published=1?page=' + input).then(function(response) {
 
