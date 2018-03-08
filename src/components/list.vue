@@ -52,10 +52,11 @@
               <span class="projectItemTitle" v-html="item.title.rendered">
           </span>
               <span class="projectItemHalf" v-if="item.acf.student_name">By:
-              <span v-for="(name, index) in item.acf.student_name.split(',')">
-                <span v-if="index != item.acf.student_name.split(',').length -1 ">{{name}}, </span>
-              <span v-else>{{name}}</span>
-              </span>
+                <span v-for="(name,index) in namesArray(item.acf.student_name)">
+                  <span v-if="index<namesArray(item.acf.student_name).length -1" v-html="name[0]+', '"></span>
+                  <span  v-else v-html="name[0]"></span>
+                </span>
+
               </span>
               <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)">
           </span>
@@ -84,7 +85,7 @@
         <div class="projectItem mobileHeader" @click="setMobileExpanded('mobileReports')">
           <div class="blockHeader">
             <h1>
-            Reports / Assignments
+            Expert Input
           </h1>
           </div>
         </div>
@@ -92,18 +93,17 @@
         <div class="projectItem" v-bind:class="{ mobileHeader: mobileReports }" v-for="item in editorreportsProp">
           <div class="projectItemInner">
 
-            <router-link :to="{path: 'editorreport/'+item.slug}">
+            <router-link :to="{path: 'expertinput/'+item.slug}">
               <span class="projectItemTitle" v-html="item.title.rendered">
           </span>
               <span class="projectItemHalf" v-if="item.acf.student_name">By:
-            <span v-for="(name, index) in item.acf.student_name.split(',')">
-              <span v-if="index != item.acf.student_name.split(',').length -1 ">{{name}}, </span>
-              <span v-else>{{name}}</span>
-              </span>
+                <span v-for="(name,index) in namesArray(item.acf.student_name)">
+                  <span v-if="index<namesArray(item.acf.student_name).length -1" v-html="name[0]+', '"></span>
+                  <span  v-else v-html="name[0]"></span>
+                </span>
+
               </span>
               <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)"></span>
-              <span class="projectItemHalf" v-html="'Type: '+item.acf.extensive_report_or_assignment"></span>
-
             </router-link>
           </div>
         </div>
@@ -226,7 +226,19 @@ export default {
 
   props: ['newsProp', 'projectsProp', 'editorreportsProp', 'newsAndProjectsProp', 'projectListPage', 'reportListPage', 'newsListPage'],
 
+
   methods: {
+
+    namesArray: function(input){
+      var namePairs = []
+      var arr = input.split(',')
+      var newArr = _(arr).reduce(function(result, value, index) {
+        if (index % 2 === 0)
+          result.push(arr.slice(index, index + 2));
+        return result;
+      }, []);
+      return newArr
+    },
 
     toggleExpandendNews(index) {
       console.log('click');

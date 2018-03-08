@@ -9,16 +9,13 @@
       <!-- <span class="projectItemTitle" v-html="itemIdTitleRendered"></span> -->
       <span class="projectItemHalf" v-if="showType">NEWS</span>
       <span class="projectItemHalf" v-html="">By:
-        <span v-if="Array.isArray(itemStudentNames)">
-        <span v-if="nameProp.length>1" v-for="(name,index) in itemStudentNames" >
-          <span v-if="index<nameProp.length -1" v-html="name+', '"></span>
-          <span v-else v-html="name"></span>
+        <span v-for="(name,index) in namesArray">
+
+          <span @click="userSlug = name[1]" v-if="index<namesArray.length -1" v-html="name[0]+', '"></span>
+          <span @click="userSlug = name[1]" v-else v-html="name[0]"></span>
         </span>
-        <span v-else v-html="itemStudentNames[0]"></span>
       </span>
-      <span v-else>
-        <span v-html="itemStudentNames"></span>
-      </span>
+
       </span>
       <span class="projectItemHalf" v-html="itemDate"></span>
     </div>
@@ -58,6 +55,20 @@ export default {
   mounted: function() {
     // this.getContent(this.itemId)
   },
+
+  computed:{
+    namesArray: function(){
+      var namePairs = []
+      var arr = this.itemStudentNames.split(',')
+      var newArr = _(arr).reduce(function(result, value, index) {
+        if (index % 2 === 0)
+          result.push(arr.slice(index, index + 2));
+        return result;
+      }, []);
+      return newArr
+    }
+  },
+
   methods: {
 
     toggleExpanded: function(id){

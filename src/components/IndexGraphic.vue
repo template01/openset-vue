@@ -84,7 +84,7 @@
 
       <template v-else-if="item.type == 'editorreport'">
                     <div class="floatItem project report">
-                        <router-link :to="{path: 'editorreport/'+item.slug}">
+                        <router-link :to="{path: 'expertinput/'+item.slug}">
 
                             <span class="largeLetter">
     <span v-html="item.title.rendered.charAt(0)">
@@ -98,7 +98,8 @@
   </span>
 
                         </router-link>
-                        <div class="hoverType"><span v-html="item.acf.extensive_report_or_assignment"></span></div>
+                        <div class="hoverType"><span v-html="'Expert Input'"></span></div>
+                        <!-- <div class="hoverType"><span v-html="item.acf.extensive_report_or_assignment"></span></div> -->
                         <div class="arrowsLink"></div>
                     </div>
                 </template>

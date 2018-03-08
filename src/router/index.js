@@ -63,9 +63,9 @@ export default new Router({
         {
           // UserProfile will be rendered inside User's <router-view>
           // when /user/:id/profile is matched
-          name: 'editorreport',
+          name: 'expertinput',
 
-          path: '/editorreport/:editorreportSlug',
+          path: '/expertinput/:editorreportSlug',
           component: Editorreport,
 
         },

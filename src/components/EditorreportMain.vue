@@ -5,12 +5,16 @@
   <div v-if="NotFoundState">
 
     <loading v-if="!loaded"></loading>
-    <editorReport v-bind:content="this.editorReportContent" v-bind:title="this.EditorreportTitle" v-if="editorReport">
+    <editorReport v-bind:content="this.editorReportContent" v-bind:title="this.EditorreportTitle">
+      <singleHeader :typeProp="'Expert Input'"  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
+    </editorReport>
+
+    <!-- <editorReport v-bind:content="this.editorReportContent" v-bind:title="this.EditorreportTitle" v-if="editorReport">
       <singleHeader :typeProp="'report'"  :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
     </editorReport>
     <editorReport v-bind:content="this.editorAssignmentContent" v-bind:title="this.EditorreportTitle" v-if="editorAssignment">
       <singleHeader :typeProp="'assignment'" :nameProp=EditorreportAuthornames :dateProp="EditorreportDate" :titleProp="EditorreportTitle"></singleHeader>
-    </editorReport>
+    </editorReport> -->
 
   </div>
   <div v-else>
@@ -88,19 +92,18 @@ export default {
           this.EditorreportDate = this.EditorreportContentMain.date
           this.EditorreportAuthornames = this.EditorreportContentMain.acf.student_name
 
-          // this.EditorreportSlug = this.EditorreportTitle.slug
-          // this.EditorreportDefaultContent = this.EditorreportTitle.acf.rendered
-          if (this.EditorreportContentMain.acf.extensive_report_or_assignment === 'Assignment') {
-            this.editorAssignment = true
-            this.editorAssignmentContent = this.EditorreportContentMain.content.rendered
+          this.editorReport = true
+          this.editorReportContent = this.EditorreportContentMain.content.rendered
 
-            // this.visualReportIntro = this.projectContent.acf.visual_introduction
-            // this.visualContent = this.projectContent.acf.visual_report
-          }
-          if (this.EditorreportContentMain.acf.extensive_report_or_assignment === "Report") {
-            this.editorReport = true
-            this.editorReportContent = this.EditorreportContentMain.content.rendered
-          }
+          // if (this.EditorreportContentMain.acf.extensive_report_or_assignment === 'Assignment') {
+          //   this.editorAssignment = true
+          //   this.editorAssignmentContent = this.EditorreportContentMain.content.rendered
+          //
+          // }
+          // if (this.EditorreportContentMain.acf.extensive_report_or_assignment === "Report") {
+          //   this.editorReport = true
+          //   this.editorReportContent = this.EditorreportContentMain.content.rendered
+          // }
         }
 
         var vm = this

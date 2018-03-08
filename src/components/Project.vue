@@ -10,7 +10,12 @@
     <loading v-if="!loaded"></loading>
     <visualProject :authorName=projectStudentNames :projectColorSchemeProp="projectColorScheme" v-bind:introText="this.visuallyOrientedIntroText" v-bind:introKeywords="this.visuallyOrientedIntroKeywords" v-bind:introNone="this.visuallyOrientedIntroNone" v-bind:content="this.visualContent"
       v-bind:date="projectDate" v-bind:title="this.projectTitle" v-if="visuallyOriented"></visualProject>
-    <textualProject v-bind:content="this.textualContent" v-bind:title="this.projectTitle" v-bind:date="projectDate" :authorName=projectStudentNames v-if="textuallyOriented"></textualProject>
+      <textualProject v-bind:content="this.textualContent" v-bind:title="this.projectTitle" v-bind:date="projectDate" :authorName=projectStudentNames v-if="textuallyOriented"></textualProject>
+    <div v-if="reportOriented">
+      <editorReport v-bind:content="reportContent" v-bind:title="projectTitle" :assignment=true>
+        <singleHeader :typeProp="'Expert Input'"  :nameProp=projectStudentNames :dateProp="projectDate" :titleProp="projectTitle"></singleHeader>
+      </editorReport>
+    </div>
   </div>
   <div v-else>
     <NotFound></NotFound>
@@ -23,6 +28,8 @@ import NotFound from '@/components/Notfound'
 import visualProject from '@/components/visualProject'
 import textualProject from '@/components/textualProject'
 import loading from '@/components/loading'
+import editorReport from '@/components/editorReport'
+import singleHeader from '@/components/singleHeader'
 
 
 export default {
@@ -34,7 +41,9 @@ export default {
     NotFound,
     visualProject,
     textualProject,
-    loading
+    loading,
+    editorReport,
+    singleHeader
   },
 
   data() {
@@ -47,8 +56,10 @@ export default {
       projectSlug: '',
       projectDefaultContent: '',
       projectColorScheme: '',
-      projectStudentNames: [],
+      projectStudentNames: '',
       NotFoundState: true,
+      reportOriented: false,
+      reportContent: '',
       visuallyOriented: false,
       visuallyOrientedIntroText: '',
       visuallyOrientedIntroKeywords: '',
@@ -56,6 +67,7 @@ export default {
       visualContent: '',
       textuallyOriented: false,
       textualContent: '',
+
       loaded: false
 
     }
@@ -86,7 +98,7 @@ export default {
           this.projectSlug = this.projectContent.slug
           this.projectDefaultContent = this.projectContent.acf.rendered
           this.projectColorScheme = this.projectContent.acf.project_color_scheme
-          this.projectStudentNames = this.projectContent.acf.student_name.split(",")
+          this.projectStudentNames = this.projectContent.acf.student_name
           if (this.projectContent.acf.content_type === "visually_oriented") {
             this.visuallyOriented = true
             if (this.projectContent.acf.visual_introduction_style === "text_based") {
@@ -99,6 +111,11 @@ export default {
               this.visuallyOrientedIntroNone = true
             }
             this.visualContent = this.projectContent.acf.visual
+          }
+
+          if(this.projectContent.acf.content_type ==="report_oriented"){
+            this.reportOriented = true
+            this.reportContent = this.projectContent.acf.report_content
           }
           // if(this.projectContent.acf.sketch_project){
           //   this.sketchProject = true

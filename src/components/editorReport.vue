@@ -95,10 +95,12 @@ export default {
     .featuredImage{
 
 
+      right: 0;
 
       &.assignmentLayout{
+        left: 0;
+
       }
-      right: 0;
 
       position: fixed;
       top: $paddingWindowLarge;
@@ -161,8 +163,9 @@ export default {
 
 
       line-height: 1.25;
-      margin-left: 50%;
+      margin-left: 0%;
       &.assignmentLayout{
+        margin-left: 50%;
         // font-family: Calibre;
         //
         // @include media(">desktop") {
@@ -171,7 +174,6 @@ export default {
         //
         // }
       };
-      margin-left: 0%;
       font-family: "Lyon", Times, serif;
       padding-left: $paddingWindowDesktop;
       padding-right: $paddingWindowDesktop;
@@ -222,7 +224,7 @@ export default {
 
       .wp-caption-text{
         padding-left: $paddingWindowDesktop;
-        
+
         font-family: Calibre;
         font-size: $fontSizeWindowMediumFixed;
         @include media(">=desktop") {

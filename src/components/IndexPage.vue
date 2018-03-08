@@ -49,7 +49,7 @@
 
     <div class="title">
       <router-link to="/">
-        <h1>OPEN SET COMMUNITY</h1>
+        <h1>OPEN SET HUB</h1>
       </router-link>
     </div>
 

@@ -25,7 +25,7 @@
             <span class="projectItemHalf" v-html="'PROJECT'"></span>
             <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)"></span>
           </router-link>
-          <router-link v-if="item.type === 'editorreport'" :to="{path: 'editorreport/'+item.slug}">
+          <router-link v-if="item.type === 'editorreport'" :to="{path: 'expertinput/'+item.slug}">
             <span class="projectItemTitle">{{item.title.rendered}}</span>
             <span class="projectItemHalf" v-html="'REPORT / ASSIGNMENT'"></span>
             <span class="projectItemHalf" v-html="'Date: '+dateStamp(item.date)"></span>

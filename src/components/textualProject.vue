@@ -1,7 +1,6 @@
 <template>
 <div class="textualProject">
 
-
   <singleHeader class="halfWidth" :typeProp="'Project'" :nameProp=authorName :dateProp="date" :titleProp="title"></singleHeader>
 
   <!-- <h1 class="title" v-html="title"></h1> -->
